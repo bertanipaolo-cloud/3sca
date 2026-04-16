@@ -322,6 +322,58 @@
     .grid-2-1, .grid-1-2 { grid-template-columns: 1fr; }
     .bar-label { width: 120px; }
   }
+
+  /* LIVE PRICING SIMULATOR */
+  .sim-grid { display:grid; grid-template-columns: 1.2fr 0.8fr; gap:14px; margin-bottom:20px; }
+  .sim-controls { display:flex; flex-direction:column; gap:14px; }
+  .sim-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .sim-row label { min-width:140px; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+  .sim-row select, .sim-row input[type="range"] {
+    font-family:inherit;
+  }
+  .sim-row select {
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+    padding:8px 10px;
+    min-width:260px;
+    outline:none;
+  }
+  .sim-slider-wrap { flex:1; min-width:220px; }
+  .sim-slider-meta { width:84px; text-align:right; font-weight:700; color:var(--accent); }
+  .sim-value {
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:72px; padding:8px 10px;
+    border:1px solid var(--border); background:var(--bg);
+    font-weight:700; color:var(--text);
+  }
+  .sim-kpis { display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; }
+  .sim-kpi {
+    border:1px solid var(--border);
+    background:var(--surface2);
+    padding:14px;
+  }
+  .sim-kpi .lbl { font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); margin-bottom:8px; }
+  .sim-kpi .val { font-size:24px; font-weight:700; line-height:1; }
+  .sim-note {
+    margin-top:10px; padding-top:12px; border-top:1px solid var(--border);
+    font-size:11px; color:var(--muted);
+  }
+  .sim-note strong { color:var(--text); }
+  .sim-table td { padding:10px 0; font-size:11px; border-bottom:1px solid rgba(226,223,216,0.8); }
+  .sim-table td:last-child { text-align:right; }
+  .decision-pill {
+    display:inline-block; padding:3px 8px; font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+    border-radius:2px; border:1px solid var(--border);
+  }
+  .decision-keep { background:rgba(46,138,95,0.08); color:var(--accent2); border-color:rgba(46,138,95,0.25); }
+  .decision-fix { background:rgba(176,125,58,0.10); color:var(--accent); border-color:rgba(176,125,58,0.25); }
+  .decision-risk { background:rgba(201,64,64,0.10); color:var(--accent3); border-color:rgba(201,64,64,0.25); }
+  @media (max-width: 900px) {
+    .sim-grid { grid-template-columns: 1fr; }
+    .sim-kpis { grid-template-columns: 1fr 1fr; }
+  }
+
 </style>
 </head>
 <body>
@@ -798,6 +850,74 @@
   </div>
 </div>
 
+
+<!-- ─────────────── LIVE PRICING SIMULATOR ─────────────── -->
+<div class="section-title">Simulatore Prezzi Live</div>
+<div class="sim-grid">
+
+  <div class="card">
+    <div class="card-label">Simulatore · Prezzo Target per Margine</div>
+    <div class="sim-controls" style="margin-top:12px">
+      <div class="sim-row">
+        <label for="sim-piatto">Seleziona piatto</label>
+        <select id="sim-piatto" onchange="updateSimulator()"></select>
+      </div>
+
+      <div class="sim-row">
+        <label for="sim-target">Target margine</label>
+        <div class="sim-slider-wrap">
+          <input id="sim-target" type="range" min="50" max="80" step="1" value="60" style="width:100%" oninput="updateSimulator()">
+        </div>
+        <div class="sim-slider-meta" id="sim-target-label">60%</div>
+      </div>
+
+      <div class="sim-row">
+        <label for="sim-rounding">Arrotondamento</label>
+        <select id="sim-rounding" onchange="updateSimulator()">
+          <option value="0">Nessuno</option>
+          <option value="0.5" selected>Ai 0,50 €</option>
+          <option value="1">All'euro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="sim-note">
+      Il simulatore usa il <strong>costo ricetta con scarto</strong> già presente nel modello e calcola il prezzo consigliato per raggiungere il margine desiderato.
+    </div>
+  </div>
+
+  <div class="card accent-gold">
+    <div class="card-label">Output Simulazione</div>
+    <div class="sim-kpis" style="margin-top:12px">
+      <div class="sim-kpi">
+        <div class="lbl">Prezzo attuale</div>
+        <div class="val" id="sim-prezzo-attuale">€ 0,00</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="lbl">Prezzo target</div>
+        <div class="val clr-gold" id="sim-prezzo-target">€ 0,00</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="lbl">Nuovo food cost</div>
+        <div class="val" id="sim-fc-target">0,0%</div>
+      </div>
+      <div class="sim-kpi">
+        <div class="lbl">Differenza prezzo</div>
+        <div class="val" id="sim-delta">€ 0,00</div>
+      </div>
+    </div>
+
+    <table class="sim-table" style="width:100%; margin-top:14px; border-collapse:collapse;">
+      <tr><td>Categoria</td><td id="sim-cat">—</td></tr>
+      <tr><td>Costo netto</td><td id="sim-costo-netto">€ 0,00</td></tr>
+      <tr><td>Costo con scarto</td><td id="sim-costo-scarto">€ 0,00</td></tr>
+      <tr><td>Margine attuale</td><td id="sim-margine-attuale">0,0%</td></tr>
+      <tr><td>Decisione</td><td><span class="decision-pill" id="sim-decision">—</span></td></tr>
+    </table>
+  </div>
+
+</div>
+
 <!-- ─────────────── TOP PEZZI VENDUTI ─────────────── -->
 <div class="section-title">Volume Vendite Storiche · Top 10 per Pezzi</div>
 <div class="card">
@@ -1096,8 +1216,79 @@ function sortTable(col) {
   renderTable();
 }
 
+
+function simFmtEuro(v) {
+  if (v === null || v === undefined || isNaN(v)) return '—';
+  return '€ ' + Number(v).toFixed(2).replace('.', ',');
+}
+function simFmtPct(v) {
+  if (v === null || v === undefined || isNaN(v)) return '—';
+  return (Number(v) * 100).toFixed(1).replace('.', ',') + '%';
+}
+function simRound(value, step) {
+  step = Number(step || 0);
+  if (!step) return value;
+  return Math.ceil(value / step) * step;
+}
+function populateSimulator() {
+  const sel = document.getElementById('sim-piatto');
+  if (!sel) return;
+  const options = piatti
+    .filter(r => r[3] !== null && r[4] !== null)
+    .sort((a,b) => a[0].localeCompare(b[0]))
+    .map((r, idx) => `<option value="${piatti.indexOf(r)}">${r[0]} · ${r[1]}</option>`)
+    .join('');
+  sel.innerHTML = options;
+  const preferred = piatti.findIndex(r => r[0] === 'Ravioli carciofi cacio e pepe');
+  if (preferred >= 0) sel.value = String(preferred);
+  updateSimulator();
+}
+function updateSimulator() {
+  const sel = document.getElementById('sim-piatto');
+  if (!sel) return;
+  const idx = Number(sel.value);
+  const item = piatti[idx];
+  if (!item) return;
+  const [nome, cat, costoN, costoS, prezzo, fc, mg] = item;
+
+  const targetMarginPct = Number(document.getElementById('sim-target').value);
+  const rounding = Number(document.getElementById('sim-rounding').value);
+  document.getElementById('sim-target-label').textContent = targetMarginPct + '%';
+
+  const targetMargin = targetMarginPct / 100;
+  let targetPrice = costoS / (1 - targetMargin);
+  targetPrice = simRound(targetPrice, rounding);
+
+  const newFc = costoS / targetPrice;
+  const delta = targetPrice - prezzo;
+
+  document.getElementById('sim-prezzo-attuale').textContent = simFmtEuro(prezzo);
+  document.getElementById('sim-prezzo-target').textContent = simFmtEuro(targetPrice);
+  document.getElementById('sim-fc-target').textContent = simFmtPct(newFc);
+  document.getElementById('sim-delta').textContent = (delta >= 0 ? '+' : '−') + ' ' + simFmtEuro(Math.abs(delta)).replace('€ ', '€ ');
+  document.getElementById('sim-cat').textContent = cat;
+  document.getElementById('sim-costo-netto').textContent = simFmtEuro(costoN);
+  document.getElementById('sim-costo-scarto').textContent = simFmtEuro(costoS);
+  document.getElementById('sim-margine-attuale').textContent = simFmtPct(mg);
+
+  const decision = document.getElementById('sim-decision');
+  decision.className = 'decision-pill';
+  if (delta <= 0.5) {
+    decision.textContent = 'KEEP';
+    decision.classList.add('decision-keep');
+  } else if (delta <= 2.0) {
+    decision.textContent = 'FIX LIGHT';
+    decision.classList.add('decision-fix');
+  } else {
+    decision.textContent = 'REPRICE';
+    decision.classList.add('decision-risk');
+  }
+}
+
+
 // init
 sortTable(5); // default: food cost
+populateSimulator();
 </script>
 
 <!-- ─────────────── FOOTER ─────────────── -->
