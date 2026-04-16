@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Cost · 3 Scalini</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0eeea;
+    --border: #e2dfd8;
+    --accent: #b07d3a;
+    --accent2: #2e8a5f;
+    --accent3: #c94040;
+    --accent4: #3a6fa8;
+    --text: #1a1814;
+    --muted: #8a8580;
+    --gold: #c47f1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    min-height: 100vh;
+    padding: 40px 32px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-left h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+  .header-left h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .header-left p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .header-right {
+    text-align: right;
+  }
+  .header-right .date {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .status-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 10px;
+    background: rgba(46,138,95,0.08);
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* GRID SYSTEM */
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 14px; margin-bottom: 20px; }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card.accent-green::before { background: var(--accent2); opacity: 1; }
+  .card.accent-red::before { background: var(--accent3); opacity: 1; }
+  .card.accent-blue::before { background: var(--accent4); opacity: 1; }
+  .card.accent-gold::before { background: var(--gold); opacity: 1; }
+
+  .card-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .card-value {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+  .card-value.big { font-size: 38px; }
+  .card-value.small { font-size: 18px; font-weight: 600; }
+  .card-sub {
+    margin-top: 6px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .card-sub span { color: var(--accent2); }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* BAR CHARTS */
+  .bar-chart { display: flex; flex-direction: column; gap: 9px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar-label {
+    width: 180px;
+    font-size: 11px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+  }
+  .bar-label.short { width: 110px; }
+  .bar-track {
+    flex: 1;
+    height: 5px;
+    background: var(--surface2);
+    position: relative;
+  }
+  .bar-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    background: var(--accent);
+    transition: width 0.6s ease;
+  }
+  .bar-fill.green { background: var(--accent2); }
+  .bar-fill.red { background: var(--accent3); }
+  .bar-fill.blue { background: var(--accent4); }
+  .bar-fill.gold { background: var(--gold); }
+  .bar-val {
+    width: 70px;
+    text-align: right;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .bar-val strong { color: var(--text); }
+
+  /* DONUT CHART */
+  .donut-wrap { display: flex; align-items: center; gap: 24px; }
+  .donut-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .legend-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+  .legend-dot { width: 8px; height: 8px; flex-shrink: 0; }
+  .legend-name { flex: 1; color: var(--text); }
+  .legend-val { color: var(--muted); }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 0 0 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table th:not(:first-child) { text-align: right; }
+  .data-table td {
+    padding: 9px 0;
+    font-size: 11px;
+    color: var(--text);
+    border-bottom: 1px solid rgba(226,223,216,0.8);
+    vertical-align: middle;
+  }
+  .data-table td:not(:first-child) { text-align: right; }
+  .data-table tr:hover td { color: var(--accent); }
+  .rank {
+    display: inline-block;
+    width: 18px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 10px;
+    margin-right: 6px;
+  }
+  .rank.top { color: var(--gold); }
+
+  /* FOOD COST INDICATOR */
+  .fc-pill {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 10px;
+    border-radius: 2px;
+  }
+  .fc-ok { background: rgba(46,138,95,0.1); color: var(--accent2); }
+  .fc-warn { background: rgba(201,64,64,0.1); color: var(--accent3); }
+  .fc-mid { background: rgba(176,125,58,0.1); color: var(--accent); }
+
+  /* CATEGORY PILLS */
+  .cat-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* SPARKLINE AREA */
+  .sparkline-row { display: flex; gap: 12px; align-items: flex-end; margin-top: 8px; }
+  .spark-bar {
+    flex: 1;
+    background: var(--accent);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    position: relative;
+  }
+  .spark-bar:hover { opacity: 1; }
+
+  /* HEATMAP */
+  .heatmap { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+  .hm-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: var(--bg);
+    font-weight: 500;
+    position: relative;
+    cursor: default;
+  }
+  .hm-label {
+    font-size: 8px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 3px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .hm-col { display: flex; flex-direction: column; align-items: center; }
+
+  /* METRICS ROW */
+  .metrics-inline { display: flex; gap: 24px; margin-top: 10px; }
+  .metric-item { display: flex; flex-direction: column; gap: 3px; }
+  .metric-item .m-val { font-size: 18px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; color: var(--text); }
+  .metric-item .m-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  /* INLINE PERCENTAGE BAR */
+  .pct-track { display: inline-flex; align-items: center; gap: 8px; width: 100%; }
+  .pct-bar { flex: 1; height: 3px; background: var(--surface2); position: relative; }
+  .pct-fill { position: absolute; top: 0; left: 0; bottom: 0; }
+  .pct-num { width: 40px; text-align: right; font-size: 10px; color: var(--muted); }
+
+  /* number highlight colors */
+  .clr-gold { color: var(--gold); }
+  .clr-green { color: var(--accent2); }
+  .clr-red { color: var(--accent3); }
+  .clr-accent { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
+    .grid-2-1, .grid-1-2 { grid-template-columns: 1fr; }
+    .bar-label { width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<script>
+(function(){
+  const PWD="panisperna252", key="fc_auth";
+  if(sessionStorage.getItem(key)!=="ok"){
+    const i=prompt("Password:");
+    if(i!==PWD){
+      document.body.innerHTML="<div style='padding:60px;font-size:14px;color:#c94040;font-family:sans-serif'>Accesso negato.</div>";
+      throw new Error();
+    }
+    sessionStorage.setItem(key,"ok");
+  }
+})();
+</script>
+
+
+<!-- ─────────────── HEADER ─────────────── -->
+<div class="header">
+  <div class="header-left">
+    <h1>Food Cost · <em>3 Scalini</em></h1>
+    <p>Analisi KPI · Prezzi, Margini &amp; Vendite</p>
+  </div>
+  <div class="header-right">
+    <div class="date">Aggiornato · Mar 2026</div>
+    <div class="status-badge">● Live Model</div>
+  </div>
+</div>
+
+<!-- ─────────────── TOP KPI ROW ─────────────── -->
+<div class="section-title">Indicatori Principali</div>
+<div class="grid-4">
+
+  <div class="card accent-gold">
+    <div class="card-label">Ricavi Storici Totali</div>
+    <div class="card-value big clr-gold">€ 922k</div>
+    <div class="card-sub">su <span>24 piatti</span> con dati vendita</div>
+  </div>
+
+  <div class="card accent-green">
+    <div class="card-label">Pezzi Venduti (storico)</div>
+    <div class="card-value big clr-green">92.262</div>
+    <div class="card-sub">dati storici cumulati</div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Food Cost % Medio</div>
+    <div class="card-value big clr-accent">42,2%</div>
+    <div class="card-sub">target ideale: <span>&lt; 35%</span></div>
+  </div>
+
+  <div class="card accent-green">
+    <div class="card-label">Margine % Medio</div>
+    <div class="card-value big clr-green">57,8%</div>
+    <div class="card-sub">su <span>48 piatti</span> attivi (ON)</div>
+  </div>
+
+</div>
+
+<!-- ─────────────── SECONDA ROW KPI ─────────────── -->
+<div class="grid-4">
+
+  <div class="card">
+    <div class="card-label">Piatti Attivi (ON)</div>
+    <div class="card-value">58</div>
+    <div class="card-sub">su 6 categorie</div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Ingredienti Mappati</div>
+    <div class="card-value">139</div>
+    <div class="card-sub">con costo per UM</div>
+  </div>
+
+  <div class="card accent-green">
+    <div class="card-label">Fornitori Attivi</div>
+    <div class="card-value clr-green">20</div>
+    <div class="card-sub clr-red">4 inattivi</div>
+  </div>
+
+  <div class="card accent-red">
+    <div class="card-label">Scarto Standard</div>
+    <div class="card-value clr-red">+20%</div>
+    <div class="card-sub">applicato su tutti i costi</div>
+  </div>
+
+</div>
+
+<!-- ─────────────── MID SECTION ─────────────── -->
+<div class="grid-2">
+
+  <!-- TOP 10 PIATTI PER RICAVI -->
+  <div class="card">
+    <div class="card-label">Top 10 Piatti · Ricavi Storici</div>
+    <div class="bar-chart" style="margin-top:12px">
+
+      <div class="bar-row">
+        <div class="bar-label">Lasagna al Ragù</div>
+        <div class="bar-track"><div class="bar-fill gold" style="width:100%"></div></div>
+        <div class="bar-val"><strong>€ 183.635</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Ravioli c.c.p.</div>
+        <div class="bar-track"><div class="bar-fill" style="width:51.8%"></div></div>
+        <div class="bar-val"><strong>€ 95.202</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Polpette di Manzo</div>
+        <div class="bar-track"><div class="bar-fill" style="width:47.6%"></div></div>
+        <div class="bar-val"><strong>€ 87.520</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Parmigiana Melanzane</div>
+        <div class="bar-track"><div class="bar-fill" style="width:41.1%"></div></div>
+        <div class="bar-val"><strong>€ 75.435</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Pollo c/ Peperoni</div>
+        <div class="bar-track"><div class="bar-fill" style="width:35.9%"></div></div>
+        <div class="bar-val"><strong>€ 65.968</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Porchetta di Ariccia</div>
+        <div class="bar-track"><div class="bar-fill" style="width:30.2%"></div></div>
+        <div class="bar-val"><strong>€ 55.425</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Misto Salumi&amp;Formaggi x2</div>
+        <div class="bar-track"><div class="bar-fill green" style="width:29.2%"></div></div>
+        <div class="bar-val"><strong>€ 53.571</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Capresona</div>
+        <div class="bar-track"><div class="bar-fill" style="width:19.4%"></div></div>
+        <div class="bar-val"><strong>€ 35.679</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Culatta c/ Bufala</div>
+        <div class="bar-track"><div class="bar-fill" style="width:14.7%"></div></div>
+        <div class="bar-val"><strong>€ 27.695</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Ricotta Bufala Miele</div>
+        <div class="bar-track"><div class="bar-fill" style="width:15.1%"></div></div>
+        <div class="bar-val"><strong>€ 27.695</strong></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOD COST % PER CATEGORIA -->
+  <div class="card">
+    <div class="card-label">Food Cost % per Categoria</div>
+
+    <div class="bar-chart" style="margin-top:14px">
+      <div class="bar-row">
+        <div class="bar-label short">ANTIPASTI</div>
+        <div class="bar-track">
+          <div class="bar-fill green" style="width:54.8%"></div>
+        </div>
+        <div class="bar-val"><strong class="clr-green">32,9%</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label short">SFIZI</div>
+        <div class="bar-track">
+          <div class="bar-fill green" style="width:60.9%"></div>
+        </div>
+        <div class="bar-val"><strong class="clr-green">36,5%</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label short">INSALATE</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:67.3%"></div>
+        </div>
+        <div class="bar-val"><strong class="clr-accent">40,4%</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label short">I CALDI</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:75.7%"></div>
+        </div>
+        <div class="bar-val"><strong class="clr-accent">45,4%</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label short">CONTORNI</div>
+        <div class="bar-track">
+          <div class="bar-fill red" style="width:81.9%"></div>
+        </div>
+        <div class="bar-val"><strong class="clr-red">49,1%</strong></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label short">DOLCI</div>
+        <div class="bar-track">
+          <div class="bar-fill red" style="width:86.6%"></div>
+        </div>
+        <div class="bar-val"><strong class="clr-red">52,0%</strong></div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border)">
+      <div class="card-label">Distribuzione piatti per categoria (attivi)</div>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <span style="font-size:11px; background:rgba(176,125,58,0.08); border:1px solid rgba(176,125,58,0.25); padding:4px 10px; color:var(--accent)">SFIZI · 15</span>
+        <span style="font-size:11px; background:rgba(176,125,58,0.08); border:1px solid rgba(176,125,58,0.25); padding:4px 10px; color:var(--accent)">DOLCI · 15</span>
+        <span style="font-size:11px; background:rgba(176,125,58,0.05); border:1px solid var(--border); padding:4px 10px; color:var(--muted)">I CALDI · 8</span>
+        <span style="font-size:11px; background:rgba(176,125,58,0.05); border:1px solid var(--border); padding:4px 10px; color:var(--muted)">ANTIPASTI · 8</span>
+        <span style="font-size:11px; background:rgba(176,125,58,0.05); border:1px solid var(--border); padding:4px 10px; color:var(--muted)">CONTORNI · 7</span>
+        <span style="font-size:11px; background:rgba(176,125,58,0.05); border:1px solid var(--border); padding:4px 10px; color:var(--muted)">INSALATE · 5</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─────────────── TABELLA PIATTI CRITICI ─────────────── -->
+<div class="section-title">Food Cost · Piatti per Categoria</div>
+<div class="grid-2">
+
+  <!-- MIGLIORI MARGINI -->
+  <div class="card accent-green">
+    <div class="card-label">✦ Best Performers — Margine Più Alto</div>
+    <table class="data-table" style="margin-top:10px">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Piatto</th>
+          <th>Prezzo</th>
+          <th>Food Cost</th>
+          <th>Margine</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rank top">1</span></td>
+          <td>Oliva Gaeta DOP</td>
+          <td>€ 3,50</td>
+          <td><span class="fc-pill fc-ok">16,1%</span></td>
+          <td class="clr-green">83,9%</td>
+        </tr>
+        <tr>
+          <td><span class="rank top">2</span></td>
+          <td>Croccantelle Formaggio</td>
+          <td>€ 3,50</td>
+          <td><span class="fc-pill fc-ok">16,3%</span></td>
+          <td class="clr-green">83,7%</td>
+        </tr>
+        <tr>
+          <td><span class="rank top">3</span></td>
+          <td>Ricotta Bufala Miele</td>
+          <td>€ 9,00</td>
+          <td><span class="fc-pill fc-ok">16,2%</span></td>
+          <td class="clr-green">83,8%</td>
+        </tr>
+        <tr>
+          <td><span class="rank">4</span></td>
+          <td>Greca</td>
+          <td>€ 10,50</td>
+          <td><span class="fc-pill fc-ok">26,2%</span></td>
+          <td class="clr-green">73,8%</td>
+        </tr>
+        <tr>
+          <td><span class="rank">5</span></td>
+          <td>Mediterranea</td>
+          <td>€ 8,00</td>
+          <td><span class="fc-pill fc-ok">29,0%</span></td>
+          <td class="clr-green">71,0%</td>
+        </tr>
+        <tr>
+          <td><span class="rank">6</span></td>
+          <td>Salsiccette Rustiche</td>
+          <td>€ 3,50</td>
+          <td><span class="fc-pill fc-ok">26,7%</span></td>
+          <td class="clr-green">73,3%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOD COST PIÙ ALTO -->
+  <div class="card accent-red">
+    <div class="card-label">⚠ Attenzione — Food Cost Elevato</div>
+    <table class="data-table" style="margin-top:10px">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Piatto</th>
+          <th>Prezzo</th>
+          <th>Food Cost</th>
+          <th>Margine</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rank top">1</span></td>
+          <td>BONACCIA</td>
+          <td>€ 15,00</td>
+          <td><span class="fc-pill fc-warn">60,0%</span></td>
+          <td class="clr-red">40,0%</td>
+        </tr>
+        <tr>
+          <td><span class="rank top">2</span></td>
+          <td>Lasagna Funghi Taleggio</td>
+          <td>€ 15,50</td>
+          <td><span class="fc-pill fc-warn">57,9%</span></td>
+          <td class="clr-red">42,1%</td>
+        </tr>
+        <tr>
+          <td><span class="rank top">3</span></td>
+          <td>Gelato Yogurt Visciole</td>
+          <td>€ 6,00</td>
+          <td><span class="fc-pill fc-warn">57,2%</span></td>
+          <td class="clr-red">42,8%</td>
+        </tr>
+        <tr>
+          <td><span class="rank">4</span></td>
+          <td>Gelato Zabaione</td>
+          <td>€ 6,00</td>
+          <td><span class="fc-pill fc-warn">57,2%</span></td>
+          <td class="clr-red">42,8%</td>
+        </tr>
+        <tr>
+          <td><span class="rank">5</span></td>
+          <td>Caponata di Melanzane</td>
+          <td>€ 7,00</td>
+          <td><span class="fc-pill fc-warn">56,8%</span></td>
+          <td class="clr-red">43,2%</td>
+        </tr>
+        <tr>
+          <td><span class="rank">6</span></td>
+          <td>Patate al Forno</td>
+          <td>€ 6,00</td>
+          <td><span class="fc-pill fc-warn">51,1%</span></td>
+          <td class="clr-red">48,9%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ─────────────── TERZA RIGA ─────────────── -->
+<div class="grid-2-1">
+
+  <!-- PREZZI MINIMI VS APPLICATI -->
+  <div class="card">
+    <div class="card-label">Prezzo Applicato vs Prezzo Minimo (60% margine) — Campione Piatti</div>
+    <table class="data-table" style="margin-top:10px">
+      <thead>
+        <tr>
+          <th>Piatto</th>
+          <th>Cat.</th>
+          <th>P. Minimo</th>
+          <th>P. Applicato</th>
+          <th>Differenza</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ricotta Bufala Miele</td>
+          <td><span style="font-size:9px;color:var(--muted)">ANT</span></td>
+          <td>€ 3,65</td>
+          <td class="clr-green"><strong>€ 9,00</strong></td>
+          <td class="clr-green">+€ 5,35</td>
+        </tr>
+        <tr>
+          <td>Misto Salumi&amp;Formaggi x2</td>
+          <td><span style="font-size:9px;color:var(--muted)">ANT</span></td>
+          <td>€ 15,98</td>
+          <td class="clr-green"><strong>€ 20,00</strong></td>
+          <td class="clr-green">+€ 4,02</td>
+        </tr>
+        <tr>
+          <td>Selezione Salumi x1</td>
+          <td><span style="font-size:9px;color:var(--muted)">ANT</span></td>
+          <td>€ 8,66</td>
+          <td class="clr-green"><strong>€ 11,00</strong></td>
+          <td class="clr-green">+€ 2,35</td>
+        </tr>
+        <tr>
+          <td>Culatta di Parma</td>
+          <td><span style="font-size:9px;color:var(--muted)">ANT</span></td>
+          <td>€ 7,26</td>
+          <td class="clr-green"><strong>€ 9,50</strong></td>
+          <td class="clr-green">+€ 2,24</td>
+        </tr>
+        <tr>
+          <td>Patate al Forno</td>
+          <td><span style="font-size:9px;color:var(--muted)">CON</span></td>
+          <td>€ 7,66</td>
+          <td class="clr-red"><strong>€ 6,00</strong></td>
+          <td class="clr-red">−€ 1,66</td>
+        </tr>
+        <tr>
+          <td>Caponata Melanzane</td>
+          <td><span style="font-size:9px;color:var(--muted)">CON</span></td>
+          <td>€ 9,93</td>
+          <td class="clr-red"><strong>€ 7,00</strong></td>
+          <td class="clr-red">−€ 2,93</td>
+        </tr>
+        <tr>
+          <td>Ravioli c.c.p.</td>
+          <td><span style="font-size:9px;color:var(--muted)">CAL</span></td>
+          <td>€ 19,94</td>
+          <td class="clr-red"><strong>€ 15,00</strong></td>
+          <td class="clr-red">−€ 4,94</td>
+        </tr>
+        <tr>
+          <td>Lasagna Funghi Taleggio</td>
+          <td><span style="font-size:9px;color:var(--muted)">CAL</span></td>
+          <td>€ 22,43</td>
+          <td class="clr-red"><strong>€ 15,50</strong></td>
+          <td class="clr-red">−€ 6,93</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MINI STATS -->
+  <div style="display:flex; flex-direction:column; gap:14px;">
+
+    <div class="card accent-blue">
+      <div class="card-label">Piatto + Venduto</div>
+      <div class="card-value small clr-accent">Lasagna Ragù</div>
+      <div class="metrics-inline" style="margin-top:10px">
+        <div class="metric-item">
+          <span class="m-val clr-gold">14.759</span>
+          <span class="m-lbl">pezzi</span>
+        </div>
+        <div class="metric-item">
+          <span class="m-val clr-green">€183k</span>
+          <span class="m-lbl">ricavi</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Prezzo Medio di Vendita</div>
+      <div class="metrics-inline" style="margin-top:8px">
+        <div class="metric-item">
+          <span class="m-val clr-accent">€ 9,99</span>
+          <span class="m-lbl">medio</span>
+        </div>
+        <div class="metric-item">
+          <span class="m-val">€ 2,00</span>
+          <span class="m-lbl">minimo</span>
+        </div>
+        <div class="metric-item">
+          <span class="m-val">€ 20,00</span>
+          <span class="m-lbl">massimo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Costo Medio Ricetta (con scarto)</div>
+      <div class="metrics-inline" style="margin-top:8px">
+        <div class="metric-item">
+          <span class="m-val clr-accent">€ 3,46</span>
+          <span class="m-lbl">medio</span>
+        </div>
+        <div class="metric-item">
+          <span class="m-val clr-green">€ 0,51</span>
+          <span class="m-lbl">minimo</span>
+        </div>
+        <div class="metric-item">
+          <span class="m-val clr-red">€ 8,18</span>
+          <span class="m-lbl">massimo</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─────────────── TOP PEZZI VENDUTI ─────────────── -->
+<div class="section-title">Volume Vendite Storiche · Top 10 per Pezzi</div>
+<div class="card">
+  <div class="bar-chart">
+
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank top">1</span>Lasagna al Ragù di Manzo</div>
+      <div class="bar-track"><div class="bar-fill gold" style="width:100%"></div></div>
+      <div class="bar-val"><strong>14.759</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank top">2</span>Polpette di Manzo al Sugo</div>
+      <div class="bar-track"><div class="bar-fill" style="width:54.4%"></div></div>
+      <div class="bar-val"><strong>8.031</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank top">3</span>Ravioli carciofi c.c.p.</div>
+      <div class="bar-track"><div class="bar-fill" style="width:47.9%"></div></div>
+      <div class="bar-val"><strong>7.070</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank">4</span>Parmigiana di Melanzane</div>
+      <div class="bar-track"><div class="bar-fill" style="width:45.1%"></div></div>
+      <div class="bar-val"><strong>6.664</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank">5</span>Pollo con i Peperoni</div>
+      <div class="bar-track"><div class="bar-fill" style="width:36.0%"></div></div>
+      <div class="bar-val"><strong>5.308</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank">6</span>Porchetta di Ariccia</div>
+      <div class="bar-track"><div class="bar-fill" style="width:34.4%"></div></div>
+      <div class="bar-val"><strong>5.073</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank">7</span>Oliva Gaeta DOP</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:28.7%"></div></div>
+      <div class="bar-val"><strong>4.234</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank">8</span>Patate al Forno</div>
+      <div class="bar-track"><div class="bar-fill" style="width:24.0%"></div></div>
+      <div class="bar-val"><strong>3.546</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank">9</span>Croccantelle di Formaggio</div>
+      <div class="bar-track"><div class="bar-fill" style="width:23.6%"></div></div>
+      <div class="bar-val"><strong>3.486</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="width:240px"><span class="rank">10</span>Capresona</div>
+      <div class="bar-track"><div class="bar-fill blue" style="width:22.8%"></div></div>
+      <div class="bar-val"><strong>3.371</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─────────────── SPECCHIETTO PIATTI ─────────────── -->
+<div class="section-title" style="margin-top:6px">Dettaglio Food Cost · Tutti i Piatti</div>
+<div class="card" style="padding:0; overflow:visible;">
+
+  <!-- TOOLBAR -->
+  <div style="display:flex; align-items:center; gap:10px; padding:16px 20px; border-bottom:1px solid var(--border); flex-wrap:wrap;">
+    <span style="font-size:11px; color:var(--muted); font-weight:500; margin-right:4px;">Categoria:</span>
+    <button class="cat-btn active" data-cat="TUTTI" onclick="filterTable('TUTTI', this)">Tutti</button>
+    <button class="cat-btn" data-cat="SFIZI" onclick="filterTable('SFIZI', this)">Sfizi</button>
+    <button class="cat-btn" data-cat="ANTIPASTI" onclick="filterTable('ANTIPASTI', this)">Antipasti</button>
+    <button class="cat-btn" data-cat="I CALDI" onclick="filterTable('I CALDI', this)">I Caldi</button>
+    <button class="cat-btn" data-cat="INSALATE" onclick="filterTable('INSALATE', this)">Insalate</button>
+    <button class="cat-btn" data-cat="CONTORNI" onclick="filterTable('CONTORNI', this)">Contorni</button>
+    <button class="cat-btn" data-cat="DOLCI" onclick="filterTable('DOLCI', this)">Dolci</button>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+      <span style="font-size:11px; color:var(--muted);" id="row-count"></span>
+      <input type="text" id="search-input" placeholder="Cerca piatto…" oninput="applyFilters()"
+        style="border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit; font-size:12px; padding:5px 10px; outline:none; width:160px;">
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div style="overflow-x:auto;">
+  <table class="data-table" id="piatti-table" style="width:100%; padding:0;">
+    <thead>
+      <tr style="background:var(--bg);">
+        <th class="sortable" data-col="0" onclick="sortTable(0)" style="padding:12px 20px; cursor:pointer; white-space:nowrap; text-align:left;">
+          Piatto <span class="sort-icon" id="sort-0">↕</span>
+        </th>
+        <th class="sortable" data-col="1" onclick="sortTable(1)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
+          Categoria <span class="sort-icon" id="sort-1">↕</span>
+        </th>
+        <th class="sortable" data-col="2" onclick="sortTable(2)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
+          Costo netto <span class="sort-icon" id="sort-2">↕</span>
+        </th>
+        <th class="sortable" data-col="3" onclick="sortTable(3)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
+          Costo c/scarto <span class="sort-icon" id="sort-3">↕</span>
+        </th>
+        <th class="sortable" data-col="4" onclick="sortTable(4)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
+          Prezzo vendita <span class="sort-icon" id="sort-4">↕</span>
+        </th>
+        <th class="sortable" data-col="5" onclick="sortTable(5)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
+          Food Cost % <span class="sort-icon" id="sort-5">↕</span>
+        </th>
+        <th class="sortable" data-col="6" onclick="sortTable(6)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
+          Margine % <span class="sort-icon" id="sort-6">↕</span>
+        </th>
+        <th style="padding:12px 14px; white-space:nowrap;">Indicatore</th>
+      </tr>
+    </thead>
+    <tbody id="piatti-tbody">
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<style>
+  .cat-btn {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .cat-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(176,125,58,0.05); }
+  .cat-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .sortable:hover { color: var(--text) !important; background: rgba(0,0,0,0.02); }
+  .sort-icon { font-size: 10px; color: var(--muted); margin-left: 3px; }
+  .sort-icon.asc::after { content: '↑'; }
+  .sort-icon.desc::after { content: '↓'; }
+  .fc-bar-wrap { display:flex; align-items:center; gap:8px; justify-content:flex-end; }
+  .fc-bar-mini { width:60px; height:4px; background:var(--surface2); position:relative; flex-shrink:0; }
+  .fc-bar-mini-fill { position:absolute; top:0; left:0; bottom:0; }
+  #piatti-table thead th { position: sticky; top: 0; background: var(--bg); z-index: 1; }
+  #piatti-table tbody tr:hover td { background: rgba(176,125,58,0.03); }
+  #piatti-table tbody tr td { padding: 9px 14px; font-size: 12px; }
+  #piatti-table tbody tr td:first-child { padding-left: 20px; font-weight: 500; }
+  #search-input:focus { border-color: var(--accent); }
+</style>
+
+<script>
+const piatti = [
+  // [nome, categoria, costo_netto, costo_scarto, prezzo, food_cost, margine]
+  ["Oliva Gaeta DOP","SFIZI",0.426,0.5112,3.5,0.1607,0.8393],
+  ["Croccantelle di Formaggio","SFIZI",0.4312,0.51744,3.5,0.1626,0.8374],
+  ["Mandorle salate tostate","SFIZI",1.4,1.68,4.0,0.462,0.538],
+  ["Salsiccette al Tartufo","SFIZI",1.0545,1.2654,4.5,0.3093,0.6907],
+  ["Salsiccette Rustiche","SFIZI",0.708,0.8496,3.5,0.267,0.733],
+  ["Coppiette di Maiale piccanti","SFIZI",1.4442,1.73304,5.0,0.3813,0.6187],
+  ["Peperone Crusco","SFIZI",1.65,1.98,4.0,0.5445,0.4555],
+  ["Hummus di ceci","SFIZI",2.2405,2.6886,7.0,0.4225,0.5775],
+  ["Sfizio Gorgonzola miele e noci","SFIZI",1.4455,1.7346,6.5,0.2935,0.7065],
+  ["Pane e Olio","SFIZI",1.715,2.058,5.0,0.4528,0.5472],
+  ["Crackers senza glutine","SFIZI",1.06,1.272,2.5,0.5597,0.4403],
+  ["Piatto Pane","SFIZI",0.455,0.546,2.0,0.3003,0.6997],
+  ["Chips di verdure","SFIZI",0.996,1.1952,4.0,0.3287,0.6713],
+  ["Pane al Sughetto di pomodoro","SFIZI",2.1255,2.5506,6.0,0.4676,0.5324],
+  ["Culatta di Parma","ANTIPASTI",2.2015,2.6418,9.5,0.3059,0.6941],
+  ["Culatta di Parma con Bufala","ANTIPASTI",3.461,4.1532,11.5,0.3973,0.6027],
+  ["Ricotta di Bufala con miele al tartufo","ANTIPASTI",1.1069,1.32828,9.0,0.1623,0.8377],
+  ["Carpaccio di Angus marinato","ANTIPASTI",3.7724,4.52688,12.5,0.3984,0.6016],
+  ["Misto x 2 Salumi e Formaggi","ANTIPASTI",4.84125,5.8095,20.0,0.3195,0.6805],
+  ["Selezione Salumi x 1","ANTIPASTI",2.6228,3.14736,11.0,0.3147,0.6853],
+  ["Selezione Formaggi x1","ANTIPASTI",3.65895,4.39074,12.0,0.4025,0.5975],
+  ["Lasagna al Ragù di Manzo","I CALDI",4.088,4.9056,13.0,0.4151,0.5849],
+  ["Parmigiana di Melanzane","I CALDI",3.85925,4.6311,12.0,0.4245,0.5755],
+  ["Porchetta di Ariccia","I CALDI",2.9775,3.573,11.0,0.3573,0.6427],
+  ["Polpette di Manzo al sugo","I CALDI",3.70315,4.44378,12.0,0.4073,0.5927],
+  ["Pollo con i Peperoni","I CALDI",5.2605,6.3126,13.5,0.5144,0.4856],
+  ["Ravioli carciofi cacio e pepe","I CALDI",6.0465,7.2558,15.0,0.5321,0.4679],
+  ["Lasagna funghi e taleggio","I CALDI",8.1558,8.1558,15.5,0.5788,0.4212],
+  ["polpettine di verdure e legumi in salsa","I CALDI",4.764,4.764,13.0,0.4031,0.5969],
+  ["Tresca primavera","INSALATE",5.502,5.502,13.5,0.4483,0.5517],
+  ["Capresona","INSALATE",4.58523,4.58523,12.0,0.4203,0.5797],
+  ["Mediterranea","INSALATE",2.106,2.106,8.0,0.2896,0.7104],
+  ["Greca","INSALATE",2.49756,2.49756,10.5,0.2616,0.7384],
+  ["BONACCIA","INSALATE",8.1792,8.1792,15.0,0.5998,0.4002],
+  ["Cicoria Ripassata","CONTORNI",2.52,2.52,7.0,0.396,0.604],
+  ["Patate al Forno","CONTORNI",2.7846,2.7846,6.0,0.5105,0.4895],
+  ["Caponata di Melanzane","CONTORNI",3.6126,3.6126,7.0,0.5677,0.4323],
+  ["Tiramisù","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
+  ["Panna Cotta","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
+  ["Ciambelline al Vino","DOLCI",0.972,0.972,3.0,0.3564,0.6436],
+  ["Tozzetti al cioccolato","DOLCI",1.62,1.62,4.0,0.4455,0.5545],
+  ["Crostatina Ricotta e Visciole","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
+  ["Crostatina Ricotta e cioccolato","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
+  ["Meringato al limone","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
+  ["Gelato zabaione al marsala","DOLCI",3.12,3.12,6.0,0.572,0.428],
+  ["Gelato Yogurt e visciole","DOLCI",3.12,3.12,6.0,0.572,0.428],
+  ["mousse alla nocciola","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
+  ["bignè di san giuseppe","DOLCI",2.4,2.4,7.0,0.3771,0.6229],
+  ["Cesarina","INSALATE",null,null,11.5,null,null],
+];
+
+let currentCat = 'TUTTI';
+let currentSort = { col: 5, dir: 'asc' }; // default: food cost asc
+
+function getCatColor(cat) {
+  const map = { SFIZI:'#b07d3a', ANTIPASTI:'#3a6fa8', 'I CALDI':'#c94040', INSALATE:'#2e8a5f', CONTORNI:'#7b5ea7', DOLCI:'#c47f1a' };
+  return map[cat] || '#8a8580';
+}
+
+function fcClass(fc) {
+  if (fc === null) return 'fc-mid';
+  if (fc <= 0.33) return 'fc-ok';
+  if (fc >= 0.50) return 'fc-warn';
+  return 'fc-mid';
+}
+
+function fmt(v, prefix='€ ', decimals=2) {
+  if (v === null || v === undefined || isNaN(v)) return '—';
+  return prefix + v.toFixed(decimals).replace('.', ',');
+}
+
+function renderTable() {
+  const search = document.getElementById('search-input').value.toLowerCase();
+  let rows = piatti.filter(r => {
+    const catOk = currentCat === 'TUTTI' || r[1] === currentCat;
+    const searchOk = !search || r[0].toLowerCase().includes(search);
+    return catOk && searchOk;
+  });
+
+  // sort
+  const col = currentSort.col;
+  const dir = currentSort.dir === 'asc' ? 1 : -1;
+  rows.sort((a, b) => {
+    let va = a[col], vb = b[col];
+    if (va === null) return 1;
+    if (vb === null) return -1;
+    if (typeof va === 'string') return va.localeCompare(vb) * dir;
+    return (va - vb) * dir;
+  });
+
+  const tbody = document.getElementById('piatti-tbody');
+  tbody.innerHTML = rows.map(r => {
+    const [nome, cat, costoN, costoS, prezzo, fc, mg] = r;
+    const fcPct = fc !== null ? (fc * 100).toFixed(1) + '%' : '—';
+    const mgPct = mg !== null ? (mg * 100).toFixed(1) + '%' : '—';
+    const fcColor = fc === null ? '#8a8580' : fc <= 0.33 ? '#2e8a5f' : fc >= 0.50 ? '#c94040' : '#b07d3a';
+    const mgColor = mg === null ? '#8a8580' : mg >= 0.67 ? '#2e8a5f' : mg <= 0.50 ? '#c94040' : '#b07d3a';
+    const barW = fc !== null ? Math.round(fc * 100) : 0;
+    const catColor = getCatColor(cat);
+    return `<tr data-cat="${cat}">
+      <td style="max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${nome}">${nome}</td>
+      <td style="text-align:right;">
+        <span style="font-size:9px; font-weight:600; color:${catColor}; background:${catColor}18; padding:3px 7px; letter-spacing:0.07em; text-transform:uppercase;">${cat}</span>
+      </td>
+      <td style="text-align:right; color:var(--muted);">${fmt(costoN)}</td>
+      <td style="text-align:right; color:var(--muted);">${fmt(costoS)}</td>
+      <td style="text-align:right; font-weight:600;">${fmt(prezzo)}</td>
+      <td style="text-align:right;">
+        <div class="fc-bar-wrap">
+          <span style="font-weight:600; color:${fcColor}; min-width:38px; text-align:right;">${fcPct}</span>
+          <div class="fc-bar-mini"><div class="fc-bar-mini-fill" style="width:${barW}%; background:${fcColor};"></div></div>
+        </div>
+      </td>
+      <td style="text-align:right; font-weight:600; color:${mgColor};">${mgPct}</td>
+      <td style="text-align:right;">
+        <span class="fc-pill ${fcClass(fc)}" style="font-size:9px;">
+          ${fc === null ? '—' : fc <= 0.33 ? '✦ ottimo' : fc >= 0.50 ? '⚠ alto' : '◉ medio'}
+        </span>
+      </td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('row-count').textContent = rows.length + ' piatti';
+}
+
+function filterTable(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function applyFilters() { renderTable(); }
+
+function sortTable(col) {
+  if (currentSort.col === col) {
+    currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort = { col, dir: col >= 2 ? 'asc' : 'asc' };
+  }
+  // update icons
+  for (let i = 0; i <= 6; i++) {
+    const el = document.getElementById('sort-' + i);
+    if (el) {
+      el.className = 'sort-icon';
+      el.textContent = i === col ? (currentSort.dir === 'asc' ? '↑' : '↓') : '↕';
+    }
+  }
+  renderTable();
+}
+
+// init
+sortTable(5); // default: food cost
+</script>
+
+<!-- ─────────────── FOOTER ─────────────── -->
+<div class="footer">
+  <span>Food Cost Dashboard · Dati da file Excel modello</span>
+  <span>Generato da Claude · Apr 2026</span>
+</div>
+
+</body>
+</html>
