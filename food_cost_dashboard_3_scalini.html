@@ -3,1299 +3,1264 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Food Cost · 3 Scalini</title>
+<title>Food Cost · Ai Tre Scalini</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
-
-  :root {
-    --bg: #f5f4f0;
-    --surface: #ffffff;
-    --surface2: #f0eeea;
-    --border: #e2dfd8;
-    --accent: #b07d3a;
-    --accent2: #2e8a5f;
-    --accent3: #c94040;
-    --accent4: #3a6fa8;
-    --text: #1a1814;
-    --muted: #8a8580;
-    --gold: #c47f1a;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 13px;
-    min-height: 100vh;
-    padding: 40px 32px;
-  }
-
-  /* HEADER */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 40px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-  }
-  .header-left h1 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.5px;
-    line-height: 1.1;
-  }
-  .header-left h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-  .header-left p {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .header-right {
-    text-align: right;
-  }
-  .header-right .date {
-    color: var(--muted);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-  .status-badge {
-    display: inline-block;
-    margin-top: 6px;
-    padding: 4px 10px;
-    background: rgba(46,138,95,0.08);
-    border: 1px solid var(--accent2);
-    color: var(--accent2);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  /* GRID SYSTEM */
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
-  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 20px; }
-  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 14px; margin-bottom: 20px; }
-
-  /* CARDS */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 20px 22px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .card:hover::before { opacity: 1; }
-
-  .card.accent-green::before { background: var(--accent2); opacity: 1; }
-  .card.accent-red::before { background: var(--accent3); opacity: 1; }
-  .card.accent-blue::before { background: var(--accent4); opacity: 1; }
-  .card.accent-gold::before { background: var(--gold); opacity: 1; }
-
-  .card-label {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
-  .card-value {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1;
-  }
-  .card-value.big { font-size: 38px; }
-  .card-value.small { font-size: 18px; font-weight: 600; }
-  .card-sub {
-    margin-top: 6px;
-    font-size: 10px;
-    color: var(--muted);
-  }
-  .card-sub span { color: var(--accent2); }
-
-  /* SECTION TITLES */
-  .section-title {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--muted);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* BAR CHARTS */
-  .bar-chart { display: flex; flex-direction: column; gap: 9px; }
-  .bar-row { display: flex; align-items: center; gap: 10px; }
-  .bar-label {
-    width: 180px;
-    font-size: 11px;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-shrink: 0;
-  }
-  .bar-label.short { width: 110px; }
-  .bar-track {
-    flex: 1;
-    height: 5px;
-    background: var(--surface2);
-    position: relative;
-  }
-  .bar-fill {
-    position: absolute;
-    top: 0; left: 0; bottom: 0;
-    background: var(--accent);
-    transition: width 0.6s ease;
-  }
-  .bar-fill.green { background: var(--accent2); }
-  .bar-fill.red { background: var(--accent3); }
-  .bar-fill.blue { background: var(--accent4); }
-  .bar-fill.gold { background: var(--gold); }
-  .bar-val {
-    width: 70px;
-    text-align: right;
-    font-size: 11px;
-    color: var(--muted);
-    flex-shrink: 0;
-  }
-  .bar-val strong { color: var(--text); }
-
-  /* DONUT CHART */
-  .donut-wrap { display: flex; align-items: center; gap: 24px; }
-  .donut-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
-  .legend-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
-  .legend-dot { width: 8px; height: 8px; flex-shrink: 0; }
-  .legend-name { flex: 1; color: var(--text); }
-  .legend-val { color: var(--muted); }
-
-  /* TABLE */
-  .data-table { width: 100%; border-collapse: collapse; }
-  .data-table th {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    padding: 0 0 10px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  .data-table th:not(:first-child) { text-align: right; }
-  .data-table td {
-    padding: 9px 0;
-    font-size: 11px;
-    color: var(--text);
-    border-bottom: 1px solid rgba(226,223,216,0.8);
-    vertical-align: middle;
-  }
-  .data-table td:not(:first-child) { text-align: right; }
-  .data-table tr:hover td { color: var(--accent); }
-  .rank {
-    display: inline-block;
-    width: 18px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 10px;
-    margin-right: 6px;
-  }
-  .rank.top { color: var(--gold); }
-
-  /* FOOD COST INDICATOR */
-  .fc-pill {
-    display: inline-block;
-    padding: 2px 7px;
-    font-size: 10px;
-    border-radius: 2px;
-  }
-  .fc-ok { background: rgba(46,138,95,0.1); color: var(--accent2); }
-  .fc-warn { background: rgba(201,64,64,0.1); color: var(--accent3); }
-  .fc-mid { background: rgba(176,125,58,0.1); color: var(--accent); }
-
-  /* CATEGORY PILLS */
-  .cat-pill {
-    display: inline-block;
-    padding: 2px 8px;
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
-
-  /* SPARKLINE AREA */
-  .sparkline-row { display: flex; gap: 12px; align-items: flex-end; margin-top: 8px; }
-  .spark-bar {
-    flex: 1;
-    background: var(--accent);
-    opacity: 0.6;
-    transition: opacity 0.2s;
-    position: relative;
-  }
-  .spark-bar:hover { opacity: 1; }
-
-  /* HEATMAP */
-  .heatmap { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
-  .hm-cell {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 9px;
-    color: var(--bg);
-    font-weight: 500;
-    position: relative;
-    cursor: default;
-  }
-  .hm-label {
-    font-size: 8px;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 3px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .hm-col { display: flex; flex-direction: column; align-items: center; }
-
-  /* METRICS ROW */
-  .metrics-inline { display: flex; gap: 24px; margin-top: 10px; }
-  .metric-item { display: flex; flex-direction: column; gap: 3px; }
-  .metric-item .m-val { font-size: 18px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; color: var(--text); }
-  .metric-item .m-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-
-  /* FOOTER */
-  .footer {
-    margin-top: 40px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-  }
-
-  /* INLINE PERCENTAGE BAR */
-  .pct-track { display: inline-flex; align-items: center; gap: 8px; width: 100%; }
-  .pct-bar { flex: 1; height: 3px; background: var(--surface2); position: relative; }
-  .pct-fill { position: absolute; top: 0; left: 0; bottom: 0; }
-  .pct-num { width: 40px; text-align: right; font-size: 10px; color: var(--muted); }
-
-  /* number highlight colors */
-  .clr-gold { color: var(--gold); }
-  .clr-green { color: var(--accent2); }
-  .clr-red { color: var(--accent3); }
-  .clr-accent { color: var(--accent); }
-
-  @media (max-width: 900px) {
-    .grid-4, .grid-3 { grid-template-columns: 1fr 1fr; }
-    .grid-2-1, .grid-1-2 { grid-template-columns: 1fr; }
-    .bar-label { width: 120px; }
-  }
-
-  /* LIVE PRICING SIMULATOR */
-  .sim-grid { display:grid; grid-template-columns: 1.2fr 0.8fr; gap:14px; margin-bottom:20px; }
-  .sim-controls { display:flex; flex-direction:column; gap:14px; }
-  .sim-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .sim-row label { min-width:140px; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
-  .sim-row select, .sim-row input[type="range"] {
-    font-family:inherit;
-  }
-  .sim-row select {
-    border:1px solid var(--border);
-    background:var(--surface);
-    color:var(--text);
-    padding:8px 10px;
-    min-width:260px;
-    outline:none;
-  }
-  .sim-slider-wrap { flex:1; min-width:220px; }
-  .sim-slider-meta { width:84px; text-align:right; font-weight:700; color:var(--accent); }
-  .sim-value {
-    display:inline-flex; align-items:center; justify-content:center;
-    min-width:72px; padding:8px 10px;
-    border:1px solid var(--border); background:var(--bg);
-    font-weight:700; color:var(--text);
-  }
-  .sim-kpis { display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; }
-  .sim-kpi {
-    border:1px solid var(--border);
-    background:var(--surface2);
-    padding:14px;
-  }
-  .sim-kpi .lbl { font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); margin-bottom:8px; }
-  .sim-kpi .val { font-size:24px; font-weight:700; line-height:1; }
-  .sim-note {
-    margin-top:10px; padding-top:12px; border-top:1px solid var(--border);
-    font-size:11px; color:var(--muted);
-  }
-  .sim-note strong { color:var(--text); }
-  .sim-table td { padding:10px 0; font-size:11px; border-bottom:1px solid rgba(226,223,216,0.8); }
-  .sim-table td:last-child { text-align:right; }
-  .decision-pill {
-    display:inline-block; padding:3px 8px; font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
-    border-radius:2px; border:1px solid var(--border);
-  }
-  .decision-keep { background:rgba(46,138,95,0.08); color:var(--accent2); border-color:rgba(46,138,95,0.25); }
-  .decision-fix { background:rgba(176,125,58,0.10); color:var(--accent); border-color:rgba(176,125,58,0.25); }
-  .decision-risk { background:rgba(201,64,64,0.10); color:var(--accent3); border-color:rgba(201,64,64,0.25); }
-  @media (max-width: 900px) {
-    .sim-grid { grid-template-columns: 1fr; }
-    .sim-kpis { grid-template-columns: 1fr 1fr; }
-  }
-
+:root{--bg:#1a1410;--bg2:#231c15;--bg3:#2c231a;--sf:#2e2418;--bd:#4a3c2a;--bd2:#5e4e38;
+--tx:#f0e8d8;--tx2:#c8b898;--mu:#8a7a60;--gold:#c9a227;--godl:#e8c050;--goldd:#9a7a18;
+--gr:#4a9a6a;--grl:#60b880;--rd:#c04840;--rdl:#e05850;--bl:#4878b0;--warn:#e07030;
+--y25:#6888b8;--y26:#c9a227;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;}
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+/* sidebar */
+.sb{background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sb-head{padding:22px 18px 16px;border-bottom:1px solid var(--bd);display:flex;flex-direction:column;align-items:center;text-align:center;gap:11px;}
+.sb-logo{width:78px;height:78px;border-radius:50%;border:2px solid var(--goldd);overflow:hidden;box-shadow:0 0 18px rgba(201,162,39,.15);}
+.sb-logo img{width:100%;height:100%;object-fit:cover;}
+.sb-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--godl);line-height:1.3;}
+.sb-sub{font-size:9px;color:var(--mu);letter-spacing:.14em;text-transform:uppercase;margin-top:-5px;}
+.sb-sec{padding:14px 14px 4px;font-size:9px;color:var(--mu);letter-spacing:.16em;text-transform:uppercase;font-weight:600;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;color:var(--tx2);font-size:12px;font-weight:500;transition:all .15s;border-left:2px solid transparent;margin:1px 0;}
+.ni:hover{color:var(--godl);background:rgba(201,162,39,.06);}
+.ni.on{color:var(--godl);background:rgba(201,162,39,.1);border-left-color:var(--gold);}
+.ni i{font-style:normal;width:15px;text-align:center;flex-shrink:0;}
+.sb-stats{margin:14px 12px 0;display:flex;flex-direction:column;gap:6px;}
+.sb-stat{background:var(--sf);border:1px solid var(--bd);border-left:2px solid var(--goldd);padding:8px 10px;}
+.sb-stat .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--mu);margin-bottom:2px;}
+.sb-stat .val{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--godl);}
+.sb-stat .dlt{font-size:9px;font-weight:600;color:var(--grl);margin-top:1px;}
+.sb-ft{margin-top:auto;padding:11px 14px;font-size:9px;color:var(--mu);line-height:1.7;border-top:1px solid var(--bd);}
+/* main */
+.main{padding:30px 36px;overflow-x:hidden;}
+.pg{display:none;}.pg.on{display:block;animation:fu .18s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.ph{margin-bottom:20px;}
+.pt{font-family:'Playfair Display',serif;font-size:24px;color:var(--tx);letter-spacing:-.3px;line-height:1.15;}
+.pt b{color:var(--gold);font-style:italic;}
+.ps{margin-top:4px;font-size:11px;color:var(--mu);letter-spacing:.05em;text-transform:uppercase;}
+/* kpi */
+.ks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.kpi{background:var(--sf);border:1px solid var(--bd);padding:14px 16px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--gold));}
+.kl{font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--mu);margin-bottom:7px;}
+.kv{font-family:'Playfair Display',serif;font-size:23px;color:var(--tx);line-height:1;}
+.kv.sm{font-size:18px;}
+.kb{font-size:10px;color:var(--mu);margin-top:4px;}
+.kd{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 6px;margin-top:5px;}
+.kd.up{background:rgba(74,154,106,.15);color:var(--grl);}
+.kd.dn{background:rgba(192,72,64,.15);color:var(--rdl);}
+/* card */
+.card{background:var(--sf);border:1px solid var(--bd);padding:16px 18px;}
+.cl{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mu);margin-bottom:10px;}
+.card.ag .cl{color:var(--gr);}.card.ar .cl{color:var(--rd);}
+/* table */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);padding:8px 10px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap;}
+.tbl th.la{text-align:left;padding-left:13px;}
+.tbl td{padding:7px 10px;font-size:12px;border-bottom:1px solid rgba(74,60,42,.3);text-align:right;color:var(--tx2);}
+.tbl td.la{text-align:left;padding-left:13px;color:var(--tx);font-weight:500;}
+.tbl tbody tr:last-child td{border-bottom:none;}
+.tbl tbody tr:hover td{background:rgba(201,162,39,.04);}
+.tw{overflow-x:auto;overflow-y:auto;}
+.tw thead th{position:sticky;top:0;background:var(--bg2);z-index:2;}
+/* pills */
+.pill{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 6px;}
+.p-ok{background:rgba(74,154,106,.18);color:var(--grl);}
+.p-wn{background:rgba(192,72,64,.18);color:var(--rdl);}
+.p-md{background:rgba(201,162,39,.15);color:var(--godl);}
+.p-nw{background:rgba(72,120,176,.18);color:#7aabdf;}
+.p-go{background:rgba(136,88,160,.18);color:#b890d8;}
+.p-ic{background:rgba(224,112,48,.18);color:var(--warn);}
+.du{color:var(--grl);font-family:'DM Mono',monospace;font-size:11px;font-weight:600;}
+.dd{color:var(--rdl);font-family:'DM Mono',monospace;font-size:11px;font-weight:600;}
+/* barre confronto */
+.bdr{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--bd);}
+.bdr:last-child{border-bottom:none;}
+.bdr .bl2{width:195px;flex-shrink:0;font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx2);}
+.bdr .brs{flex:1;display:flex;flex-direction:column;gap:3px;}
+.bdr .s25{height:5px;background:var(--y25);opacity:.55;border-radius:1px;}
+.bdr .s26{height:5px;background:var(--y26);opacity:.85;border-radius:1px;}
+.bdr .n26{width:52px;text-align:right;font-size:10px;font-weight:600;color:var(--gold);font-family:'DM Mono',monospace;flex-shrink:0;}
+.bdr .n25{width:52px;text-align:right;font-size:10px;color:var(--y25);font-family:'DM Mono',monospace;flex-shrink:0;opacity:.75;}
+/* filtri */
+.fb{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--bg3);border:1px solid var(--bd);border-bottom:none;flex-wrap:wrap;}
+.fl{font-size:10px;color:var(--mu);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-right:2px;flex-shrink:0;}
+.cb{border:1px solid var(--bd);background:transparent;color:var(--tx2);font-family:inherit;font-size:11px;font-weight:500;padding:3px 10px;cursor:pointer;transition:all .12s;}
+.cb:hover{border-color:var(--goldd);color:var(--godl);}
+.cb.on{border-color:var(--gold);background:var(--gold);color:var(--bg);}
+.fs{width:1px;height:17px;background:var(--bd);margin:0 1px;flex-shrink:0;}
+.si{border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-family:inherit;font-size:12px;padding:4px 9px;outline:none;}
+.si:focus{border-color:var(--goldd);}
+.ss{border:1px solid var(--bd);background:var(--sf);color:var(--tx2);font-family:inherit;font-size:11px;padding:3px 7px;outline:none;cursor:pointer;}
+.rc{font-size:10px;color:var(--mu);margin-left:auto;white-space:nowrap;}
+.surface{background:var(--sf);border:1px solid var(--bd);}
+/* split layout */
+.split{display:grid;grid-template-columns:370px 1fr;border:1px solid var(--bd);border-top:none;background:var(--sf);}
+.split-l{padding:13px 16px;border-right:1px solid var(--bd);}
+.split-r{overflow-x:auto;overflow-y:auto;max-height:540px;}
+.split-r thead th{position:sticky;top:0;background:var(--bg2);z-index:2;}
+/* fc bar inline */
+.fcw{display:flex;align-items:center;gap:5px;justify-content:flex-end;}
+.fcm{width:44px;height:3px;background:var(--bg3);flex-shrink:0;}
+.fcmf{height:100%;}
+.leg{display:flex;gap:12px;margin-bottom:8px;}
+.li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2);}
+.ld{width:10px;height:8px;border-radius:1px;flex-shrink:0;}
+/* nota collassabile */
+.nota{background:rgba(72,120,176,.07);border:1px solid rgba(72,120,176,.2);padding:9px 13px;margin-bottom:14px;font-size:11px;color:#8aaad8;line-height:1.6;}
+.nota details summary{cursor:pointer;font-weight:600;list-style:none;}
+.nota details summary::before{content:'▶  ';}
+.nota details[open] summary::before{content:'▼  ';}
+.nota details p{margin-top:6px;opacity:.9;}
+/* grid helpers */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.g32{display:grid;grid-template-columns:3fr 2fr;gap:12px;margin-bottom:12px;}
+/* simulatore */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.sr{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.sr label{min-width:128px;font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
+.sr select{flex:1;border:1px solid var(--bd);background:var(--bg3);color:var(--tx);font-family:inherit;font-size:12px;padding:5px 9px;outline:none;}
+.slw{flex:1;}
+.sm2{width:46px;text-align:right;font-size:13px;font-weight:600;color:var(--gold);font-family:'DM Mono',monospace;}
+.sn{background:var(--bg3);border:1px solid var(--bd);padding:9px 12px;font-size:11px;color:var(--mu);line-height:1.5;margin-top:10px;}
+.so{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px;}
+.sk{background:var(--bg3);border:1px solid var(--bd);padding:10px 12px;}
+.sk .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu);margin-bottom:3px;}
+.sk .val{font-family:'DM Mono',monospace;font-size:17px;font-weight:500;color:var(--tx);}
+.sk .val.gd{color:var(--godl);}.sk .val.gr{color:var(--grl);}.sk .val.rd{color:var(--rdl);}
+.sd{width:100%;border-collapse:collapse;font-size:11px;}
+.sd td{padding:5px 0;border-bottom:1px solid var(--bd);color:var(--tx2);}
+.sd td:last-child{text-align:right;font-weight:600;color:var(--tx);font-family:'DM Mono',monospace;}
+.sd tr:last-child td{border-bottom:none;}
+.dp-k{background:rgba(74,154,106,.15);color:var(--grl);display:inline-block;padding:2px 8px;font-size:9px;font-weight:700;}
+.dp-f{background:rgba(201,162,39,.15);color:var(--godl);display:inline-block;padding:2px 8px;font-size:9px;font-weight:700;}
+.dp-r{background:rgba(192,72,64,.15);color:var(--rdl);display:inline-block;padding:2px 8px;font-size:9px;font-weight:700;}
+/* sez. delta prezzi */
+.delta-bar-wrap{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--bd);}
+.delta-bar-wrap:last-child{border-bottom:none;}
+.delta-bar-lbl{width:200px;flex-shrink:0;font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.delta-bar-track{flex:1;height:6px;background:var(--bg3);position:relative;}
+.delta-bar-fill{position:absolute;top:0;left:0;bottom:0;transition:width .4s;}
+.delta-bar-val{width:70px;text-align:right;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;flex-shrink:0;}
+/* row alert */
+.row-alert td{background:rgba(224,112,48,.07)!important;}
+/* section */
+.sec{display:flex;align-items:center;gap:11px;margin:18px 0 10px;}
+.sec h2{font-family:'Playfair Display',serif;font-size:15px;color:var(--tx);white-space:nowrap;font-style:italic;}
+.secl{flex:1;height:1px;background:var(--bd);}
+.footer{margin-top:38px;padding-top:13px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;font-size:10px;color:var(--mu);}
+input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:var(--bd2);outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);box-shadow:0 1px 4px rgba(0,0,0,.4);}
 </style>
 </head>
 <body>
 
+<div id="login-screen" style="
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+">
+  <div style="
+    background:var(--sf);border:1px solid var(--bd);
+    padding:40px 44px;text-align:center;min-width:320px;
+  ">
+    <div style="margin-bottom:20px;">
+      <div style="
+        width:72px;height:72px;border-radius:50%;
+        border:2px solid var(--goldd);overflow:hidden;
+        margin:0 auto 14px;box-shadow:0 0 18px rgba(201,162,39,.15);
+      ">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMVFhUWFhkYGBgYGBcaGBoYGhgYFxgeGhsZHSggGholGxkaITEhJSkrLi8vGCAzODMtNygtLisBCgoKDg0OGxAQGy8mHyYrLy8rMjItLy43MDU1Ly0wLS0tLS0tLS0uNSsvLy4uLS0tLS8tLS0vLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAABQMEBgcCAQj/xABIEAACAQIEAgcEBggEBQMFAAABAhEAAwQSITEFQQYTIlFhcYEykaGxI0JSwdHwBxRicoKSouEzU7LCJEPS4vEVFjRjc4Oj8v/EABoBAAIDAQEAAAAAAAAAAAAAAAADAQIEBQb/xAAvEQACAQMCAwYHAQADAAAAAAAAAQIDESESMQRBUQUTYXGB8CKRobHB0eEyFCPx/9oADAMBAAIRAxEAPwDuNFFFABRRRQAUUUUAFFeXcAEkgACSToABvNYnj/6RLVuUwyi832zpaHlzf0gH7VVnOMFeTJUW9jbswAk6AVmuK9OsHZkC4brD6toZv6pCT4ZprmWN4li8aTnd7gn2R2bS+ns6eMtU+G6One4/on/Uw+4Vza/acKeF79B8aF9x9xD9Jl4z1Nm2g73Jc+4ZQPeaR3ulmPvbXrhHdaQAe9Fn40yw/C7KezbE957R97SajfjFoObS5nuKASiIxIB2nSBPKTXOl2pUn/hN/T7D1SihM1vGv7RxDfv3Sfg71EeA3Tui+pWtThr2dQ2Vlkeywhh4HxqWscu0K17Y+v7LqCMiOj90bW19CtSrh8Yns9csc0ux/oeal4O6Yl8St1mNy3edCmd0yWwYtlQpESNc+5JOugh7hbXV21UsTkUAsxkkAbsTz7zTZ8ZVpvTz8n9MkKKYmtdJeIWf+deAH+YuYe+4p+dOeH/pLvj/ABbVq4O9SUP+4H3Cqtji6uM1q3duJydVAU+K52BYeIBB5VFbfC4hmWF6xR2lKm3dA2kggNHjtWiHaNaP+k8b8/n0KOlBm34Z0/wd3R2ay3/1RC/zqSoHmRWotXAwDKQQdQQZBHgRXGcT0dG9tyPBtR6Eaj1mqWHxGKwTZkZ7QnUqZtnzBlf5gDW+h2nCeH79BUqFtju1Fc/4D+kdWhMWmQ/5iAlP4l1ZfTN6VvMPfV1DoysrCQykEEeBGhrpQqRmrxYiUXHckoooq5UKKKKACiiigAooooAKKKKACiiigApR0h6RWcIma4ZY+xbXV28hyH7R09YFLemXS9cIOrtw98jRT7KA/WePgu58BrXMbNi9i7jXHckk9u425jko202gaD4Vk4ni40UNp0nItcc6QYnHPkM5N1sp7IjYuTGYj7TQJ2Aot8KtWV6zEuI001yydh3uT3c+40xuYc2bRGHRS8r7UwZYAsxGpgEmPCNKSdIOHXbQTGI73r1glnU6K1o6OqINEgagjXTUsa4EuKlxE7arXx4v9L31NenSsIf8NxfWKfontAGFDqFlY0IA9kb9kwRGoFLl4heuYm7hiVsFLaupWLjOrEgsMwAABEEZTvvTbBYtLttLtsyjqGU+B+R8KQdMA1prGMQhTafJcMSOpuEKxI55TBrJRSlVcGrN4V82f9225lpYjcu9HsXfY3rOIys9lwA6jKHRlzKY5GN4qhxN2tcSsuq5uvsPaiQozWz1gJJ8D8KmvYbF4d3u2WGJRyGe2+VLkwFm26gKRAHZI5d5qPjCX8QMNcs2GS5avC4ReKoMuUhlMFjrI5GnQUe81JrS0082zbphrP8ACrva3MfYN7hX6VVVpOisWWOUMQCfcKsVSw7XpzXerRQsZVYtqSNSzKo5REc969txGyN7tv8AnX8axSg28L5ZGJiXpNwTP/xeGbq8TbWQw9m4oE5X7wRzqp0m4gb3DrL+wuIawLkHZHILCe7l5VbsW7QtCx+vE2wMupti5k2y5wBpGkgT4jemGKw2Gv2Dh81s2yoUKrLoBGXLGxECPKtqnocNWdLw7PC9fmugtq97cxmqgCAIA0AHIDao+oXP1kdrLlnwmfnSzBjFWVCOoxAUQtxWCXCBtnV+yW8Q2vdX3F8We1aDPabrHbKlsSRJOVA9wDKveTymNeeXuZN2i07+O/5+ZfUuYdJONDDWmZVz3MjMqDuUdpm7kGmvMkAammOFuFraMd2VSe7UAmsp0i4bdtYTFXGurce5aPW5k22AW0QezbWTCkGZJkEmtXhP8NP3F+Qq9WEI0k45y8+i9+7KItuWRbjuBI0m3CN3D2D6fV9Pcao8L4ricBc7ByyZZDrbfvPn+0Ibae6jgV18ViLuKDsthfobQB0uZWOZ2HMTIHhO1aHE2EdcrgFT39/KDyPiK0Q4mpw81Fu/XqvDxI0qaNl0Y6VWcYIHYugS1tjr4lT9dfHfaQJp/XCcfw58OwuIzZVMq40ZD4kf6h6+PQuhXTQX4sYghb31W2W76fVfvGx3HcPRcLxkayMlSk45RtKKKK2CQooooAKKKKACiiigArLdNulYwidXbg33EqNwi7Z2+MDmQeQNMuk/HUwlg3G1Y9m2n2nOw8ANye4HnArj+HtXMXeZ7jEyc1x9pJ2Ud2kADkAPCsnFcSqMRtKnqZ94bgHxDm5cLFSxLMT2nbnB+Z9B4ae2gUBQAABAA2AHdX22gUBVAAAgAbAVn+N2sRZu/rdkteULlu2DH+HMzage2N4Mz7hXlZ1HxM7N26e/Hqbv8o0NFVuG8Qt37a3bTBkYaH5gjkR3VarK4uLs9yyyZLhlz9RxTYUz1F/Ncw8AnI29y3AkxzGnPxrQcXt23sul5gttxlaTEg8hPP41Q4jxpVP0QVniM51UDmB9r0090Uot2bt5s2rcs7bDvj8FEeVdHunNqrP4er6vr4fvNha6IYDjKW0FuwjFVAANxmOgED2iWPrFU24jfumAznwtgiPVdR6mr+H4VZR1S6+Z2DEAghYWJ0GnMaEmrVriDCwl62qG12WyiQ3VsR2gfZkA5sscomjXTT+CN2+b5/P+F9HVie3wK+/aKAHvdhPvGY1bTo5cO9y2PLMfwqXHYi+Evqfpgr3AMgi7bIOe2Co/xFyldobwaanRD+us+XRrVkg9WT2s15WhvqHKUnwqZVqtr3Xpnp18yVGPQg/9sNyvLPcUI+OaorvRa9yNphzksPhlNM+OWLpe3cthmNkM8cnkqrJvBJt54nSSp5VVPXW+uJzDNcss7AEhLbQtwWzEQqiCRqNW3qkK9WST1L5eNuXzJcYrkLDw3E2tkuKB/lmR/LbJ+Ir3h+O3V0Yh43DCG967eop3e4gLd36NjctCy73O2XhgU6qGJJlpYZecT5+P1lb9u2t+0pu9YbVwDdHVSzENuEKgMNZh176t32pXqQTX1+T/AH06ldK5MpYvGWcVZew7Na6wZSTHeNmMr74NVulVy8mGSwoMPlt3cQIC27eisxEkiRz2EnWvd/gytJsPJHtW30dZ23AI8Mw176qYTH3bBy6wN7b93h9nzEjfQ0ynCN06ebO+l+/vdFJJ8zUYHDpbtpbtgBFUBRv2QO/n5+NIukmMe8/6hYPbcTeflatHf+NtgPH1qxh3XqrrYJLa3iJyPIAPLQaATrpoTOxJNeuj3D1wtgvcb6R/pL919CWiTM7KuwG3vrLFKnJzeZXwnvfq/eX6kvOBrYtC2gUsSqrEuZMAfWJ38zWd4xwvq/pLf+HvofY5ggj6vjy8tqHTDF3L2Bv3u1bsBV6tdQ93M6qHfmtvWQu50J7q2VuAgmICiZ2iPlVo66CU75baa8rfXPp8wupOw76BdLuvjD3z9MB2GP8AzQBr/wDkA1I5jUbGNtXCeK4A2HD2yVXMCpG6ONQAeWokH07p6p0L6RjGWe1AvW4FwDnOzgfZaD5EEcpPpeD4pVomOrT0u6NFRRRW0SFFFFABXl3ABJIAAkk6AAbk16rD/pQ411doYZD2rwl/C0NCP4jp4gPVZzUIuTJiruxiuk3GHx2JlJyTksqdIXcsRyJjMecADlTW3hTbslLOXOAYLbF+9o7z3belUOjeDhTdO7aL4L3+pHuAp1XkeO4l1Klun3/h0YRSRl8J0pvZM1/BXQslS1krdCkGGDKIZYMg7+tMeHdKcHfjq8Qkn6rHI3uaCfSq3HrJtMboYpZulVxJGhUbC4CPZkQjNyBB0yzTHG8Ew91QtyxbYAQOyJA2EEaj0qs/+O0paWr9Ht5p/tYzzIWvYWrwkpiTew11bdp8xxC6FMwAhl1hXM6nbST3GDi/FzclEkW9ucv9+U925+FQ4/FIFWxZGWzbAUAfWI28xPvOuulW+F4NU7bnt8h9n/u7zy27yX4glUqZfLr4X8ft5kxjfCPmB4PpmujTkn/VHyHrO1WOKs/VSmbsENkByh1GpSRtptBGsTppUtzFTzO0j318S7BGYnXwrK5zlLXL5D9KSshXZ617duP+W4e1dLM/ZkyGDAMZtsyST4zNW7AtqIU3MoOYJ2urBzToDynUDYchU2JYtsZBPjp51Nw7DlrmXkNT5VeVS6vt79/UhRPa4zLqSBOshR+TX18XIkmY13j/AMUuxWIZWYaaMR+RX3C38wgx+fSlujjUW1chp176Qy6iQCdfxFe7eKeCAVBG+5+Eikp/xPZ0XQR3c5g61ZF/TRZJ5QZ+etRKkCkXsRfzLDgMAQeXtAyD5gidO6vGFyG6b2vWMmXTRTGxK8m2GbuAHKKkxwW3kAUSw7W2h0299QM5USRIOmX5xVI3tjmS0indLJbEqpxd+60NE5XcEEg6HJbsiORIQDc01v4S3cUI8uQPa0DTtIIGh8NvCvuHYMsgyPzv41ELoU70SqSbxhr36JdCFFGcxuEew4MnQ9m4NPQ9x5dx+FMbTW8WES8O2jB41yPlM6rMMOeUzB11o41io0gdoHQjSNvvrP22ZSAxgzKsPD7/AJ10qadaCk8S5MRNJOw+/SD/APBuDve0P/2p+FWsfiXvO2Hw5ygaXr3JO9LfJrpHovPWBUDIuOsGzdJUhkZ8uhIVgwK90xHh7quY/iOHwVpcxCLsiKJZj3Ko1Yyd/HU1lXwxVO15pvHnbPjt++hV7t8izbwCLaFnUplygMxJgDTU6yI07o8KR8OxlzA4oONSm426y0249Y9GXwr5aw2LxjLcus2FsqwZLSR1rEGVNwkEKP2I86Z8fwWe3mHtpJ81+sPhPmKZQquhUScrt7+D89vMGtS2wdbwWKS7bS5bOZHUMp7wRI8vKpq5x+izjerYRjprctfN1HvzDzeuj16unNTipIwSjpdgoooq5U+M0CTsK4bxXFnG4tnkxcaF/ZtLt5dkT+83jXTf0h8S6nBOAYa6RaX+KS/kerD+sVznoxh9XuH9wfBm/wBvuNcvtOv3cLL30NFCN8j5VAAAEAaAdw5V9ooryZuPN22GUqwBVgQQdiCIIPpWbxJOHsJhg7MxHaYsSVTYKD3QMo8FJ3rR37oRSzbKCT6VhMdjQXzXTHWN2iNYHh5CFmt3BQcr32WfX3+BcrF7h9jUOdvqj4T+Hqe6r9wzyMxWf4dxVjfZrjHKG6sKNAi7JA7txT838wlToBJYHSPXbanV4yU7yGQatg9Jd+rH41Dj7ykDKdVJ0000j4VRuX8x1LJbjYHtP5nkp7hX1riknKuRAAF0IknT1POaI0rO4OQ2s4oBYJB2J76v8MxSpcBMjMMvP8jWs8ERO9mA12+FMMPbOXMQY8vyaRUpxt5l02N+NcNJ+kQAzqw28yNKUK5ADQD5H8iK0/BL2e3G4GlI+N4bqrsp2Q47QnSfI99JpSbehkvqUL95OSnuiBvHia0HCeFqEVyvaOoGmn4mkaW+suKsbsAdBtznTmK2mMtkISgGimI02FTXbUUkEdzKcUebpIghdPI8z518F6QRv3THyqglwMwgQTqe0d/fAFT2wNWk5R7/AENMcLJJkJkd/EFCIErzXafDTn+FXruEtsucKuUidAPzNVkuBuQjlO5Hga98OuATp2cwVp5q3sn01HlRJO2MNAjOX7huA5dhJA5DwH55Vc4a6t2Gtg5hvzjz5a/KtIuBtW7eUDskGfI+PdFZ7A4XI+e22dQSpGzAeR0rRGvGcWli2xRwaaIVL2bgP1l1B5Mp7/A7Hx17qe8O4Vh2vHGKgL3FEE6lCJDRyUnnHMHvqnxHDF1zDUrqPHvHqPiBXzo1jIfqyey+q/vAa+9R/T41NSTqUnOLs7Wfl7z8yjjaWTS19r5RXKLmVulsLiVe3ujC4nlrK+A9pPI13HBYpbttLiGVdQynwYSK5B0mw8otzmhg/utA/wBWX41sf0WcRz4Z7JPasvp+48sv9WceSivU9l19cLP2zHxEeZtKKKK65lOY/pYx03rNmdEQufNzA9wQ/wA1VeEWMllF5xJ827R+Jpb0zu9dxC8ORuJaHkAqH+rNT6vMdr1Lzt4/bBvoq0T5RRRXGHiTpPiIVbY+scx8l2/qg/wmsXxbDMQtwCVMrpygn57zT3pDiCbtwjXL2F8x/wB5NZe0bijKC0b84/O1d7haeimrCJMtrwq7o3Vsc5AzADQxoCOWka1ouNp1dhUXmFDAaTET+fGpsLeK7k5Wg5hrBChSCNxsPjVDpVdDqsagSviCdj7xSe8lUqxTWEN0qMXYUWLLMczEjTx0HI6VfNyRrupEeJ276vdFbIa3dRpGdQgY8iBK/GKqXLL2rgW4PZPp+edNdRSm480VUbK40wuW2oBILEAsfjV2zdLAlddzuZA7zVLDWVcySYJ00+MU54bgblq4uzKd2XaO6DtXPrOKu3uPjcqnpC1lciKJPONz66Gld3EX8Q6zOpgDvk8vCtRxHgVu6c40bzn51LwnhAsmWaW2Hco9dSarGvSjG6XxA4tsz/GsH1DrlkcwddTzMzVo9KbxTKFXNsW5x5TT3imAS/bhp0OhBEj+1IsPgLVolSOsjbTtDzOxqIVYSgtSu0Di74FyYFmIuSBPLYE+Ec/SpsRgGyNm5xAHcN6mew5YsCo7hroPOgcROUDmCZmAOUa7Vdzm7OIWQsQkaabzrv3elejjAdJPceQ011rxiFy9oHeZHxB/PdXzBcKZvpHMKfOWA2HgPGtL0W1SKZ2RNiMW72mVcpAWNoYDad6T2bzKCwJmACPEb/CnRBnEFVgjKBA+rAJjxilfC7a3GaR2ToOXf8atScVF4xj8ESu2ivwzF3sx6vtLzBOn/mrTMVckaEEOO4GZj0YH0Ipi1q1aWAQvOJ1/GqOKghWBkTHof7haZTqKcrpYZVxsjZYa8HRXGzAEeon31JSnozem0V+wx9zdr5lvdTauPVhom4lk7ojxVgOjIfrKR7xFUv0ZY0pjAh0622ykftL2x7grj1pjWawt3qMejfZxCk/uuwLf0sa6PZVTTUt76MVVV4ncqKKK9Wc84VabPjS32r91/ebjj4xWorJdHDN1D+yT/T/etbXju0Xer6flnSp7BX2vlQY9otXD3Ix9ymsKV3YuYdla7ENlLEuT3TLH4mvWD4Gc4a5czxsuo5+PyqxgEHWCeSt81puLJg5TlY7NAMV2K9ZwelYIhBPLKLYtEv5CZJGw3E98HfwqXF4RCSp0XLJaPrH8KS43hww83HfO76iJBzTzJ5VNex73VACkwuZwNTty7vTvqvd3tKDx1J1bpjPC3HtKEIUrvnBM+oNaEG3dTtqDAjUa685rF4fFkoVjaDBnuIPzFXLWJfqFgnMCQPQ6fdpSq3Dtu+zuWjNGkwvAtZkZfOGE92lPrCKtvLO22lLldgs/WI/ufvqhc4mjEqGuEgScuseoNc966niNwh0G5aE/Kobx7wZ+FZhsY4JuW3OYQCCNx46wfWmvCuOtebq2QK28jYgb+VWlw8ktS9SFJXLtnEW/ZzTPiPuouLbSdkBHPc+XM1X4hxDqO0EzSSNO+JpFZ4kj3C986jZZ/JqYUZSWpbA5JOw8S9bA2J010iR586UcZgDseyY5ag771LjOPKB9GEO20k+gj76it5j2jz5bRTacJQepohtPCJOF8LXIt68xjdVPsjxPfXvGYrMSY7ImBGpAEnSpuJL9BkHJVjzBEeWtLLGKIu2Vf25bN3xlPpUq9S834kbYF36+bjsIyydO5eW3u1qXh90E3Aw7IlSBsDP9q+dIbxLJC6GRoOc6bVBYzW0JKkqZzfaBGxHeN62pKVO6Vrir2Ytxl1i7FjMErJPcdKbnBhbBiDpm9dxSuzw92VmWCDMaxPjTHhwdbCo28sPSadN7aXsysVvcZdGLkXHX7ST/ACn/ALq0lZHoy30qHvQj3qG/21rq5vHK1X0JhsFZPpOpF1o3NsEHx7S/7RWsrN9JV+lU/sAf1N+NRwTtV9CZbHUP/c6d1Ffnv/1nE/5nzor2PeI5uhmr6NCLqD9kj+n+1a2svhlyY3LtlvXUPp1ifOK1FeS7QVqvp+WdGGwVW4n/AIN3/wC2/wDpNWa83reZWXvBHvEVig7STLPYyPC46ye5CfitN7TiADWfwN3UH7SEepyt/tNOVQyDXR4mHxZJpvB841ghdtxsRLDu2ivnBOHC0hiSx3Py9Kt8j6Ci2wGn57qza5d3o5DNKvch4mDkMDfLOnjSXAtkuPaLAjNofGY0j86Vose0K7DcL+HKsel3q3V4lg2bKO78a08KnKDQuphpnQuFlwlsO2Y5mGbnENE952FRcV4WpZLi21Yg9oEaEHQwDpNUOE8XW6QEDCBn18f/ADT9bxjUwK589dOecMcrNGVHR8rf6zO3V5iyoFIJn6rQIIBPlFTJgDbvByYBIgdwnWad4nGqo35HWkmJOZUcmQfnPfT41ak/9eRXSlsWukiFsoG07RVQ8Im1kZSAe1mXRww038u+rnGVIZPQeRMGrPD+LSSHEEDceFVU5xprSDSbyLsDwTqrYRSVWQzSBmaNuURPyr3igOXdEeNNsViEdMyse77qzjuRc11jY0Qcqkm5bg7JDTi8CySdhyjcDWsdYusby3W1DsVPKJ0HwqfiHH7hzWDBG0xroe/87VU4cpzqh2Pa8jyrfw9B06b1e0JnNSeDS3mAIB2Go8OVVjeJmNBUmKUZSCQY7qo3LnZ027qVTgmi8mTWHWCNu6OXl3VWv3CMuXzJ5jX8++q9u+dQRX11lSYiATHkK0xhaRRywXOjC/SWvBf9hrYVlejNv6Ydy22+agfCa1VYePd6vp+yIbBWb6Sn6Vf3B/qb8K0lZTpQ/wBKxH1bYHqM7feKrwSvV9CZbGJ/Vr3+Ufz6UV+gv/ag7xRXse7RzdZz/pZa6niF7kBeW56NluN8SwrQVB+lfAxiLd3lctlT5ofvDj3V44Zfz2kbmVAP7w0b4g15vtanad/H75NtF3iWa+18orjjzE4q3kukH6tw+ik6f0NTIXWn1ivHSbDxcDcnXXzXQ/Ar7qqYO4SFJOoOvmNP7115f9lOM/ArB2wM2aRuNDG9ewOzS5iRsedW7Z0E/wBqzyhZDEz67SCpPcD5VluJALoDJnfzH4VqcshoGrVkcYpzlTBIOvnWrhN2Lq7D7oriALuXSer+R/8ANaEubxykhQRHx7653h8Wbd1SpgiPdzmtThOPotonvIjwI2+6l8Vw8nLXFE06itZjG7+r2ZD3CeX4Usu4hVKi2+ZRrlO4O4jvFeeHYS5cXMpQ6doOCQTvuNj8KksLbUhjhzIH1Scp0jxqqjGLd22/Qtdsj4pxvMAJGpHofLwFOeD4zDgKqtnYqZMbnnv8qVphsM2q4e42xYlmOw2mBpV/CKz6W0S0uxMSdapVUNGlJr5f1hG97jK7aUgNb9nmB5E/Os5i8Z2yeXj3VJbxxsX2tE9l80HxB08pE0j4niIGXx38ZNX4eh8WcrkE54K95ZZn72Ap3gMCAAxPaiY850pdwYi4GQgSNRPPvHnTG9aOfKJXTUH47Vqqyf8Ai9hcFzJcpM93P38684jTlMV6u3oED1r5fjbSkK9y5TtPOsaH+1R4m7oE7yPxPwFfZ1MGI/8ANR6Fp+yvxP4D/VWqCzcW3g0XRa1/iP8Aur7pY/MU+qjwSxkspO7do/xawfECB6VerjcRPVVbLR2CswtrrscqD699EPkGVG+CmtJfuhFZzsoLHyAml36N8GbmORj/AMtXuE8sxGT5uT6Vt7Lp6ql/L9spVdonYaKKK9Yc4yn6SuH9bgmcDtWWF3+ESr+gRi38IrA9F8Ro9s8jmHkdG9xE/wAVdmu2wylWEgggg8wdCK4ZibBwWLZGmLTlSe+2YIPj2SreYiuV2nQ1wuvfQ08PK2DU0UUV5Q2lDjeE6y0YEsvaXzG49QSPWsphWAfwYfED7x/prd1kOO4Hq7hjRX7SkcjuR6HUeB8K6HBVLp036FJYdzy76CpnxELBgzGwj4VT66UJPtTBA+7wiK+vi7YI+kUd4kTWhw8C1y9ZumSdo0qj+o9ZiAx2EaDmQNflVvDvaYFhdSPBhy86LGKtalLikjkCCaWm430rOxOHuIOkGCFu6qkRCCfHtEfIik4DMmT9v4fk/Ctlj8B1wu3G1LL2T3QNIHpWPuzbcqdCD9w+8Vu4epqjbmhFSNnc6JwVwLYjw09PxpbxrE9QQbZifqnWD4UlwPEyrKc2w9Dv8asW8QL93tcuXLtVkXDONRyew3vLxstz7g+L3WYKzAITrpHnBrZ8PvW1WV0Qakk+8k0rx+Gt9UdAIH4Vn14jlXKDoxg+m8ec0uUFxCvBWyWT0blrjRTP1qntMRA7tTOnpFZ5rk+0Y1J93fQ9/MSZ0GijkBNSYLBhmGeSCJjx10roQh3cbMRJ6mRcOxJR2IBMn6uu1aoXs0PrMHff1qrh1VWnKCRpt3+NGMcyCOXKk1Gpy2GRWlEl65roNJ796kxF3tQB+dPhS18WoMuQD3SKlHEVJDLqIiq92+hOpHy8wUtJ27vKp+FYPrHVDzOZ/wB0RI8tl9apMua4SdlPx/t+HdWv6P4LImdh2ng+S/VHnzPnHKpr1O6pX5v3/Sm7GtfKKK4Y0U9JcRFoJzc/0rqfuH8Var9FPDsti5fI1uvlX9y3I/1l/cKwPEWbEYgJb1JYWk7sxME+WY79yg123hmCWxat2U9m2oUeMDc+J39a9R2VQ0Ru/d/4Y+IlyLVFFFdgyhXP/wBKfBcyri0GqQlz9wnsH+FiR/H4V0Co8TYV0ZHAZWBVgdiCIIPpVKkFOLiy0ZaXc5B0dxmZOrPtJt4py923oO+m1ZrjHDrmAxRTU5dUY/Xtnv8AHkfETG1aHDX1dQ6mQRp94PiDpXkOO4d0p36/c6MJJokqvj8ILqFD5g9x5H8+NWKp4PiaXWYJJAJAaOy5HtZD9bKTBI09xjJBS/1HkWduZieK4O5DJqrjQ9xHnzB5Hx86z13EC2YGrDfw9O+uqcX4aLokaOux5HwPh8veDh8fwsF5ZSHUwy7T5+MbHmPCK7nC8TGos78xMosQ27T3j2QT6aVctKMI63CQXE6eH4GmXE+IJbQdXAO0DQ+vdWVuuzsSTJO9aYXqLKwVdo+Z1vgPGLGMtkoAtwe2mkjxH2l8ap8S6OrcdiwGqGD+1pBHlB99Y7DcP6rIyXPpNyw0ywTPiIjnWy4F0ws3T1d51FyIB+q2nM7A+tcqrw86Lc6F7fY0RmpK0zn7owXUbE/HWvOHxRtkMvf8RtWx4/gFg5fZJ0jxpdjOEf8ADqiiWV8x7yCIPz+Fb4cRCUU3zEum0ypd41ntmSQQdQOZqkiuSpIMNJFXcTwBhDLJBknbQmfhTTAYQsEBWMoA8jNS6kIK8Q0ybyVE4eMyQCdO156kU36kKoJAB5aVax4t4e2HeSYkACTHlWbPG7V5grXOrEwAQQB5k1mjKdbKvZDWlDHMaXMWqaAFydlHM0p4iMRcEDKneA3a9/KvHErrqcqqroIJy67yAdO+DBqhat3WDXLU9mMyE6/3rRTppfELlK+Ctcwe6uO13gk/nyr5wKzcNwqJgbmdB3eZ8Ka2MQuJSQhS4G1Yez//AEPCn/B+FG4YGiA9tu88wO9j8PcKbOtoi9ZRRu8FjgPDesbMR9Gh/mbePEA6nvOnfWrqphby5jatqctsQWEZQ32d5JjU/HWrdcDiasqk7v0HxR8qhxvG9Xb0PbbRfDvPoPjFXrjhQWJgASSdgBvWXt27mNxKpbGrnKk7Ig1LMPLtH0HdV+DoOrPwInKyNP8Aot4JmuHFMOzblLf75EMR5Kcv8bd1dPqpwrh6Ye0lm2OyiwO88yT3kmST3k1br2NKGiKRzpy1O4UUUUwqFFFFACDpl0dGMswIF1Ja0x7+ak/ZaAD4gHlXKOGY1sPcZLgKrmh1O6MNCfhB8p8+7Vi+nvRLrwcRYH0yjtKP+ao2/jA2PMaHlGPjOFVaI6lU0uzM3xPB9dbyZjBIJAYgOoMlWI1ysNDHxGhUoGtXB9EDduOwsW1chLVkJbDk6ZUGYScqky4GtQ8G4t1fYf2NgTuh2II+zP8AL5bP7+HlkuLGdAwE7FWjMJG0lVM+FeYalReiW2ff2ubN8nq1fObK4CsQSIMggQDBgHSROnMVBxPhq3hro42YfI948PdFQ/q91r3W3Ctu3bRgiq0mWjM7sQAIAgDXcknlXnhnFCyZ3EWiT1d1iBmQbM42TNqQdiI9kkClqMo/FB5XT7eJN+TMpxng2uW4uVvquNj5HmPA6+VKbfDcm5iNc3IkezrygwYPhvFdTvWldcrAMp5HUUhxvR8jW0ZH2WOvo3PyPvrfQ49NaZ4KuBzDHY0tAEwBLeLc/SZ91X8LhjbWXABYgRpInbTnTvE8IRW1Tq3PIjQ+QOhH7tUcTw1pJ3+zrt5g/wB66XeRksbCdLR64Xxx7JjS5bBjIx1XWOyTsPDbup3Y43h7zHI+VvstoQd+Wh/vWLx9h1gBWAgZjB1jbXvqHh2H7WY8jIHyqk+Fpy+PZlo1ZLB0NyQGPkBNV34iLMKqm45g5QJgRMn8KzLcXdXOUgu0LB9nbstB2IJ/OlHC+JGy6K1tg65w5mcwYggmAdRlA9TSf+K7ZyX70b4viYdVu5zcnssADKECYKxIG+hHKlXEcIL4dhlDASpX648e/UGrXEMES/W2fbaCREDaDJYCSRM+dXOqmGKohywxXWfU/fNMhaCTj78Cru9zO9Hsa1u6gMqDKkEHSeUd8gfk1plEEkdkHc7EgHTy9fhVnh3B2Y5kTfe42k+p1PoIrScP4IluGbtt3kdkeS/eZPlSOJ4qlF359Pf5JhF2sKOE8ELgFgUt8hszeXcPE6nl307xLlStmybdtihZcykiFKgwoZZ9oSZ09ajv4w3Rdt2v8S2ySrygZZBMEAnKwDqGjcGluGw5OXPhrDWXvSq585ttGSVU2wsFlJIB0zE99YZOdR6p8uWOmN3n8ltsIlw9m1eR3xFrMUYh7a57lokgMLlu2B2sylWmCRrzmW/DLJS2q66TAYyQskqpPMhYHpUtu1DMftEfBQPupFxzjEzbtnTXO8+8KfmfTyUtVd6I7b+RKWnJFx3iXWHq01QHUjXMwOgEbgH3ny16R0B6NfqtvrLg+nuASPsLuEHjzbxga5RSf9HvRErlxV9YO9q2RGXudhybuHLc6xl6HXpuC4RUYoyVamrCCiiit4gKKKKACiiigAooooAxPTboWL838OAL27JoBd+4XPHY7HvHP+HcSewTbdWyqYKkEOh5gA/6T6dx7tWd6U9ErOMGb/DvAQLgG/cHH1l+I5Eazi4rg41kOp1XHDMRibNvE2subNbaJykiQDJVvAxBU+Ir1xPHLZtlyJOioo3Z2OVFHiSQPCkePwGJwN2HGQnY+1auR3HSdPJh4UywPGrdzsv2G7j7J8m+4wa83W4SdJ2avFcvf3Nikmroito2Ew5d3LsASyD2WuueytsH2BmIUAabTrrTNsUqwHZEYicpYffEiedR4zBdY9pixy22LZORaCFJ/dkkDv15VRwt1cO2Ia8Qua41zOxgMmUZQD+yAVy+ExrScVFfeW+PPb03+gf58htctqwhgGB5EAg+hpbf4DZbbMn7p09zSB6RUFy+RasdWDafEXUhTByAjrLgjUD6NG07zO9MMbjCj2UC5jdcpvEAIzltjPsxHiKEqkH8L6/T6f8AhN09xTc6Ot9W4D5qR8QT8qrP0fvd1s/xH71rQLjpuPbCOchQFhly9vUfWnTnpXn/ANUtZipJEXBaJKmBcIUhZiJIZY75A3pseJ4hePp+gtEzq9Hrv+XbHqPuFWLfR+7zNseRY/7RWgXFKbjWwe2qqxEH2WLBTO2pVvdXyxjEdnRT2rZAYd0iR5jcT3qRyofF1un0DShVa6OD69wn90AfOaYYbhVlNQgJHNu0R5Tt6RXzi+La0iuoEdZbViQTCu4TNAI2LCosTcu2rls589t3CMpUBlLA5WUqBIkagg7zOlLc6tRXct7+G3kGEMc28ax8+6q3DMaL1sPBUyysp3VlJVlPiCN+e9KUw91bl29Yyk9YwuWp0ugRBk6JcA2PMQDyhhb4b9JccOyrdClrYj2wCpbNylcoMfY3qsqcIrL981b6p/2xdhxPCOWt3bUdahA1MK1tiM6sfLtAwYKjvNS28HatZrgAXUsTJygnViATCzrJAE86jx/F7duR7T/ZHL947L8/CktpMRjboRFLnfKuiIORYnQfvHuMd1PoUKtVJbL7+BEnFZPfFeMm52LchDpOoZp0gDcA+8+HPYdCeg+UrfxS6iDbsn6sbM4+13Ly3OuiuOifQq3hYuXIuX+RjsJ+4Dz5Zjr5TFauvRcJwUaK2MlSrqwgoooreICiiigAooooAKKKKACiiigAooooAhxmEt3UNu4iujbqwBB99c+4/wDo4OrYRtP8q4fgrn5N/NXR6KpOnGatJFoycdjhBu4nCt1bqyH/AC7g0/hPd4qYplhukCHS4pTxHaX4CfhXX8XhLd1SlxFdTurAMPcayPFP0cYd5Nl3st3e2n8rHN6BgK5dfsuE8r9M0R4jqZk27V5kuK8tbnKyMDGYQ0rqsxpqJofBMb1q4XkW0dYI1LPl7UjSQFIiPrGo8f8Ao9xiGUFu6BsVbK3ueAPRjSu7hsdY9pMQviUZ1/mIZfjXOn2dWhs/DK/Oeo1VIsYYPAut+7cZQesuhlZXOiC0qAMNJ1UmNRLVVbAXQbrhS3/Ei71TG3FxVVFBU/VcFQwzECVExMiknSG6DGa2SNwRr/SwqwvSC7zVPQN/1Uruq6d7LZL5FsDGzbb9auXcjZGsW1nsjtI90lYJkGHGu3jUFjht1TavKfpdRdViACjsXcAqDqrmVmeYntE1VPSC79lPc341XudIruxa0vkIP9TGoVGt0XT6WDBpOI4QXrT2iSA6lSRuJESPEbivDIiQ125JXZnKgAxBIAAExOu+p7zSO0uNvaKuIf8AcRgP5kUD40zwPQHG3DLItvvNxwWj+DMT6kU2l2bWas3jwX5ZEqkVk8Yjj1pdEBc+AyrPmfmAaWPjsRiG6tAxJ+paDFo8SO1HjoO+t9wv9GtlYN+690/ZX6NPgS/9Q8q1/D+H2rC5LNtLa9ygCfE958TXRodlRjmX7/gmXEdDnXR/9HNxobFN1S/5aEF/JmEqv8M+YronDeG2sOgt2UVF7hzPeSdWPidat0V1IUow/wAozym5bhRRRTCoUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQBnulvsCvz3x7/AOVc9fnRRS6mxaBWwn+Nb8/wr9BdDdj5UUUU9gmayiiimFQooooAKKKKACiiigAooooAKKKKACiiigD/2Q==" style="width:100%;height:100%;object-fit:cover;" alt="">
+      </div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--godl);line-height:1.2;">Ai Tre Scalini</div>
+      <div style="font-size:9px;color:var(--mu);letter-spacing:.14em;text-transform:uppercase;margin-top:4px;">Dashboard · Area riservata</div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <input id="pwd-input" type="password" placeholder="Password"
+        style="
+          width:100%;border:1px solid var(--bd);background:var(--bg3);
+          color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;
+          padding:9px 12px;outline:none;text-align:center;letter-spacing:.1em;
+        "
+        onkeydown="if(event.key==='Enter')checkPwd()"
+      >
+    </div>
+    <div id="pwd-err" style="font-size:11px;color:var(--rdl);height:16px;margin-bottom:8px;"></div>
+    <button onclick="checkPwd()" style="
+      width:100%;border:none;background:var(--gold);color:var(--bg);
+      font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+      padding:10px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;
+      transition:opacity .15s;
+    " onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+      Accedi
+    </button>
+  </div>
+</div>
 <script>
-(function(){
-  const PWD="panisperna252", key="fc_auth";
-  if(sessionStorage.getItem(key)!=="ok"){
-    const i=prompt("Password:");
-    if(i!==PWD){
-      document.body.innerHTML="<div style='padding:60px;font-size:14px;color:#c94040;font-family:sans-serif'>Accesso negato.</div>";
-      throw new Error();
-    }
-    sessionStorage.setItem(key,"ok");
+function checkPwd(){
+  const v=document.getElementById('pwd-input').value;
+  if(v==='SociaSocio'){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('pwd-input').value='';
+  } else {
+    const e=document.getElementById('pwd-err');
+    e.textContent='Password errata';
+    document.getElementById('pwd-input').value='';
+    document.getElementById('pwd-input').focus();
+    setTimeout(()=>e.textContent='',2500);
   }
-})();
+}
+document.addEventListener('DOMContentLoaded',()=>document.getElementById('pwd-input').focus());
 </script>
 
-
-<!-- ─────────────── HEADER ─────────────── -->
-<div class="header">
-  <div class="header-left">
-    <h1>Food Cost · <em>3 Scalini</em></h1>
-    <p>Analisi KPI · Prezzi, Margini &amp; Vendite</p>
+<div class="shell">
+<aside class="sb">
+  <div class="sb-head">
+    <div class="sb-logo"><img src="data:image/jpeg;base64,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" alt="Ai Tre Scalini"></div>
+    <div><div class="sb-name">Ai Tre Scalini</div><div class="sb-sub">Rione Monti · dal 1895</div></div>
   </div>
-  <div class="header-right">
-    <div class="date">Aggiornato · Mar 2026</div>
-    <div class="status-badge">● Live Model</div>
+  <div class="sb-sec">Vendite Q1</div>
+  <div class="ni on" onclick="go('conf',this)"><i>⇄</i> Confronto 2025/2026</div>
+  <div class="ni" onclick="go('q1d',this)"><i>▲</i> Q1 2026 Dettaglio</div>
+  <div class="sb-sec">Analisi</div>
+  <div class="ni" onclick="go('fc',this)"><i>◎</i> Food Cost</div>
+  <div class="ni" onclick="go('delta',this)"><i>↑</i> Incremento Prezzi</div>
+  <div class="sb-sec">Approvvigionamento</div>
+  <div class="ni" onclick="go('ingr',this)"><i>⊞</i> Ingredienti & Fornitori</div>
+  <div class="sb-sec">Strumenti</div>
+  <div class="ni" onclick="go('sim',this)"><i>⟳</i> Simulatore</div>
+  <div class="sb-sec">Reputazione</div>
+  <div class="ni" onclick="go('reviews',this)"><i>★</i> Recensioni</div>
+  <div class="sb-stats">
+    <div class="sb-stat"><div class="lbl">Pezzi Q1 2026</div><div class="val">35.197</div><div class="dlt">▲ +148% vs 2025</div></div>
+    <div class="sb-stat"><div class="lbl">Ricavi Q1 2026</div><div class="val">€ 314k</div><div class="dlt">▲ +165% vs 2025</div></div>
   </div>
-</div>
+  <div class="sb-ft">Food cost model · Apr 2026<br>Scarto 20% · IVA 10%<br>iPratico riconciliato</div>
+</aside>
+<main class="main">
 
-<!-- ─────────────── TOP KPI ROW ─────────────── -->
-<div class="section-title">Indicatori Principali</div>
-<div class="grid-4">
-
-  <div class="card accent-gold">
-    <div class="card-label">Ricavi Storici Totali</div>
-    <div class="card-value big clr-gold">€ 922k</div>
-    <div class="card-sub">su <span>24 piatti</span> con dati vendita</div>
+<!-- ══ CONFRONTO ══ -->
+<div id="pg-conf" class="pg on">
+  <div class="ph"><div class="pt">Confronto <b>Q1 2025/2026</b></div><div class="ps">52 ricette food · nomi riconciliati dal gestionale iPratico</div></div>
+  <div class="ks">
+    <div class="kpi" style="--kc:var(--y25)"><div class="kl">Pezzi food Q1 2025</div><div class="kv sm">14.168</div></div>
+    <div class="kpi" style="--kc:var(--y26)"><div class="kl">Pezzi food Q1 2026</div><div class="kv sm">35.197</div><div class="kd up">▲ +148%</div></div>
+    <div class="kpi" style="--kc:var(--y25)"><div class="kl">Ricavi cassa Q1 2025</div><div class="kv sm">€ 119k</div></div>
+    <div class="kpi" style="--kc:var(--y26)"><div class="kl">Ricavi cassa Q1 2026</div><div class="kv sm">€ 314k</div><div class="kd up">▲ +165%</div></div>
   </div>
-
-  <div class="card accent-green">
-    <div class="card-label">Pezzi Venduti (storico)</div>
-    <div class="card-value big clr-green">92.262</div>
-    <div class="card-sub">dati storici cumulati</div>
+  <div class="nota"><details><summary>Riconciliazione nomi gestionale iPratico → ricette food cost</summary><p>"RAVIOLO"/"Ravioli"/"Ravioli ai Carciofi" → <em>Ravioli carciofi cacio e pepe</em> · "ANGUS" → <em>Carpaccio di Angus marinato</em> · "Lasagna G.F." → <em>Lasagna funghi e taleggio</em> · "Polpette sugo" → <em>Polpette di Manzo al sugo</em> · "SORPRESINA DI POLLO" → <em>Trippa alla Romana</em> · "Misto SalumForm x2/x3" → <em>Misto x 2 Salumi e Formaggi</em> ecc. Badge <em>alias ×N</em> = nomi originali al hover. Esclusi: vini, birre, bevande, caffè, Pane&amp;olio, Dolce del giorno, Cesarina, Prosc. Bufala.</p></details></div>
+  <div class="fb">
+    <span class="fl">Vista:</span>
+    <button class="cb on" data-cv="pz" onclick="cV('pz',this)">Pezzi</button>
+    <button class="cb" data-cv="rc" onclick="cV('rc',this)">Ricavi €</button>
+    <div class="fs"></div>
+    <span class="fl">Ordina:</span>
+    <button class="cb on" data-cs="q26" onclick="cS('q26',this)">Q1 2026 ↓</button>
+    <button class="cb" data-cs="da" onclick="cS('da',this)">Δ assoluto</button>
+    <button class="cb" data-cs="dp" onclick="cS('dp',this)">Δ %</button>
+    <div class="fs"></div>
+    <span class="fl">Filtra:</span>
+    <button class="cb on" data-cf="ALL" onclick="cFi('ALL',this)">Tutti</button>
+    <button class="cb" data-cf="UP" onclick="cFi('UP',this)">↑ Cresciuti</button>
+    <button class="cb" data-cf="DN" onclick="cFi('DN',this)">↓ Calati</button>
+    <button class="cb" data-cf="NW" onclick="cFi('NW',this)">★ Nuovi 2026</button>
+    <div class="fs"></div>
+    <span class="fl">Cat:</span>
+    <button class="cb on" data-cc="ALL" onclick="cC('ALL',this)">Tutti</button>
+    <button class="cb" data-cc="SFIZI" onclick="cC('SFIZI',this)">Sfizi</button>
+    <button class="cb" data-cc="ANTIPASTI" onclick="cC('ANTIPASTI',this)">Antipasti</button>
+    <button class="cb" data-cc="I CALDI" onclick="cC('I CALDI',this)">Caldi</button>
+    <button class="cb" data-cc="INSALATE" onclick="cC('INSALATE',this)">Insalate</button>
+    <button class="cb" data-cc="CONTORNI" onclick="cC('CONTORNI',this)">Contorni</button>
+    <button class="cb" data-cc="DOLCI" onclick="cC('DOLCI',this)">Dolci</button>
+    <input class="si" id="cs" placeholder="Cerca…" oninput="cR()" style="width:130px;margin-left:auto;">
+    <span class="rc" id="ccnt"></span>
   </div>
-
-  <div class="card">
-    <div class="card-label">Food Cost % Medio</div>
-    <div class="card-value big clr-accent">42,2%</div>
-    <div class="card-sub">target ideale: <span>&lt; 35%</span></div>
-  </div>
-
-  <div class="card accent-green">
-    <div class="card-label">Margine % Medio</div>
-    <div class="card-value big clr-green">57,8%</div>
-    <div class="card-sub">su <span>48 piatti</span> attivi (ON)</div>
-  </div>
-
-</div>
-
-<!-- ─────────────── SECONDA ROW KPI ─────────────── -->
-<div class="grid-4">
-
-  <div class="card">
-    <div class="card-label">Piatti Attivi (ON)</div>
-    <div class="card-value">58</div>
-    <div class="card-sub">su 6 categorie</div>
-  </div>
-
-  <div class="card">
-    <div class="card-label">Ingredienti Mappati</div>
-    <div class="card-value">139</div>
-    <div class="card-sub">con costo per UM</div>
-  </div>
-
-  <div class="card accent-green">
-    <div class="card-label">Fornitori Attivi</div>
-    <div class="card-value clr-green">20</div>
-    <div class="card-sub clr-red">4 inattivi</div>
-  </div>
-
-  <div class="card accent-red">
-    <div class="card-label">Scarto Standard</div>
-    <div class="card-value clr-red">+20%</div>
-    <div class="card-sub">applicato su tutti i costi</div>
-  </div>
-
-</div>
-
-<!-- ─────────────── MID SECTION ─────────────── -->
-<div class="grid-2">
-
-  <!-- TOP 10 PIATTI PER RICAVI -->
-  <div class="card">
-    <div class="card-label">Top 10 Piatti · Ricavi Storici</div>
-    <div class="bar-chart" style="margin-top:12px">
-
-      <div class="bar-row">
-        <div class="bar-label">Lasagna al Ragù</div>
-        <div class="bar-track"><div class="bar-fill gold" style="width:100%"></div></div>
-        <div class="bar-val"><strong>€ 183.635</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Ravioli c.c.p.</div>
-        <div class="bar-track"><div class="bar-fill" style="width:51.8%"></div></div>
-        <div class="bar-val"><strong>€ 95.202</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Polpette di Manzo</div>
-        <div class="bar-track"><div class="bar-fill" style="width:47.6%"></div></div>
-        <div class="bar-val"><strong>€ 87.520</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Parmigiana Melanzane</div>
-        <div class="bar-track"><div class="bar-fill" style="width:41.1%"></div></div>
-        <div class="bar-val"><strong>€ 75.435</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Pollo c/ Peperoni</div>
-        <div class="bar-track"><div class="bar-fill" style="width:35.9%"></div></div>
-        <div class="bar-val"><strong>€ 65.968</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Porchetta di Ariccia</div>
-        <div class="bar-track"><div class="bar-fill" style="width:30.2%"></div></div>
-        <div class="bar-val"><strong>€ 55.425</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Misto Salumi&amp;Formaggi x2</div>
-        <div class="bar-track"><div class="bar-fill green" style="width:29.2%"></div></div>
-        <div class="bar-val"><strong>€ 53.571</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Capresona</div>
-        <div class="bar-track"><div class="bar-fill" style="width:19.4%"></div></div>
-        <div class="bar-val"><strong>€ 35.679</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Culatta c/ Bufala</div>
-        <div class="bar-track"><div class="bar-fill" style="width:14.7%"></div></div>
-        <div class="bar-val"><strong>€ 27.695</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label">Ricotta Bufala Miele</div>
-        <div class="bar-track"><div class="bar-fill" style="width:15.1%"></div></div>
-        <div class="bar-val"><strong>€ 27.695</strong></div>
-      </div>
-
+  <div class="split">
+    <div class="split-l">
+      <div style="font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:7px;">Grafico comparativo</div>
+      <div class="leg"><div class="li"><div class="ld" style="background:var(--y25);opacity:.65;"></div>Q1 2025</div><div class="li"><div class="ld" style="background:var(--y26);"></div>Q1 2026</div></div>
+      <div id="conf-bars"></div>
+    </div>
+    <div class="split-r">
+      <table class="tbl"><thead><tr style="background:var(--bg2);"><th class="la" style="width:24px;">#</th><th class="la">Ricetta</th><th>Q1 2025</th><th>Q1 2026</th><th>Δ ass.</th><th>Δ %</th></tr></thead>
+      <tbody id="conf-body"></tbody></table>
     </div>
   </div>
-
-  <!-- FOOD COST % PER CATEGORIA -->
-  <div class="card">
-    <div class="card-label">Food Cost % per Categoria</div>
-
-    <div class="bar-chart" style="margin-top:14px">
-      <div class="bar-row">
-        <div class="bar-label short">ANTIPASTI</div>
-        <div class="bar-track">
-          <div class="bar-fill green" style="width:54.8%"></div>
-        </div>
-        <div class="bar-val"><strong class="clr-green">32,9%</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label short">SFIZI</div>
-        <div class="bar-track">
-          <div class="bar-fill green" style="width:60.9%"></div>
-        </div>
-        <div class="bar-val"><strong class="clr-green">36,5%</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label short">INSALATE</div>
-        <div class="bar-track">
-          <div class="bar-fill" style="width:67.3%"></div>
-        </div>
-        <div class="bar-val"><strong class="clr-accent">40,4%</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label short">I CALDI</div>
-        <div class="bar-track">
-          <div class="bar-fill" style="width:75.7%"></div>
-        </div>
-        <div class="bar-val"><strong class="clr-accent">45,4%</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label short">CONTORNI</div>
-        <div class="bar-track">
-          <div class="bar-fill red" style="width:81.9%"></div>
-        </div>
-        <div class="bar-val"><strong class="clr-red">49,1%</strong></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-label short">DOLCI</div>
-        <div class="bar-track">
-          <div class="bar-fill red" style="width:86.6%"></div>
-        </div>
-        <div class="bar-val"><strong class="clr-red">52,0%</strong></div>
-      </div>
-    </div>
-
-    <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border)">
-      <div class="card-label">Distribuzione piatti per categoria (attivi)</div>
-      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-        <span style="font-size:11px; background:rgba(176,125,58,0.08); border:1px solid rgba(176,125,58,0.25); padding:4px 10px; color:var(--accent)">SFIZI · 15</span>
-        <span style="font-size:11px; background:rgba(176,125,58,0.08); border:1px solid rgba(176,125,58,0.25); padding:4px 10px; color:var(--accent)">DOLCI · 15</span>
-        <span style="font-size:11px; background:rgba(176,125,58,0.05); border:1px solid var(--border); padding:4px 10px; color:var(--muted)">I CALDI · 8</span>
-        <span style="font-size:11px; background:rgba(176,125,58,0.05); border:1px solid var(--border); padding:4px 10px; color:var(--muted)">ANTIPASTI · 8</span>
-        <span style="font-size:11px; background:rgba(176,125,58,0.05); border:1px solid var(--border); padding:4px 10px; color:var(--muted)">CONTORNI · 7</span>
-        <span style="font-size:11px; background:rgba(176,125,58,0.05); border:1px solid var(--border); padding:4px 10px; color:var(--muted)">INSALATE · 5</span>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<!-- ─────────────── TABELLA PIATTI CRITICI ─────────────── -->
-<div class="section-title">Food Cost · Piatti per Categoria</div>
-<div class="grid-2">
-
-  <!-- MIGLIORI MARGINI -->
-  <div class="card accent-green">
-    <div class="card-label">✦ Best Performers — Margine Più Alto</div>
-    <table class="data-table" style="margin-top:10px">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Piatto</th>
-          <th>Prezzo</th>
-          <th>Food Cost</th>
-          <th>Margine</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="rank top">1</span></td>
-          <td>Oliva Gaeta DOP</td>
-          <td>€ 3,50</td>
-          <td><span class="fc-pill fc-ok">16,1%</span></td>
-          <td class="clr-green">83,9%</td>
-        </tr>
-        <tr>
-          <td><span class="rank top">2</span></td>
-          <td>Croccantelle Formaggio</td>
-          <td>€ 3,50</td>
-          <td><span class="fc-pill fc-ok">16,3%</span></td>
-          <td class="clr-green">83,7%</td>
-        </tr>
-        <tr>
-          <td><span class="rank top">3</span></td>
-          <td>Ricotta Bufala Miele</td>
-          <td>€ 9,00</td>
-          <td><span class="fc-pill fc-ok">16,2%</span></td>
-          <td class="clr-green">83,8%</td>
-        </tr>
-        <tr>
-          <td><span class="rank">4</span></td>
-          <td>Greca</td>
-          <td>€ 10,50</td>
-          <td><span class="fc-pill fc-ok">26,2%</span></td>
-          <td class="clr-green">73,8%</td>
-        </tr>
-        <tr>
-          <td><span class="rank">5</span></td>
-          <td>Mediterranea</td>
-          <td>€ 8,00</td>
-          <td><span class="fc-pill fc-ok">29,0%</span></td>
-          <td class="clr-green">71,0%</td>
-        </tr>
-        <tr>
-          <td><span class="rank">6</span></td>
-          <td>Salsiccette Rustiche</td>
-          <td>€ 3,50</td>
-          <td><span class="fc-pill fc-ok">26,7%</span></td>
-          <td class="clr-green">73,3%</td>
-        </tr>
-      </tbody>
-    </table>
+<!-- ══ Q1 DETTAGLIO ══ -->
+<div id="pg-q1d" class="pg">
+  <div class="ph"><div class="pt">Q1 2026 <b>Dettaglio</b></div>
+    <div class="ps">Prezzi e margini calcolati sui ricavi reali della cassa · FC = costo modello / prezzo cassa netto</div></div>
+  <div class="ks">
+    <div class="kpi" style="--kc:var(--y26)"><div class="kl">Ricavi cassa Q1 2026</div><div class="kv sm">€ 314k</div></div>
+    <div class="kpi" style="--kc:var(--grl)"><div class="kl">Margine stimato Q1</div><div class="kv sm">€ 159k</div><div class="kb">~50,6% sui ricavi</div></div>
+    <div class="kpi" style="--kc:var(--warn)">
+      <div class="kl">⚠ Pane al Sughetto</div>
+      <div class="kv sm" style="font-size:14px;">FC 87% in cassa</div>
+      <div class="kb">Prezzo medio cassa €2,66 vs listino €6,00</div>
+    </div>
+    <div class="kpi" style="--kc:var(--gold)"><div class="kl">Piatti con FC reale</div><div class="kv sm">40</div><div class="kb">su 51 venduti nel Q1</div></div>
   </div>
-
-  <!-- FOOD COST PIÙ ALTO -->
-  <div class="card accent-red">
-    <div class="card-label">⚠ Attenzione — Food Cost Elevato</div>
-    <table class="data-table" style="margin-top:10px">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Piatto</th>
-          <th>Prezzo</th>
-          <th>Food Cost</th>
-          <th>Margine</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="rank top">1</span></td>
-          <td>BONACCIA</td>
-          <td>€ 15,00</td>
-          <td><span class="fc-pill fc-warn">60,0%</span></td>
-          <td class="clr-red">40,0%</td>
-        </tr>
-        <tr>
-          <td><span class="rank top">2</span></td>
-          <td>Lasagna Funghi Taleggio</td>
-          <td>€ 15,50</td>
-          <td><span class="fc-pill fc-warn">57,9%</span></td>
-          <td class="clr-red">42,1%</td>
-        </tr>
-        <tr>
-          <td><span class="rank top">3</span></td>
-          <td>Gelato Yogurt Visciole</td>
-          <td>€ 6,00</td>
-          <td><span class="fc-pill fc-warn">57,2%</span></td>
-          <td class="clr-red">42,8%</td>
-        </tr>
-        <tr>
-          <td><span class="rank">4</span></td>
-          <td>Gelato Zabaione</td>
-          <td>€ 6,00</td>
-          <td><span class="fc-pill fc-warn">57,2%</span></td>
-          <td class="clr-red">42,8%</td>
-        </tr>
-        <tr>
-          <td><span class="rank">5</span></td>
-          <td>Caponata di Melanzane</td>
-          <td>€ 7,00</td>
-          <td><span class="fc-pill fc-warn">56,8%</span></td>
-          <td class="clr-red">43,2%</td>
-        </tr>
-        <tr>
-          <td><span class="rank">6</span></td>
-          <td>Patate al Forno</td>
-          <td>€ 6,00</td>
-          <td><span class="fc-pill fc-warn">51,1%</span></td>
-          <td class="clr-red">48,9%</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="nota" style="background:rgba(224,112,48,.07);border-color:rgba(224,112,48,.25);color:var(--warn);">
+    <strong>Nota metodologica:</strong> FC e margini qui sono calcolati usando il <strong>prezzo reale dalla cassa</strong> (ricavi ÷ pezzi), non il prezzo di listino del modello food cost. Questo dà una fotografia fedele di quello che è stato effettivamente incassato per ogni piatto. Il Pane al Sughetto registra un FC dell'87% perché in cassa viene spesso battuto a €2,66 invece del listino di €6,00 — da verificare se si tratta di un problema di registrazione o di politica di prezzo.
   </div>
-
+  <div class="fb">
+    <span class="fl">Ordina:</span>
+    <select class="ss" id="q1s" onchange="q1R()">
+      <option value="pz">Pezzi ↓</option><option value="rc">Ricavi ↓</option>
+      <option value="mt">Margine tot. ↓</option><option value="mp">Margine €/pz ↓</option>
+      <option value="fc">Food cost ↑</option><option value="nm">Nome A→Z</option>
+    </select>
+    <div class="fs"></div>
+    <span class="fl">Cat:</span>
+    <button class="cb on" data-qc="ALL" onclick="q1C('ALL',this)">Tutti</button>
+    <button class="cb" data-qc="SFIZI" onclick="q1C('SFIZI',this)">Sfizi</button>
+    <button class="cb" data-qc="ANTIPASTI" onclick="q1C('ANTIPASTI',this)">Antipasti</button>
+    <button class="cb" data-qc="I CALDI" onclick="q1C('I CALDI',this)">Caldi</button>
+    <button class="cb" data-qc="INSALATE" onclick="q1C('INSALATE',this)">Insalate</button>
+    <button class="cb" data-qc="CONTORNI" onclick="q1C('CONTORNI',this)">Contorni</button>
+    <button class="cb" data-qc="DOLCI" onclick="q1C('DOLCI',this)">Dolci</button>
+    <div class="fs"></div>
+    <label style="font-size:10px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:4px;cursor:pointer;">
+      <input type="checkbox" id="q1fc" onchange="q1R()"> Solo con FC
+    </label>
+    <input class="si" id="q1s2" placeholder="Cerca…" oninput="q1R()" style="margin-left:auto;width:130px;">
+    <span class="rc" id="q1cnt"></span>
+  </div>
+  <div class="surface"><div class="tw" style="max-height:560px;">
+    <table class="tbl"><thead><tr style="background:var(--bg2);">
+      <th class="la" style="width:28px;">#</th><th class="la">Piatto</th><th>Cat.</th>
+      <th>Costo+sc.</th><th>Prz medio cassa</th><th>FC reale</th>
+      <th>Marg €/pz</th><th>Pezzi Q1</th><th>Ricavi cassa</th><th>Marg. tot.</th>
+    </tr></thead><tbody id="q1body"></tbody></table>
+  </div></div>
 </div>
 
-<!-- ─────────────── TERZA RIGA ─────────────── -->
-<div class="grid-2-1">
-
-  <!-- PREZZI MINIMI VS APPLICATI -->
-  <div class="card">
-    <div class="card-label">Prezzo Applicato vs Prezzo Minimo (60% margine) — Campione Piatti</div>
-    <table class="data-table" style="margin-top:10px">
-      <thead>
-        <tr>
-          <th>Piatto</th>
-          <th>Cat.</th>
-          <th>P. Minimo</th>
-          <th>P. Applicato</th>
-          <th>Differenza</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Ricotta Bufala Miele</td>
-          <td><span style="font-size:9px;color:var(--muted)">ANT</span></td>
-          <td>€ 3,65</td>
-          <td class="clr-green"><strong>€ 9,00</strong></td>
-          <td class="clr-green">+€ 5,35</td>
-        </tr>
-        <tr>
-          <td>Misto Salumi&amp;Formaggi x2</td>
-          <td><span style="font-size:9px;color:var(--muted)">ANT</span></td>
-          <td>€ 15,98</td>
-          <td class="clr-green"><strong>€ 20,00</strong></td>
-          <td class="clr-green">+€ 4,02</td>
-        </tr>
-        <tr>
-          <td>Selezione Salumi x1</td>
-          <td><span style="font-size:9px;color:var(--muted)">ANT</span></td>
-          <td>€ 8,66</td>
-          <td class="clr-green"><strong>€ 11,00</strong></td>
-          <td class="clr-green">+€ 2,35</td>
-        </tr>
-        <tr>
-          <td>Culatta di Parma</td>
-          <td><span style="font-size:9px;color:var(--muted)">ANT</span></td>
-          <td>€ 7,26</td>
-          <td class="clr-green"><strong>€ 9,50</strong></td>
-          <td class="clr-green">+€ 2,24</td>
-        </tr>
-        <tr>
-          <td>Patate al Forno</td>
-          <td><span style="font-size:9px;color:var(--muted)">CON</span></td>
-          <td>€ 7,66</td>
-          <td class="clr-red"><strong>€ 6,00</strong></td>
-          <td class="clr-red">−€ 1,66</td>
-        </tr>
-        <tr>
-          <td>Caponata Melanzane</td>
-          <td><span style="font-size:9px;color:var(--muted)">CON</span></td>
-          <td>€ 9,93</td>
-          <td class="clr-red"><strong>€ 7,00</strong></td>
-          <td class="clr-red">−€ 2,93</td>
-        </tr>
-        <tr>
-          <td>Ravioli c.c.p.</td>
-          <td><span style="font-size:9px;color:var(--muted)">CAL</span></td>
-          <td>€ 19,94</td>
-          <td class="clr-red"><strong>€ 15,00</strong></td>
-          <td class="clr-red">−€ 4,94</td>
-        </tr>
-        <tr>
-          <td>Lasagna Funghi Taleggio</td>
-          <td><span style="font-size:9px;color:var(--muted)">CAL</span></td>
-          <td>€ 22,43</td>
-          <td class="clr-red"><strong>€ 15,50</strong></td>
-          <td class="clr-red">−€ 6,93</td>
-        </tr>
-      </tbody>
-    </table>
+<!-- ══ FOOD COST ══ -->
+<div id="pg-fc" class="pg">
+  <div class="ph"><div class="pt">Analisi <b>Food Cost</b></div><div class="ps">Prezzi di listino · costi di ricetta · margini teorici</div></div>
+  <div class="ks">
+    <div class="kpi" style="--kc:var(--gr)"><div class="kl">Migliore food cost</div><div class="kv sm">13,5%</div><div class="kb">Ricotta di Bufala</div></div>
+    <div class="kpi" style="--kc:var(--rd)"><div class="kl">Food cost più alto</div><div class="kv sm">60,0%</div><div class="kb">BONACCIA</div></div>
+    <div class="kpi" style="--kc:var(--gold)"><div class="kl">FC medio ponderato</div><div class="kv sm">38,8%</div><div class="kb">sui volumi storici</div></div>
+    <div class="kpi" style="--kc:var(--bl)"><div class="kl">Piatti con prezzo listino</div><div class="kv sm">49</div><div class="kb">su 58 nel modello</div></div>
   </div>
+  <div class="g32">
+    <div class="card ag"><div class="cl">✦ Top 6 — food cost più basso</div><div id="fc-ok"></div></div>
+    <div class="card ar"><div class="cl">⚠ Top 6 — food cost più alto</div><div id="fc-warn"></div></div>
+  </div>
+  <div class="fb">
+    <span class="fl">Cat:</span>
+    <button class="cb on" data-fcat="ALL" onclick="fcF('ALL',this)">Tutti</button>
+    <button class="cb" data-fcat="SFIZI" onclick="fcF('SFIZI',this)">Sfizi</button>
+    <button class="cb" data-fcat="ANTIPASTI" onclick="fcF('ANTIPASTI',this)">Antipasti</button>
+    <button class="cb" data-fcat="I CALDI" onclick="fcF('I CALDI',this)">Caldi</button>
+    <button class="cb" data-fcat="INSALATE" onclick="fcF('INSALATE',this)">Insalate</button>
+    <button class="cb" data-fcat="CONTORNI" onclick="fcF('CONTORNI',this)">Contorni</button>
+    <button class="cb" data-fcat="DOLCI" onclick="fcF('DOLCI',this)">Dolci</button>
+    <div class="fs"></div>
+    <span class="fl">Fascia:</span>
+    <button class="cb" data-ffc="ok" onclick="fcFF('ok',this)">≤33%</button>
+    <button class="cb" data-ffc="mid" onclick="fcFF('mid',this)">33–50%</button>
+    <button class="cb" data-ffc="warn" onclick="fcFF('warn',this)">≥50%</button>
+    <div class="fs"></div>
+    <input class="si" id="fc-s" placeholder="Cerca piatto…" oninput="fcR()" style="width:150px;">
+    <select class="ss" id="fc-sort" onchange="fcR()">
+      <option value="fc-a">FC ↑</option><option value="fc-d">FC ↓</option>
+      <option value="mg-d">Margine ↓</option><option value="prz-d">Prezzo ↓</option>
+      <option value="cs-d">Costo ↓</option><option value="nm-a">Nome A→Z</option>
+    </select>
+    <span class="rc" id="fc-cnt"></span>
+  </div>
+  <div class="surface"><div class="tw" style="max-height:520px;">
+    <table class="tbl"><thead><tr style="background:var(--bg2);">
+      <th class="la">Piatto</th><th>Cat.</th><th>Costo netto</th><th>Costo+scarto</th>
+      <th>Prezzo listino IVA</th><th>Food cost %</th><th>Margine %</th><th>Status</th>
+    </tr></thead><tbody id="fc-body"></tbody></table>
+  </div></div>
+</div>
 
-  <!-- MINI STATS -->
-  <div style="display:flex; flex-direction:column; gap:14px;">
-
-    <div class="card accent-blue">
-      <div class="card-label">Piatto + Venduto</div>
-      <div class="card-value small clr-accent">Lasagna Ragù</div>
-      <div class="metrics-inline" style="margin-top:10px">
-        <div class="metric-item">
-          <span class="m-val clr-gold">14.759</span>
-          <span class="m-lbl">pezzi</span>
-        </div>
-        <div class="metric-item">
-          <span class="m-val clr-green">€183k</span>
-          <span class="m-lbl">ricavi</span>
-        </div>
-      </div>
+<!-- ══ INCREMENTO PREZZI ══ -->
+<div id="pg-delta" class="pg">
+  <div class="ph"><div class="pt">Incremento <b>Prezzi</b></div>
+    <div class="ps">Prezzo modello 2026 vs prezzo medio gestionale Q1 2025 · impatto sui volumi Q1 2026</div></div>
+  <div class="ks">
+    <div class="kpi" style="--kc:var(--grl)"><div class="kl">Extra incassato Q1 2026</div><div class="kv sm">+ € 23k</div><div class="kb">31 ricette con confronto diretto</div></div>
+    <div class="kpi" style="--kc:var(--godl)"><div class="kl">Stima apr–dic 2026</div><div class="kv sm">+ € 69k</div><div class="kb">stessa struttura di volume</div></div>
+    <div class="kpi" style="--kc:var(--bl)"><div class="kl">Ricette confrontate</div><div class="kv sm">31</div><div class="kb">13 nuove · 4 senza prezzo modello</div></div>
+    <div class="kpi" style="--kc:var(--rd)"><div class="kl">Piatti con prezzo calato</div><div class="kv sm">3</div><div class="kb">Polpettine, Spezzatino, Salsiccia</div></div>
+  </div>
+  <div class="nota">
+    <details>
+      <summary>Metodologia del confronto</summary>
+      <p>
+        <strong>Prezzo 2025:</strong> media ponderata dal gestionale iPratico (totale incassato ÷ quantità) Q1 gen–mar 2025.<br>
+        <strong>Prezzo 2026:</strong> prezzo di listino IVA inclusa dal modello food cost.<br>
+        <strong>Extra Q1:</strong> (P2026 − PM2025) × pezzi venduti Q1 2026.<br>
+        <strong>Stima 9 mesi:</strong> Extra Q1 × 3, ipotizzando stesso volume trimestrale.<br>
+        Escluse: ricette nuove nel 2026 (no confronto), ricette senza prezzo nel modello, voci con dati non omogenei tra anni.
+      </p>
+    </details>
+  </div>
+  <div class="fb">
+    <span class="fl">Vista:</span>
+    <button class="cb on" data-dv="extra" onclick="dV('extra',this)">Extra Q1 €</button>
+    <button class="cb" data-dv="s9m" onclick="dV('s9m',this)">Stima 9 mesi</button>
+    <button class="cb" data-dv="delta" onclick="dV('delta',this)">Δ prezzo €</button>
+    <button class="cb" data-dv="pct" onclick="dV('pct',this)">Δ prezzo %</button>
+    <div class="fs"></div>
+    <span class="fl">Filtra:</span>
+    <button class="cb on" data-df="ALL" onclick="dFi('ALL',this)">Tutti</button>
+    <button class="cb" data-df="UP" onclick="dFi('UP',this)">↑ Aumento</button>
+    <button class="cb" data-df="DN" onclick="dFi('DN',this)">↓ Calo</button>
+    <div class="fs"></div>
+    <span class="fl">Cat:</span>
+    <button class="cb on" data-dc="ALL" onclick="dC('ALL',this)">Tutti</button>
+    <button class="cb" data-dc="SFIZI" onclick="dC('SFIZI',this)">Sfizi</button>
+    <button class="cb" data-dc="ANTIPASTI" onclick="dC('ANTIPASTI',this)">Antipasti</button>
+    <button class="cb" data-dc="I CALDI" onclick="dC('I CALDI',this)">Caldi</button>
+    <button class="cb" data-dc="INSALATE" onclick="dC('INSALATE',this)">Insalate</button>
+    <button class="cb" data-dc="CONTORNI" onclick="dC('CONTORNI',this)">Contorni</button>
+    <button class="cb" data-dc="DOLCI" onclick="dC('DOLCI',this)">Dolci</button>
+    <input class="si" id="ds" placeholder="Cerca…" oninput="dR()" style="width:130px;margin-left:auto;">
+    <span class="rc" id="dcnt"></span>
+  </div>
+  <div style="display:grid;grid-template-columns:380px 1fr;border:1px solid var(--bd);border-top:none;background:var(--sf);">
+    <div style="padding:13px 16px;border-right:1px solid var(--bd);">
+      <div style="font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:8px;">Grafico — extra incassato Q1 2026 (€)</div>
+      <div id="delta-bars"></div>
     </div>
+    <div style="overflow-x:auto;overflow-y:auto;max-height:540px;">
+      <table class="tbl"><thead><tr style="background:var(--bg2);">
+        <th class="la" style="width:24px;">#</th><th class="la">Ricetta</th><th>Cat.</th>
+        <th>PM 2025</th><th>P. modello 2026</th><th>Δ prezzo</th><th>Δ %</th>
+        <th>Pezzi Q1</th><th>Extra Q1 (€)</th><th>Stima 9m (€)</th>
+      </tr></thead><tbody id="delta-body"></tbody></table>
+    </div>
+  </div>
+  <div class="sec"><div class="secl"></div><h2>Ricette nuove nel 2026 — nessun confronto disponibile</h2><div class="secl"></div></div>
+  <div class="surface"><div class="tw" style="max-height:220px;">
+    <table class="tbl"><thead><tr style="background:var(--bg2);">
+      <th class="la">Ricetta</th><th>Cat.</th><th>P. modello 2026</th><th>Pezzi Q1 2026</th><th>Note</th>
+    </tr></thead><tbody id="delta-nuovi"></tbody></table>
+  </div></div>
+</div>
 
+<!-- ══ INGREDIENTI ══ -->
+<div id="pg-ingr" class="pg">
+  <div class="ph"><div class="pt">Ingredienti <b>&amp; Fornitori</b></div><div class="ps">134 ingredienti · 24 fornitori · prezzi e incongruenze listino</div></div>
+  <div class="ks">
+    <div class="kpi" style="--kc:var(--gold)"><div class="kl">Ingredienti totali</div><div class="kv sm">134</div></div>
+    <div class="kpi" style="--kc:var(--grl)"><div class="kl">Con fornitore assegnato</div><div class="kv sm">39</div><div class="kb">95 ancora da assegnare</div></div>
+    <div class="kpi" style="--kc:var(--warn)"><div class="kl">Incongruenze di prezzo</div><div class="kv sm">5</div><div class="kb">listino ≠ ingredienti</div></div>
+    <div class="kpi" style="--kc:var(--bl)"><div class="kl">Fornitori attivi</div><div class="kv sm">20</div><div class="kb">su 24 in anagrafica</div></div>
+  </div>
+  <div class="sec"><div class="secl"></div><h2>Anagrafica fornitori</h2><div class="secl"></div></div>
+  <div class="surface" style="margin-bottom:14px;"><div class="tw" style="max-height:210px;">
+    <table class="tbl"><thead><tr style="background:var(--bg2);">
+      <th class="la">Fornitore</th><th>Stato</th><th class="la">Categoria / Prodotti</th><th class="la">Note logistica</th><th>Ingr.</th>
+    </tr></thead><tbody id="forn-body"></tbody></table>
+  </div></div>
+  <div class="sec"><div class="secl"></div><h2>Ingredienti</h2><div class="secl"></div></div>
+  <div class="fb">
+    <span class="fl">Fornitore:</span>
+    <button class="cb on" data-if="ALL" onclick="iF('ALL',this)">Tutti</button>
+    <button class="cb" data-if="NO" onclick="iF('NO',this)">Senza fornitore</button>
+    <div class="fs"></div>
+    <button class="cb" data-if="Caseificio Stella" onclick="iF('Caseificio Stella',this)">Caseificio Stella <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Caseificio Zigrino" onclick="iF('Caseificio Zigrino',this)">Caseificio Zigrino <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Col.Form" onclick="iF('Col.Form',this)">Col.Form <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Colonna" onclick="iF('Colonna',this)">Colonna <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Food B2B" onclick="iF('Food B2B',this)">Food B2B <span style="opacity:.6;font-size:9px;">(13)</span></button>
+    <button class="cb" data-if="Forno Danieli" onclick="iF('Forno Danieli',this)">Forno Danieli <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Forno Roscioli" onclick="iF('Forno Roscioli',this)">Forno Roscioli <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Frolla" onclick="iF('Frolla',this)">Frolla <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Gioia" onclick="iF('Gioia',this)">Gioia <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="IceLike" onclick="iF('IceLike',this)">IceLike <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Latteria Perenzin" onclick="iF('Latteria Perenzin',this)">Latteria Perenzin <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Luca Vinz" onclick="iF('Luca Vinz',this)">Luca Vinz <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="MaRr" onclick="iF('MaRr',this)">MaRr <span style="opacity:.6;font-size:9px;">(4)</span></button>
+    <button class="cb" data-if="PachinEat" onclick="iF('PachinEat',this)">PachinEat <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Pezzetta" onclick="iF('Pezzetta',this)">Pezzetta <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Proposte d&#39;Autore" onclick="iF('Proposte d\'Autore',this)">Proposte d&#39;Autore <span style="opacity:.6;font-size:9px;">(8)</span></button>
+    <button class="cb" data-if="Sandro" onclick="iF('Sandro',this)">Sandro <span style="opacity:.6;font-size:9px;">(13)</span></button>
+    <button class="cb" data-if="Sulpizio Tartufi" onclick="iF('Sulpizio Tartufi',this)">Sulpizio Tartufi <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Vescovi" onclick="iF('Vescovi',this)">Vescovi <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <button class="cb" data-if="Vulcino" onclick="iF('Vulcino',this)">Vulcino <span style="opacity:.6;font-size:9px;">(0)</span></button>
+    <div class="fs"></div>
+    <label style="font-size:10px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" id="ingr-incon" onchange="iR()"> ⚠ Solo incongruenze</label>
+    <input class="si" id="ingr-s" placeholder="Cerca ingrediente…" oninput="iR()" style="width:150px;margin-left:auto;">
+    <select class="ss" id="ingr-sort" onchange="iR()">
+      <option value="nm-a">Nome A→Z</option><option value="costo-d">Costo ↓</option>
+      <option value="costo-a">Costo ↑</option><option value="forn-a">Fornitore A→Z</option>
+    </select>
+    <span class="rc" id="ingr-cnt"></span>
+  </div>
+  <div class="surface"><div class="tw" style="max-height:500px;">
+    <table class="tbl"><thead><tr style="background:var(--bg2);">
+      <th class="la">Ingrediente</th><th>Fornitore</th><th>UM acq.</th>
+      <th>Costo unitario</th><th>UM utilizzo</th><th>€/UM utilizzo</th>
+      <th>Prezzo listino</th><th>Δ listino</th><th>Stato</th>
+    </tr></thead><tbody id="ingr-body"></tbody></table>
+  </div></div>
+</div>
+
+<!-- ══ SIMULATORE ══ -->
+<div id="pg-sim" class="pg">
+  <div class="ph"><div class="pt">Simulatore <b>Prezzi</b></div><div class="ps">Prezzo target per margine desiderato · IVA 10% · scarto 20%</div></div>
+  <div class="sg">
     <div class="card">
-      <div class="card-label">Prezzo Medio di Vendita</div>
-      <div class="metrics-inline" style="margin-top:8px">
-        <div class="metric-item">
-          <span class="m-val clr-accent">€ 9,99</span>
-          <span class="m-lbl">medio</span>
-        </div>
-        <div class="metric-item">
-          <span class="m-val">€ 2,00</span>
-          <span class="m-lbl">minimo</span>
-        </div>
-        <div class="metric-item">
-          <span class="m-val">€ 20,00</span>
-          <span class="m-lbl">massimo</span>
-        </div>
-      </div>
+      <div class="cl">Parametri</div>
+      <div class="sr"><label>Piatto</label><select id="smp" onchange="sU()" style="flex:1;border:1px solid var(--bd);background:var(--bg3);color:var(--tx);font-family:inherit;font-size:12px;padding:5px 8px;outline:none;"></select></div>
+      <div class="sr"><label>Target margine</label><div class="slw"><input type="range" id="smt" min="40" max="85" step="1" value="60" oninput="sU()"></div><div class="sm2" id="sml">60%</div></div>
+      <div class="sr"><label>Arrotondamento</label><select id="smr" onchange="sU()" style="flex:1;border:1px solid var(--bd);background:var(--bg3);color:var(--tx);font-family:inherit;font-size:12px;padding:5px 8px;outline:none;"><option value="0">Nessuno</option><option value="0.5" selected>Ai 0,50 €</option><option value="1">All'euro</option></select></div>
+      <div class="sn">Calcola il prezzo IVA inclusa (10%) per raggiungere il margine target, dal <strong>costo ricetta con scarto 20%</strong>.</div>
     </div>
-
-    <div class="card">
-      <div class="card-label">Costo Medio Ricetta (con scarto)</div>
-      <div class="metrics-inline" style="margin-top:8px">
-        <div class="metric-item">
-          <span class="m-val clr-accent">€ 3,46</span>
-          <span class="m-lbl">medio</span>
-        </div>
-        <div class="metric-item">
-          <span class="m-val clr-green">€ 0,51</span>
-          <span class="m-lbl">minimo</span>
-        </div>
-        <div class="metric-item">
-          <span class="m-val clr-red">€ 8,18</span>
-          <span class="m-lbl">massimo</span>
-        </div>
+    <div class="card" style="border-top:2px solid var(--goldd);">
+      <div class="cl" style="color:var(--gold);">Output</div>
+      <div class="so">
+        <div class="sk"><div class="lbl">Prezzo attuale</div><div class="val" id="sa">—</div></div>
+        <div class="sk"><div class="lbl">Prezzo target</div><div class="val gd" id="st">—</div></div>
+        <div class="sk"><div class="lbl">Nuovo food cost</div><div class="val" id="sfc">—</div></div>
+        <div class="sk"><div class="lbl">Differenza</div><div class="val" id="sdl">—</div></div>
       </div>
+      <table class="sd">
+        <tr><td>Categoria</td><td id="sca">—</td></tr>
+        <tr><td>Costo netto</td><td id="scn">—</td></tr>
+        <tr><td>Costo+scarto</td><td id="scs">—</td></tr>
+        <tr><td>Margine attuale</td><td id="sma">—</td></tr>
+        <tr><td>Decisione</td><td><span id="sde">—</span></td></tr>
+      </table>
     </div>
-
   </div>
+  <div class="sec"><div class="secl"></div><h2>Tutti i piatti — indicazioni pricing</h2><div class="secl"></div></div>
+  <div class="fb">
+    <span class="fl">Filtro:</span>
+    <button class="cb on" data-sf="ALL" onclick="stF('ALL',this)">Tutti</button>
+    <button class="cb" data-sf="REPRICE" onclick="stF('REPRICE',this)">Da reprezzare</button>
+    <button class="cb" data-sf="FIX" onclick="stF('FIX',this)">Fix light</button>
+    <button class="cb" data-sf="KEEP" onclick="stF('KEEP',this)">OK</button>
+    <input class="si" id="sts" placeholder="Cerca…" oninput="stR()" style="margin-left:auto;width:130px;">
+  </div>
+  <div class="surface"><div class="tw" style="max-height:500px;">
+    <table class="tbl"><thead><tr style="background:var(--bg2);">
+      <th class="la">Piatto</th><th>Cat.</th><th>Costo+sc.</th><th>P.listino</th>
+      <th id="sth-tgt">P.target (60%)</th><th>Δ</th><th>FC listino</th><th>Decisione</th>
+    </tr></thead><tbody id="stbody"></tbody></table>
+  </div></div>
 </div>
 
 
-<!-- ─────────────── LIVE PRICING SIMULATOR ─────────────── -->
-<div class="section-title">Simulatore Prezzi Live</div>
-<div class="sim-grid">
+<!-- ══ RECENSIONI ══ -->
+<div id="pg-reviews" class="pg">
+  <div class="ph">
+    <div class="pt">Recensioni <b>Google / TripAdvisor</b></div>
+    <div class="ps">Analisi reputazione online · Focus food · Ultimi 6 mesi · Fonti multiple</div>
+  </div>
 
-  <div class="card">
-    <div class="card-label">Simulatore · Prezzo Target per Margine</div>
-    <div class="sim-controls" style="margin-top:12px">
-      <div class="sim-row">
-        <label for="sim-piatto">Seleziona piatto</label>
-        <select id="sim-piatto" onchange="updateSimulator()"></select>
-      </div>
-
-      <div class="sim-row">
-        <label for="sim-target">Target margine</label>
-        <div class="sim-slider-wrap">
-          <input id="sim-target" type="range" min="50" max="80" step="1" value="60" style="width:100%" oninput="updateSimulator()">
-        </div>
-        <div class="sim-slider-meta" id="sim-target-label">60%</div>
-      </div>
-
-      <div class="sim-row">
-        <label for="sim-rounding">Arrotondamento</label>
-        <select id="sim-rounding" onchange="updateSimulator()">
-          <option value="0">Nessuno</option>
-          <option value="0.5" selected>Ai 0,50 €</option>
-          <option value="1">All'euro</option>
-        </select>
-      </div>
+  <!-- KPI strip -->
+  <div class="ks">
+    <div class="kpi" style="--kc:var(--godl)">
+      <div class="kl">TripAdvisor</div>
+      <div class="kv sm">4,4 / 5</div>
+      <div class="kb">2.429 recensioni · <b>Traveller's Choice 2025</b></div>
     </div>
-
-    <div class="sim-note">
-      Il simulatore usa il <strong>costo ricetta con scarto</strong> già presente nel modello e calcola il prezzo consigliato per raggiungere il margine desiderato.
+    <div class="kpi" style="--kc:var(--grl)">
+      <div class="kl">Google Maps</div>
+      <div class="kv sm">4,5 / 5</div>
+      <div class="kb">3.900+ recensioni</div>
+    </div>
+    <div class="kpi" style="--kc:var(--bl)">
+      <div class="kl">Posizione Roma</div>
+      <div class="kv sm">#775</div>
+      <div class="kb">su 11.725 ristoranti</div>
+    </div>
+    <div class="kpi" style="--kc:var(--warn)">
+      <div class="kl">Criticità principale</div>
+      <div class="kv sm" style="font-size:14px;">Incostanza</div>
+      <div class="kb">temperatura piatti · porzioni vs prezzo</div>
     </div>
   </div>
 
-  <div class="card accent-gold">
-    <div class="card-label">Output Simulazione</div>
-    <div class="sim-kpis" style="margin-top:12px">
-      <div class="sim-kpi">
-        <div class="lbl">Prezzo attuale</div>
-        <div class="val" id="sim-prezzo-attuale">€ 0,00</div>
-      </div>
-      <div class="sim-kpi">
-        <div class="lbl">Prezzo target</div>
-        <div class="val clr-gold" id="sim-prezzo-target">€ 0,00</div>
-      </div>
-      <div class="sim-kpi">
-        <div class="lbl">Nuovo food cost</div>
-        <div class="val" id="sim-fc-target">0,0%</div>
-      </div>
-      <div class="sim-kpi">
-        <div class="lbl">Differenza prezzo</div>
-        <div class="val" id="sim-delta">€ 0,00</div>
+  <!-- Griglia punti di forza / debolezza -->
+  <div class="g2" style="margin-bottom:16px;">
+
+    <div class="card ag">
+      <div class="cl">✦ Punti di forza — food</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+
+        <div style="border-left:3px solid var(--grl);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Lasagna al ragù · Ravioli · Pasta</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Il piatto più citato in assoluto nelle recensioni positive. La lasagna è considerata il benchmark del locale — molti clienti tornano specificamente per questo. I ravioli cacio e pepe raccolgono lodi costanti.</div>
+        </div>
+
+        <div style="border-left:3px solid var(--grl);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Ricotta di bufala con miele al tartufo</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Piatto-simbolo che genera ritorni. Citato da clienti stranieri come "life changing". Ottimo rapporto qualità/prezzo percepito rispetto ad altri antipasti.</div>
+        </div>
+
+        <div style="border-left:3px solid var(--grl);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Salsicce al tartufo · Carpaccio di Angus · Porchetta</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Antipasti proteici con forte personalità. Il carpaccio viene citato come "incredibilmente fresco". La porchetta è tra i piatti più fotografati.</div>
+        </div>
+
+        <div style="border-left:3px solid var(--grl);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Lavagna dei piatti del giorno</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Apprezzatissima dai clienti abituali. Crea aspettativa e motiva il ritorno. I "fuori menu" come ossobuco e varianti stagionali sono ricordati meglio dei piatti fissi.</div>
+        </div>
+
+        <div style="border-left:3px solid var(--grl);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Accoglienza fuori orario e gestione ospiti</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Episodi di ospitalità straordinaria (clienti accolti a chiusura, staff che consiglia i piatti con passione) generano le recensioni a 5 stelle più virali e sentite.</div>
+        </div>
+
       </div>
     </div>
 
-    <table class="sim-table" style="width:100%; margin-top:14px; border-collapse:collapse;">
-      <tr><td>Categoria</td><td id="sim-cat">—</td></tr>
-      <tr><td>Costo netto</td><td id="sim-costo-netto">€ 0,00</td></tr>
-      <tr><td>Costo con scarto</td><td id="sim-costo-scarto">€ 0,00</td></tr>
-      <tr><td>Margine attuale</td><td id="sim-margine-attuale">0,0%</td></tr>
-      <tr><td>Decisione</td><td><span class="decision-pill" id="sim-decision">—</span></td></tr>
+    <div class="card ar">
+      <div class="cl">⚠ Punti di debolezza — food</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+
+        <div style="border-left:3px solid var(--rdl);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Temperatura incostante dei piatti caldi</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Criticità più frequente negli ultimi 6 mesi. Polpette, parmigiana e lasagne arrivano a volte fredde o tiepide in modo non uniforme. La percezione è di riscaldamento al microonde. Correlato con i picchi di flusso (weekend, orari di punta).</div>
+          <div style="margin-top:5px;"><span class="pill p-wn">Piatti a rischio: Polpette · Parmigiana · Lasagna</span></div>
+        </div>
+
+        <div style="border-left:3px solid var(--rdl);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Rapporto quantità/prezzo sui taglieri</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Il Misto x2 Salumi e Formaggi (€20) viene descritto come povero nella presentazione rispetto al prezzo. Crea dissonanza con l'esperienza complessiva positiva.</div>
+          <div style="margin-top:5px;"><span class="pill p-wn">Piatto a rischio: Misto Salumi/Formaggi</span></div>
+        </div>
+
+        <div style="border-left:3px solid var(--warn);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Tiramisù e dolci nella media</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">I dessert vengono citati come "non il migliore" o "nella norma". Non creano l'effetto WOW che invece hanno i piatti principali.</div>
+        </div>
+
+        <div style="border-left:3px solid var(--warn);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Prezzi al peso non comunicati chiaramente</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Clienti internazionali ricevono sorprese in conto sulla carne (€8/etto → €24 per 300g). Assenza di menu in inglese con equivalenze. Rischio di recensioni negative da malinteso, non da qualità.</div>
+        </div>
+
+        <div style="border-left:3px solid var(--warn);padding-left:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">Gestione sotto pressione nei picchi</div>
+          <div style="font-size:11px;color:var(--tx2);line-height:1.55;">Episodi isolati di staff brusco durante le ore di punta. L'afflusso elevato (confermato dai +111% pezzi Q1 2026) amplifica la variabilità nella qualità dell'esperienza.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabella piatti vs recensioni -->
+  <div class="sec"><div class="secl"></div><h2>Piatti del menu — percezione nelle recensioni</h2><div class="secl"></div></div>
+  <div class="surface"><div class="tw" style="max-height:400px;">
+    <table class="tbl">
+      <thead><tr style="background:var(--bg2);">
+        <th class="la">Piatto</th>
+        <th>Cat.</th>
+        <th>Sentiment recensioni</th>
+        <th>Citazioni tipiche</th>
+        <th>Rischio</th>
+      </tr></thead>
+      <tbody id="rev-body"></tbody>
     </table>
-  </div>
+  </div></div>
 
-</div>
-
-<!-- ─────────────── TOP PEZZI VENDUTI ─────────────── -->
-<div class="section-title">Volume Vendite Storiche · Top 10 per Pezzi</div>
-<div class="card">
-  <div class="bar-chart">
-
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank top">1</span>Lasagna al Ragù di Manzo</div>
-      <div class="bar-track"><div class="bar-fill gold" style="width:100%"></div></div>
-      <div class="bar-val"><strong>14.759</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank top">2</span>Polpette di Manzo al Sugo</div>
-      <div class="bar-track"><div class="bar-fill" style="width:54.4%"></div></div>
-      <div class="bar-val"><strong>8.031</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank top">3</span>Ravioli carciofi c.c.p.</div>
-      <div class="bar-track"><div class="bar-fill" style="width:47.9%"></div></div>
-      <div class="bar-val"><strong>7.070</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank">4</span>Parmigiana di Melanzane</div>
-      <div class="bar-track"><div class="bar-fill" style="width:45.1%"></div></div>
-      <div class="bar-val"><strong>6.664</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank">5</span>Pollo con i Peperoni</div>
-      <div class="bar-track"><div class="bar-fill" style="width:36.0%"></div></div>
-      <div class="bar-val"><strong>5.308</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank">6</span>Porchetta di Ariccia</div>
-      <div class="bar-track"><div class="bar-fill" style="width:34.4%"></div></div>
-      <div class="bar-val"><strong>5.073</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank">7</span>Oliva Gaeta DOP</div>
-      <div class="bar-track"><div class="bar-fill green" style="width:28.7%"></div></div>
-      <div class="bar-val"><strong>4.234</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank">8</span>Patate al Forno</div>
-      <div class="bar-track"><div class="bar-fill" style="width:24.0%"></div></div>
-      <div class="bar-val"><strong>3.546</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank">9</span>Croccantelle di Formaggio</div>
-      <div class="bar-track"><div class="bar-fill" style="width:23.6%"></div></div>
-      <div class="bar-val"><strong>3.486</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label" style="width:240px"><span class="rank">10</span>Capresona</div>
-      <div class="bar-track"><div class="bar-fill blue" style="width:22.8%"></div></div>
-      <div class="bar-val"><strong>3.371</strong> <span style="color:var(--muted);font-size:10px">pz</span></div>
-    </div>
-
+  <!-- Note metodologiche -->
+  <div style="background:var(--bg3);border:1px solid var(--bd);padding:11px 16px;margin-top:14px;font-size:10px;color:var(--mu);line-height:1.7;">
+    <strong style="color:var(--tx2);">Fonti:</strong> TripAdvisor (2.429 recensioni), Google Maps (~3.900), Yelp (491), Sluurpy, Restaurant Guru, Foursquare.
+    L'analisi è basata su recensioni in italiano e inglese degli ultimi 6 mesi (nov 2024 – mag 2025) con riferimento ai piatti del food cost model.
+    Le recensioni Google dirette non sono accessibili programmaticamente — il sentiment Google è estratto da aggregatori terzi.
   </div>
 </div>
 
-<!-- ─────────────── SPECCHIETTO PIATTI ─────────────── -->
-<div class="section-title" style="margin-top:6px">Dettaglio Food Cost · Tutti i Piatti</div>
-<div class="card" style="padding:0; overflow:visible;">
-
-  <!-- TOOLBAR -->
-  <div style="display:flex; align-items:center; gap:10px; padding:16px 20px; border-bottom:1px solid var(--border); flex-wrap:wrap;">
-    <span style="font-size:11px; color:var(--muted); font-weight:500; margin-right:4px;">Categoria:</span>
-    <button class="cat-btn active" data-cat="TUTTI" onclick="filterTable('TUTTI', this)">Tutti</button>
-    <button class="cat-btn" data-cat="SFIZI" onclick="filterTable('SFIZI', this)">Sfizi</button>
-    <button class="cat-btn" data-cat="ANTIPASTI" onclick="filterTable('ANTIPASTI', this)">Antipasti</button>
-    <button class="cat-btn" data-cat="I CALDI" onclick="filterTable('I CALDI', this)">I Caldi</button>
-    <button class="cat-btn" data-cat="INSALATE" onclick="filterTable('INSALATE', this)">Insalate</button>
-    <button class="cat-btn" data-cat="CONTORNI" onclick="filterTable('CONTORNI', this)">Contorni</button>
-    <button class="cat-btn" data-cat="DOLCI" onclick="filterTable('DOLCI', this)">Dolci</button>
-    <div style="margin-left:auto; display:flex; align-items:center; gap:8px;">
-      <span style="font-size:11px; color:var(--muted);" id="row-count"></span>
-      <input type="text" id="search-input" placeholder="Cerca piatto…" oninput="applyFilters()"
-        style="border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit; font-size:12px; padding:5px 10px; outline:none; width:160px;">
-    </div>
-  </div>
-
-  <!-- TABLE -->
-  <div style="overflow-x:auto;">
-  <table class="data-table" id="piatti-table" style="width:100%; padding:0;">
-    <thead>
-      <tr style="background:var(--bg);">
-        <th class="sortable" data-col="0" onclick="sortTable(0)" style="padding:12px 20px; cursor:pointer; white-space:nowrap; text-align:left;">
-          Piatto <span class="sort-icon" id="sort-0">↕</span>
-        </th>
-        <th class="sortable" data-col="1" onclick="sortTable(1)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
-          Categoria <span class="sort-icon" id="sort-1">↕</span>
-        </th>
-        <th class="sortable" data-col="2" onclick="sortTable(2)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
-          Costo netto <span class="sort-icon" id="sort-2">↕</span>
-        </th>
-        <th class="sortable" data-col="3" onclick="sortTable(3)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
-          Costo c/scarto <span class="sort-icon" id="sort-3">↕</span>
-        </th>
-        <th class="sortable" data-col="4" onclick="sortTable(4)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
-          Prezzo vendita <span class="sort-icon" id="sort-4">↕</span>
-        </th>
-        <th class="sortable" data-col="5" onclick="sortTable(5)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
-          Food Cost % <span class="sort-icon" id="sort-5">↕</span>
-        </th>
-        <th class="sortable" data-col="6" onclick="sortTable(6)" style="padding:12px 14px; cursor:pointer; white-space:nowrap;">
-          Margine % <span class="sort-icon" id="sort-6">↕</span>
-        </th>
-        <th style="padding:12px 14px; white-space:nowrap;">Indicatore</th>
-      </tr>
-    </thead>
-    <tbody id="piatti-tbody">
-    </tbody>
-  </table>
-  </div>
+<div class="footer">
+  <span>Food Cost Dashboard · Ai Tre Scalini · Q1 2025/2026 · Apr 2026</span>
+  <span>Margini Q1 calcolati su prezzo reale cassa · non su prezzo di listino</span>
 </div>
-
-<style>
-  .cat-btn {
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--muted);
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 500;
-    padding: 5px 12px;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.03em;
-  }
-  .cat-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(176,125,58,0.05); }
-  .cat-btn.active { border-color: var(--accent); background: var(--accent); color: #fff; }
-  .sortable:hover { color: var(--text) !important; background: rgba(0,0,0,0.02); }
-  .sort-icon { font-size: 10px; color: var(--muted); margin-left: 3px; }
-  .sort-icon.asc::after { content: '↑'; }
-  .sort-icon.desc::after { content: '↓'; }
-  .fc-bar-wrap { display:flex; align-items:center; gap:8px; justify-content:flex-end; }
-  .fc-bar-mini { width:60px; height:4px; background:var(--surface2); position:relative; flex-shrink:0; }
-  .fc-bar-mini-fill { position:absolute; top:0; left:0; bottom:0; }
-  #piatti-table thead th { position: sticky; top: 0; background: var(--bg); z-index: 1; }
-  #piatti-table tbody tr:hover td { background: rgba(176,125,58,0.03); }
-  #piatti-table tbody tr td { padding: 9px 14px; font-size: 12px; }
-  #piatti-table tbody tr td:first-child { padding-left: 20px; font-weight: 500; }
-  #search-input:focus { border-color: var(--accent); }
-</style>
+</main>
+</div>
 
 <script>
-const piatti = [
-  // [nome, categoria, costo_netto, costo_scarto, prezzo, food_cost, margine]
-  ["Oliva Gaeta DOP","SFIZI",0.426,0.5112,3.5,0.1607,0.8393],
-  ["Croccantelle di Formaggio","SFIZI",0.4312,0.51744,3.5,0.1626,0.8374],
-  ["Mandorle salate tostate","SFIZI",1.4,1.68,4.0,0.462,0.538],
-  ["Salsiccette al Tartufo","SFIZI",1.0545,1.2654,4.5,0.3093,0.6907],
-  ["Salsiccette Rustiche","SFIZI",0.708,0.8496,3.5,0.267,0.733],
-  ["Coppiette di Maiale piccanti","SFIZI",1.4442,1.73304,5.0,0.3813,0.6187],
-  ["Peperone Crusco","SFIZI",1.65,1.98,4.0,0.5445,0.4555],
-  ["Hummus di ceci","SFIZI",2.2405,2.6886,7.0,0.4225,0.5775],
-  ["Sfizio Gorgonzola miele e noci","SFIZI",1.4455,1.7346,6.5,0.2935,0.7065],
-  ["Pane e Olio","SFIZI",1.715,2.058,5.0,0.4528,0.5472],
-  ["Crackers senza glutine","SFIZI",1.06,1.272,2.5,0.5597,0.4403],
-  ["Piatto Pane","SFIZI",0.455,0.546,2.0,0.3003,0.6997],
-  ["Chips di verdure","SFIZI",0.996,1.1952,4.0,0.3287,0.6713],
-  ["Pane al Sughetto di pomodoro","SFIZI",2.1255,2.5506,6.0,0.4676,0.5324],
-  ["Culatta di Parma","ANTIPASTI",2.2015,2.6418,9.5,0.3059,0.6941],
-  ["Culatta di Parma con Bufala","ANTIPASTI",3.461,4.1532,11.5,0.3973,0.6027],
-  ["Ricotta di Bufala con miele al tartufo","ANTIPASTI",1.1069,1.32828,9.0,0.1623,0.8377],
-  ["Carpaccio di Angus marinato","ANTIPASTI",3.7724,4.52688,12.5,0.3984,0.6016],
-  ["Misto x 2 Salumi e Formaggi","ANTIPASTI",4.84125,5.8095,20.0,0.3195,0.6805],
-  ["Selezione Salumi x 1","ANTIPASTI",2.6228,3.14736,11.0,0.3147,0.6853],
-  ["Selezione Formaggi x1","ANTIPASTI",3.65895,4.39074,12.0,0.4025,0.5975],
-  ["Lasagna al Ragù di Manzo","I CALDI",4.088,4.9056,13.0,0.4151,0.5849],
-  ["Parmigiana di Melanzane","I CALDI",3.85925,4.6311,12.0,0.4245,0.5755],
-  ["Porchetta di Ariccia","I CALDI",2.9775,3.573,11.0,0.3573,0.6427],
-  ["Polpette di Manzo al sugo","I CALDI",3.70315,4.44378,12.0,0.4073,0.5927],
-  ["Pollo con i Peperoni","I CALDI",5.2605,6.3126,13.5,0.5144,0.4856],
-  ["Ravioli carciofi cacio e pepe","I CALDI",6.0465,7.2558,15.0,0.5321,0.4679],
-  ["Lasagna funghi e taleggio","I CALDI",8.1558,8.1558,15.5,0.5788,0.4212],
-  ["polpettine di verdure e legumi in salsa","I CALDI",4.764,4.764,13.0,0.4031,0.5969],
-  ["Tresca primavera","INSALATE",5.502,5.502,13.5,0.4483,0.5517],
-  ["Capresona","INSALATE",4.58523,4.58523,12.0,0.4203,0.5797],
-  ["Mediterranea","INSALATE",2.106,2.106,8.0,0.2896,0.7104],
-  ["Greca","INSALATE",2.49756,2.49756,10.5,0.2616,0.7384],
-  ["BONACCIA","INSALATE",8.1792,8.1792,15.0,0.5998,0.4002],
-  ["Cicoria Ripassata","CONTORNI",2.52,2.52,7.0,0.396,0.604],
-  ["Patate al Forno","CONTORNI",2.7846,2.7846,6.0,0.5105,0.4895],
-  ["Caponata di Melanzane","CONTORNI",3.6126,3.6126,7.0,0.5677,0.4323],
-  ["Tiramisù","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
-  ["Panna Cotta","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
-  ["Ciambelline al Vino","DOLCI",0.972,0.972,3.0,0.3564,0.6436],
-  ["Tozzetti al cioccolato","DOLCI",1.62,1.62,4.0,0.4455,0.5545],
-  ["Crostatina Ricotta e Visciole","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
-  ["Crostatina Ricotta e cioccolato","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
-  ["Meringato al limone","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
-  ["Gelato zabaione al marsala","DOLCI",3.12,3.12,6.0,0.572,0.428],
-  ["Gelato Yogurt e visciole","DOLCI",3.12,3.12,6.0,0.572,0.428],
-  ["mousse alla nocciola","DOLCI",3.6,3.6,7.0,0.5657,0.4343],
-  ["bignè di san giuseppe","DOLCI",2.4,2.4,7.0,0.3771,0.6229],
-  ["Cesarina","INSALATE",null,null,11.5,null,null],
+const KPI={pz25:14168,t25:118538.85,pz26:35197,t26:313739.24};
+const Q1={ricavi:313739.24,marg:158502.23,pz:35197};
+const conf=[
+{r:"Pane al Sughetto di pomodoro",cat:"SFIZI",q25:1722,q26:4369,t25:4401.56,t26:11600.48,dp:153.7,alias:["Pane", "Pane al sughetto"]},
+{r:"Lasagna al Ragù di Manzo",cat:"I CALDI",q25:1475,q26:3502,t25:17986.02,t26:43681.2,dp:137.4,alias:["Lasagna ragu", "Lasagna zucca e salsiccia"]},
+{r:"Ravioli carciofi cacio e pepe",cat:"I CALDI",q25:808,q26:2603,t25:10861.6,t26:36054.17,dp:222.2,alias:["RAVIOLO", "Ravioli", "Ravioli ai Carciofi", "Ravioli cacio pepe", "Ravioli carciofi"]},
+{r:"Polpette di Manzo al sugo",cat:"I CALDI",q25:850,q26:2105,t25:9177.21,t26:23391.67,dp:147.6,alias:["Polpette sugo"]},
+{r:"Tiramisù",cat:"DOLCI",q25:764,q26:1733,t25:4547.81,t26:10751.08,dp:126.8,alias:[]},
+{r:"Parmigiana di Melanzane",cat:"I CALDI",q25:858,q26:1630,t25:9187.94,t26:18719.98,dp:90.0,alias:["Parmigiana"]},
+{r:"Porchetta di Ariccia",cat:"I CALDI",q25:553,q26:1282,t25:6023.91,t26:13975.46,dp:131.8,alias:["Porchetta"]},
+{r:"Oliva Gaeta DOP",cat:"SFIZI",q25:453,q26:1242,t25:1572.26,t26:4313.41,dp:174.2,alias:["Olive Gaeta"]},
+{r:"Pollo con i Peperoni",cat:"I CALDI",q25:555,q26:1103,t25:6866.18,t26:13916.27,dp:98.7,alias:["POLLO E PEPERONI", "Pollo ai peperoni"]},
+{r:"Patate al Forno",cat:"CONTORNI",q25:406,q26:1081,t25:2405.42,t26:6402.15,dp:166.3,alias:["Patate al forno"]},
+{r:"Hummus di ceci",cat:"SFIZI",q25:585,q26:855,t25:3462.67,t26:5597.44,dp:46.2,alias:["HUMMUS CECI", "Hummus di Ceci"]},
+{r:"Misto x 2 Salumi e Formaggi",cat:"ANTIPASTI",q25:379,q26:843,t25:7659.58,t26:17094.67,dp:122.4,alias:["MISTO FORMAGGI X2", "Misto SalumForm x2", "Misto SalumForm x3", "Misto x 2 salumi"]},
+{r:"Carpaccio di Angus marinato",cat:"ANTIPASTI",q25:410,q26:717,t25:4832.27,t26:8492.17,dp:74.9,alias:["ANGUS", "Carpaccio di ANGUS", "Carpaccio di Angus"]},
+{r:"Salsiccette Rustiche",cat:"SFIZI",q25:311,q26:774,t25:1068.26,t26:2667.28,dp:148.9,alias:["Sals  Rustiche", "Sals  rustiche"]},
+{r:"Salsiccette al Tartufo",cat:"SFIZI",q25:263,q26:743,t25:1161.84,t26:3312.43,dp:182.5,alias:["Sals Tartufo"]},
+{r:"Cicoria Ripassata",cat:"CONTORNI",q25:330,q26:665,t25:2110.69,t26:4287.97,dp:101.5,alias:["Cicoria ripassata"]},
+{r:"Croccantelle di Formaggio",cat:"SFIZI",q25:427,q26:553,t25:1482.29,t26:1924.13,dp:29.5,alias:["Croccantelle", "Croccantelle di formaggio"]},
+{r:"Ricotta di Bufala",cat:"ANTIPASTI",q25:298,q26:627,t25:2659.54,t26:5622.66,dp:110.4,alias:["Ricotta miele"]},
+{r:"Capresona",cat:"ANTIPASTI",q25:312,q26:605,t25:3169.33,t26:6831.31,dp:93.9,alias:["CapresONA"]},
+{r:"Lasagna funghi e taleggio",cat:"I CALDI",q25:0,q26:829,t25:0.0,t26:12221.05,dp:null,alias:["Lasagna Funghi e Taleggio", "Lasagna G.F."]},
+{r:"Selezione Formaggi x1",cat:"ANTIPASTI",q25:313,q26:497,t25:1958.91,t26:3278.48,dp:58.8,alias:["SELEZIONE di formaggi x1", "Sfizio Gorgo"]},
+{r:"Coppiette",cat:"SFIZI",q25:241,q26:530,t25:1057.52,t26:2390.6,dp:119.9,alias:[]},
+{r:"Caponata di Melanzane",cat:"CONTORNI",q25:269,q26:484,t25:1583.9,t26:2935.79,dp:79.9,alias:["Caponata agrodolce"]},
+{r:"Culatta di Parma con Bufala",cat:"ANTIPASTI",q25:97,q26:609,t25:1053.1,t26:6903.42,dp:527.8,alias:["Culatta di Parma con bufala"]},
+{r:"Mandorle salate tostate",cat:"SFIZI",q25:157,q26:539,t25:535.28,t26:1906.61,dp:243.3,alias:["Mandorle salate"]},
+{r:"Panna Cotta",cat:"DOLCI",q25:259,q26:408,t25:1542.44,t26:2536.5,dp:57.5,alias:["Cheesecake", "PANNACOTTA", "Panna cotta"]},
+{r:"Zuppa Lenticchie",cat:"I CALDI",q25:167,q26:475,t25:2127.99,t26:5131.64,dp:184.4,alias:["ZUPPA del Giorno"]},
+{r:"Tresca primavera",cat:"INSALATE",q25:227,q26:241,t25:1873.01,t26:3026.46,dp:6.2,alias:["Mista", "Ortolana", "TRESCA", "Tresca"]},
+{r:"Polpettine Emporio Vegetale",cat:"I CALDI",q25:40,q26:427,t25:563.17,t26:5478.46,dp:967.5,alias:["POLPETTINE VEGETALI", "POLPETTINE di Legumi", "Polpettine  di Verdure"]},
+{r:"Greca",cat:"INSALATE",q25:122,q26:331,t25:1271.54,t26:3447.32,dp:171.3,alias:[]},
+{r:"Mediterranea",cat:"INSALATE",q25:0,q26:399,t25:0.0,t26:3042.62,dp:null,alias:[]},
+{r:"Scarola alla Partenopea",cat:"CONTORNI",q25:64,q26:296,t25:433.72,t26:2021.07,dp:362.5,alias:["Broccoletti ripassati", "Broccoli ripassati", "SCAROLA"]},
+{r:"Ciambelline al Vino",cat:"SFIZI",q25:131,q26:195,t25:272.91,t26:501.51,dp:48.9,alias:["Ciambelline al vino"]},
+{r:"BONACCIA",cat:"INSALATE",q25:0,q26:288,t25:0.0,t26:3950.32,dp:null,alias:["Bonaccia"]},
+{r:"Peperone Crusco",cat:"SFIZI",q25:0,q26:273,t25:0.0,t26:1080.04,dp:null,alias:["Peperone crusco"]},
+{r:"Spezzatino di Maiale con Prugne",cat:"I CALDI",q25:44,q26:205,t25:643.59,t26:3015.77,dp:365.9,alias:["S Spezzatino", "SPEZZATINO MAIALE PRUGNE", "Spezzatino Zucca e Castagne"]},
+{r:"Zucca Grigliata",cat:"CONTORNI",q25:18,q26:228,t25:121.62,t26:3084.43,dp:1166.7,alias:["Broccolo romano", "VERDURE X 2", "Zucca infornata"]},
+{r:"Culatta di Parma",cat:"ANTIPASTI",q25:25,q26:175,t25:221.64,t26:1648.13,dp:600.0,alias:[]},
+{r:"Involtino di carne al sugo",cat:"I CALDI",q25:34,q26:157,t25:484.15,t26:2100.04,dp:361.8,alias:["INVOLTINO MANZO", "Involtini di radicchio", "Involtini di verza"]},
+{r:"Polpettine Manzo/Salsiccia vino bianco",cat:"I CALDI",q25:39,q26:140,t25:515.36,t26:1861.23,dp:259.0,alias:["Polpettine al vino", "Polpettone di Vitella"]},
+{r:"Chips di verdure essiccate",cat:"SFIZI",q25:0,q26:177,t25:0.0,t26:700.53,dp:null,alias:["Chips di verdure"]},
+{r:"Friarielli",cat:"CONTORNI",q25:87,q26:0,t25:579.55,t26:0.0,dp:-100.0,alias:[]},
+{r:"Salsiccia e Friarielli",cat:"I CALDI",q25:39,q26:43,t25:542.1,t26:587.69,dp:10.3,alias:["SALSICCIA E FRIARELLI"]},
+{r:"Trippa alla Romana",cat:"I CALDI",q25:0,q26:61,t25:0.0,t26:893.98,dp:null,alias:["SORPRESINA DI POLLO", "Sorpresina di pollo Radicchio e Speck"]},
+{r:"Baccalà Mantecato",cat:"I CALDI",q25:34,q26:25,t25:500.97,t26:416.89,dp:-26.5,alias:["Baccalà", "Baccalà coi ceci"]},
+{r:"Carciofo alla Romana",cat:"I CALDI",q25:0,q26:43,t25:0.0,t26:337.0,dp:null,alias:["CARCIOFO ALLA ROMANA"]},
+{r:"Crostatina Ricotta e cioccolato",cat:"DOLCI",q25:0,q26:26,t25:0.0,t26:177.36,dp:null,alias:["Crostatina Ricotta Cioccolato"]},
+{r:"Crostatina Ricotta e Visciole",cat:"DOLCI",q25:0,q26:21,t25:0.0,t26:147.0,dp:null,alias:["Crostatina ric/visciole"]},
+{r:"Meringato al limone",cat:"DOLCI",q25:0,q26:21,t25:0.0,t26:146.4,dp:null,alias:["Meringato limone"]},
+{r:"Gelato zabaione al marsala",cat:"DOLCI",q25:0,q26:11,t25:0.0,t26:65.78,dp:null,alias:["Gelato Zabaione"]},
+{r:"Gelato Yogurt e visciole",cat:"DOLCI",q25:0,q26:10,t25:0.0,t26:59.83,dp:null,alias:["Gelato Yogurt Visciole"]},
+{r:"Selezione Salumi x 1",cat:"ANTIPASTI",q25:2,q26:1,t25:20.0,t26:9.36,dp:-50.0,alias:["SELEZIONE di salumi x1"]}
 ];
+const q1d=[
+{nm:"Pane al Sughetto di pomodoro",cat:"SFIZI",q26:4369,t26:11600.48,prz:2.6552,pn:2.4138,cs:2.1055,fc:0.8723,mp:0.3083,mt:1346.96},
+{nm:"Lasagna al Ragù di Manzo",cat:"I CALDI",q26:3502,t26:43681.2,prz:12.4732,pn:11.3393,cs:4.9056,fc:0.4326,mp:6.4337,mt:22530.82},
+{nm:"Ravioli carciofi cacio e pepe",cat:"I CALDI",q26:2603,t26:36054.17,prz:13.851,pn:12.5918,cs:7.2558,fc:0.5762,mp:5.336,mt:13889.61},
+{nm:"Polpette di Manzo al sugo",cat:"I CALDI",q26:2105,t26:23391.67,prz:11.1124,pn:10.1022,cs:4.4438,fc:0.4399,mp:5.6584,mt:11910.93},
+{nm:"Tiramisù",cat:"DOLCI",q26:1733,t26:10751.08,prz:6.2037,pn:5.6397,cs:3.6,fc:0.6383,mp:2.0397,mt:3534.8},
+{nm:"Parmigiana di Melanzane",cat:"I CALDI",q26:1630,t26:18719.98,prz:11.4847,pn:10.4406,cs:4.6311,fc:0.4436,mp:5.8095,mt:9469.49},
+{nm:"Porchetta di Ariccia",cat:"I CALDI",q26:1282,t26:13975.46,prz:10.9013,pn:9.9103,cs:3.573,fc:0.3605,mp:6.3373,mt:8124.42},
+{nm:"Oliva Gaeta DOP",cat:"SFIZI",q26:1242,t26:4313.41,prz:3.473,pn:3.1573,cs:0.5112,fc:0.1619,mp:2.6461,mt:3286.46},
+{nm:"Pollo con i Peperoni",cat:"I CALDI",q26:1103,t26:13916.27,prz:12.6167,pn:11.4697,cs:6.3126,fc:0.5504,mp:5.1571,mt:5688.28},
+{nm:"Patate al Forno",cat:"CONTORNI",q26:1081,t26:6402.15,prz:5.9224,pn:5.384,cs:2.7846,fc:0.5172,mp:2.5994,mt:2809.95},
+{nm:"Hummus di ceci",cat:"SFIZI",q26:855,t26:5597.44,prz:6.5467,pn:5.9515,cs:1.95,fc:0.3276,mp:4.0015,mt:3421.28},
+{nm:"Misto x 2 Salumi e Formaggi",cat:"ANTIPASTI",q26:843,t26:17094.67,prz:20.2784,pn:18.4349,cs:5.8095,fc:0.3151,mp:12.6254,mt:10643.21},
+{nm:"Carpaccio di Angus marinato",cat:"ANTIPASTI",q26:717,t26:8492.17,prz:11.844,pn:10.7673,cs:4.5269,fc:0.4204,mp:6.2404,mt:4474.37},
+{nm:"Salsiccette Rustiche",cat:"SFIZI",q26:774,t26:2667.28,prz:3.4461,pn:3.1328,cs:0.8496,fc:0.2712,mp:2.2832,mt:1767.2},
+{nm:"Salsiccette al Tartufo",cat:"SFIZI",q26:743,t26:3312.43,prz:4.4582,pn:4.0529,cs:1.2654,fc:0.3122,mp:2.7875,mt:2071.11},
+{nm:"Cicoria Ripassata",cat:"CONTORNI",q26:665,t26:4287.97,prz:6.4481,pn:5.8619,cs:2.52,fc:0.4299,mp:3.3419,mt:2222.36},
+{nm:"Croccantelle di Formaggio",cat:"SFIZI",q26:553,t26:1924.13,prz:3.4794,pn:3.1631,cs:0.5174,fc:0.1636,mp:2.6457,mt:1463.07},
+{nm:"Ricotta di Bufala",cat:"ANTIPASTI",q26:627,t26:5622.66,prz:8.9676,pn:8.1524,cs:1.1069,fc:0.1358,mp:7.0455,mt:4417.53},
+{nm:"Capresona",cat:"ANTIPASTI",q26:605,t26:6831.31,prz:11.2914,pn:10.2649,cs:4.1684,fc:0.4061,mp:6.0965,mt:3688.38},
+{nm:"Lasagna funghi e taleggio",cat:"I CALDI",q26:829,t26:12221.05,prz:14.7419,pn:13.4017,cs:8.1,fc:0.6044,mp:5.3017,mt:4395.11},
+{nm:"Selezione Formaggi x1",cat:"ANTIPASTI",q26:497,t26:3278.48,prz:6.5965,pn:5.9968,cs:4.3907,fc:0.7322,mp:1.6061,mt:798.23},
+{nm:"Coppiette",cat:"SFIZI",q26:530,t26:2390.6,prz:4.5106,pn:4.1005,cs:1.733,fc:0.4226,mp:2.3675,mt:1254.78},
+{nm:"Caponata di Melanzane",cat:"CONTORNI",q26:484,t26:2935.79,prz:6.0657,pn:5.5143,cs:3.6126,fc:0.6551,mp:1.9017,mt:920.42},
+{nm:"Culatta di Parma con Bufala",cat:"ANTIPASTI",q26:609,t26:6903.42,prz:11.3357,pn:10.3052,cs:4.1532,fc:0.403,mp:6.152,mt:3746.57},
+{nm:"Mandorle salate tostate",cat:"SFIZI",q26:539,t26:1906.61,prz:3.5373,pn:3.2157,cs:1.68,fc:0.5224,mp:1.5357,mt:827.74},
+{nm:"Panna Cotta",cat:"DOLCI",q26:408,t26:2536.5,prz:6.2169,pn:5.6517,cs:3.6,fc:0.637,mp:2.0517,mt:837.09},
+{nm:"Zuppa Lenticchie",cat:"I CALDI",q26:475,t26:5131.64,prz:10.8035,pn:9.8214,cs:3.1,fc:0.3156,mp:6.7214,mt:3192.66},
+{nm:"Tresca primavera",cat:"INSALATE",q26:241,t26:3026.46,prz:12.5579,pn:11.4163,cs:4.5955,fc:0.4025,mp:6.8208,mt:1643.81},
+{nm:"Polpettine Emporio Vegetale",cat:"I CALDI",q26:427,t26:5478.46,prz:12.8301,pn:11.6637,cs:null,fc:null,mp:null,mt:null},
+{nm:"Greca",cat:"INSALATE",q26:331,t26:3447.32,prz:10.4149,pn:9.4681,cs:2.4976,fc:0.2638,mp:6.9705,mt:2307.24},
+{nm:"Mediterranea",cat:"INSALATE",q26:399,t26:3042.62,prz:7.6256,pn:6.9324,cs:2.106,fc:0.3038,mp:4.8264,mt:1925.73},
+{nm:"Scarola alla Partenopea",cat:"CONTORNI",q26:296,t26:2021.07,prz:6.8279,pn:6.2072,cs:null,fc:null,mp:null,mt:null},
+{nm:"Ciambelline al Vino",cat:"SFIZI",q26:195,t26:501.51,prz:2.5718,pn:2.338,cs:0.972,fc:0.4157,mp:1.366,mt:266.37},
+{nm:"BONACCIA",cat:"INSALATE",q26:288,t26:3950.32,prz:13.7164,pn:12.4695,cs:8.1792,fc:0.6559,mp:4.2903,mt:1235.61},
+{nm:"Peperone Crusco",cat:"SFIZI",q26:273,t26:1080.04,prz:3.9562,pn:3.5965,cs:1.98,fc:0.5505,mp:1.6165,mt:441.3},
+{nm:"Spezzatino di Maiale con Prugne",cat:"I CALDI",q26:205,t26:3015.77,prz:14.7111,pn:13.3737,cs:6.2,fc:0.4636,mp:7.1737,mt:1470.61},
+{nm:"Zucca Grigliata",cat:"CONTORNI",q26:228,t26:3084.43,prz:13.5282,pn:12.2984,cs:null,fc:null,mp:null,mt:null},
+{nm:"Culatta di Parma",cat:"ANTIPASTI",q26:175,t26:1648.13,prz:9.4179,pn:8.5617,cs:2.6418,fc:0.3086,mp:5.9199,mt:1035.98},
+{nm:"Involtino di carne al sugo",cat:"I CALDI",q26:157,t26:2100.04,prz:13.3761,pn:12.1601,cs:null,fc:null,mp:null,mt:null},
+{nm:"Polpettine Manzo/Salsiccia vino bianco",cat:"I CALDI",q26:140,t26:1861.23,prz:13.2945,pn:12.0859,cs:null,fc:null,mp:null,mt:null},
+{nm:"Chips di verdure essiccate",cat:"SFIZI",q26:177,t26:700.53,prz:3.9578,pn:3.598,cs:1.1952,fc:0.3322,mp:2.4028,mt:425.3},
+{nm:"Salsiccia e Friarielli",cat:"I CALDI",q26:43,t26:587.69,prz:13.6672,pn:12.4247,cs:4.95,fc:0.3984,mp:7.4747,mt:321.41},
+{nm:"Trippa alla Romana",cat:"I CALDI",q26:61,t26:893.98,prz:14.6554,pn:13.3231,cs:4.3,fc:0.3227,mp:9.0231,mt:550.41},
+{nm:"Baccalà Mantecato",cat:"I CALDI",q26:25,t26:416.89,prz:16.6756,pn:15.1596,cs:null,fc:null,mp:null,mt:null},
+{nm:"Carciofo alla Romana",cat:"I CALDI",q26:43,t26:337.0,prz:7.8372,pn:7.1247,cs:null,fc:null,mp:null,mt:null},
+{nm:"Crostatina Ricotta e cioccolato",cat:"DOLCI",q26:26,t26:177.36,prz:6.8215,pn:6.2014,cs:3.6,fc:0.5805,mp:2.6014,mt:67.64},
+{nm:"Crostatina Ricotta e Visciole",cat:"DOLCI",q26:21,t26:147.0,prz:7.0,pn:6.3636,cs:3.6,fc:0.5657,mp:2.7636,mt:58.04},
+{nm:"Meringato al limone",cat:"DOLCI",q26:21,t26:146.4,prz:6.9714,pn:6.3376,cs:3.6,fc:0.568,mp:2.7376,mt:57.49},
+{nm:"Gelato zabaione al marsala",cat:"DOLCI",q26:11,t26:65.78,prz:5.98,pn:5.4364,cs:3.12,fc:0.5739,mp:2.3164,mt:25.48},
+{nm:"Gelato Yogurt e visciole",cat:"DOLCI",q26:10,t26:59.83,prz:5.983,pn:5.4391,cs:3.12,fc:0.5736,mp:2.3191,mt:23.19},
+{nm:"Selezione Salumi x 1",cat:"ANTIPASTI",q26:1,t26:9.36,prz:9.36,pn:8.5091,cs:3.1474,fc:0.3699,mp:5.3617,mt:5.36}
+];
+const piatti=[
+["Oliva Gaeta DOP", "SFIZI", 0.426, 0.5112, 3.5, 3.1818, 0.1607, 0.8393, 2.6706],
+["Croccantelle di Formaggio", "SFIZI", 0.4312, 0.5174, 3.5, 3.1818, 0.1626, 0.8374, 2.6644],
+["Salsiccette Rustiche", "SFIZI", 0.708, 0.8496, 3.5, 3.1818, 0.267, 0.733, 2.3322],
+["Salsiccette al Tartufo", "SFIZI", 1.0545, 1.2654, 4.5, 4.0909, 0.3093, 0.6907, 2.8255],
+["Coppiette", "SFIZI", 1.4442, 1.733, 5.0, 4.5455, 0.3813, 0.6187, 2.8125],
+["Mandorle salate tostate", "SFIZI", 1.4, 1.68, 4.0, 3.6364, 0.462, 0.538, 1.9564],
+["Hummus di ceci", "SFIZI", 1.625, 1.95, 7.0, 6.3636, 0.3065, 0.6935, 4.4136],
+["Peperone Crusco", "SFIZI", 1.65, 1.98, 4.0, 3.6364, 0.5445, 0.4555, 1.6564],
+["Chips di verdure essiccate", "SFIZI", 0.996, 1.1952, 4.0, 3.6364, 0.3287, 0.6713, 2.4412],
+["Pane al Sughetto di pomodoro", "SFIZI", 1.7546, 2.1055, 6.0, 5.4545, 0.386, 0.614, 3.349],
+["Ciambelline al Vino", "SFIZI", 0.972, 0.972, 3.0, 2.7273, 0.3564, 0.6436, 1.7553],
+["bignè di san giuseppe", "SFIZI", 2.0, 2.4, 7.0, 6.3636, 0.3771, 0.6229, 3.9636],
+["Culatta di Parma", "ANTIPASTI", 2.2015, 2.6418, 9.5, 8.6364, 0.3059, 0.6941, 5.9946],
+["Culatta di Parma con Bufala", "ANTIPASTI", 3.461, 4.1532, 11.5, 10.4545, 0.3971, 0.6029, 6.3013],
+["Ricotta di Bufala", "ANTIPASTI", 1.1069, 1.1069, 9.0, 8.1818, 0.1352, 0.8648, 7.0749],
+["Carpaccio di Angus marinato", "ANTIPASTI", 3.7724, 4.5269, 12.5, 11.3636, 0.3985, 0.6015, 6.8367],
+["Misto x 2 Salumi e Formaggi", "ANTIPASTI", 4.8413, 5.8095, 20.0, 18.1818, 0.3195, 0.6805, 12.3723],
+["Selezione Salumi x 1", "ANTIPASTI", 2.6228, 3.1474, 11.0, 10.0, 0.3147, 0.6853, 6.8526],
+["Selezione Formaggi x1", "ANTIPASTI", 3.6591, 4.3907, 12.0, 10.9091, 0.4025, 0.5975, 6.5184],
+["Capresona", "ANTIPASTI", 4.1684, 4.1684, 12.0, 10.9091, 0.4203, 0.5797, 6.7407],
+["Lasagna al Ragù di Manzo", "I CALDI", 4.088, 4.9056, 13.0, 11.8182, 0.415, 0.585, 6.9126],
+["Polpette di Manzo al sugo", "I CALDI", 3.7032, 4.4438, 12.0, 10.9091, 0.4073, 0.5927, 6.4653],
+["Parmigiana di Melanzane", "I CALDI", 3.8593, 4.6311, 12.0, 10.9091, 0.4245, 0.5755, 6.278],
+["Porchetta di Ariccia", "I CALDI", 2.9775, 3.573, 11.0, 10.0, 0.3573, 0.6427, 6.427],
+["Pollo con i Peperoni", "I CALDI", 5.2605, 6.3126, 13.5, 12.2727, 0.5144, 0.4856, 5.9601],
+["Ravioli carciofi cacio e pepe", "I CALDI", 6.0465, 7.2558, 15.0, 13.6364, 0.5321, 0.4679, 6.3806],
+["Lasagna funghi e taleggio", "I CALDI", 6.75, 8.1, 15.5, 14.0909, 0.575, 0.425, 5.9909],
+["Spezzatino di Maiale con Prugne", "I CALDI", 5.5, 6.2, 14.0, 12.7273, 0.487, 0.513, 6.5273],
+["Trippa alla Romana", "I CALDI", 4.3, 4.3, 14.0, 12.7273, 0.3378, 0.6622, 8.4273],
+["Salsiccia e Friarielli", "I CALDI", 4.95, 4.95, 12.0, 10.9091, 0.4537, 0.5463, 5.9591],
+["Polpettine Emporio Vegetale", "I CALDI", 0, 0, 13.0, 11.8182, null, null, null],
+["Involtino di carne al sugo", "I CALDI", 3.8, 3.8, 0, 0, null, null, null],
+["Zuppa Lenticchie", "I CALDI", 3.1, 3.1, 0, 0, null, null, null],
+["Tresca primavera", "INSALATE", 4.5955, 4.5955, 13.5, 12.2727, 0.3744, 0.6256, 7.6772],
+["Mediterranea", "INSALATE", 1.755, 2.106, 8.0, 7.2727, 0.2896, 0.7104, 5.1667],
+["Greca", "INSALATE", 2.0813, 2.4976, 10.5, 9.5455, 0.2617, 0.7383, 6.9479],
+["BONACCIA", "INSALATE", 8.1792, 8.1792, 15.0, 13.6364, 0.5998, 0.4002, 5.4572],
+["Cicoria Ripassata", "CONTORNI", 2.52, 2.52, 7.0, 6.3636, 0.396, 0.604, 3.8436],
+["Patate al Forno", "CONTORNI", 2.7846, 2.7846, 6.0, 5.4545, 0.5105, 0.4895, 2.6699],
+["Caponata di Melanzane", "CONTORNI", 3.0105, 3.6126, 7.0, 6.3636, 0.5677, 0.4323, 2.751],
+["Zucca Grigliata", "CONTORNI", 2.5205, 3.0246, 0, 0, null, null, null],
+["Scarola alla Partenopea", "CONTORNI", 2.5, 3.0, 0, 0, null, null, null],
+["Tiramisù", "DOLCI", 3.0, 3.6, 7.0, 6.3636, 0.5657, 0.4343, 2.7636],
+["Panna Cotta", "DOLCI", 3.0, 3.6, 7.0, 6.3636, 0.5657, 0.4343, 2.7636],
+["Meringato al limone", "DOLCI", 3.0, 3.6, 7.0, 6.3636, 0.5657, 0.4343, 2.7636],
+["Gelato zabaione al marsala", "DOLCI", 2.6, 3.12, 6.0, 5.4545, 0.572, 0.428, 2.3345],
+["Gelato Yogurt e visciole", "DOLCI", 2.6, 3.12, 6.0, 5.4545, 0.572, 0.428, 2.3345],
+["Crostatina Ricotta e Visciole", "DOLCI", 3.0, 3.6, 7.0, 6.3636, 0.5657, 0.4343, 2.7636],
+["Crostatina Ricotta e cioccolato", "DOLCI", 3.0, 3.6, 7.0, 6.3636, 0.5657, 0.4343, 2.7636]
+];
+const ingr=[
+{nm:"Baccalà Mantecato",forn:"Food B2B",um:"pz",costo:null,umU:"pz",costoU:0,prL:4.68,incon:false,nota:""},
+{nm:"Hummus di ceci",forn:"Food B2B",um:"pz",costo:1.95,umU:"pz",costoU:1.95,prL:2.5,incon:true,nota:""},
+{nm:"Lasagna Vegetariana mista",forn:"Food B2B",um:"pz",costo:4.75,umU:"pz",costoU:4.75,prL:null,incon:false,nota:""},
+{nm:"Parmigiana di Melanzane",forn:"Food B2B",um:"pz",costo:3.8,umU:"pz",costoU:3.8,prL:null,incon:false,nota:""},
+{nm:"Patate al Forno",forn:"Food B2B",um:"pz",costo:2.31,umU:"pz",costoU:2.31,prL:null,incon:false,nota:""},
+{nm:"Polpo e Patate",forn:"Food B2B",um:"pz",costo:5,umU:"pz",costoU:5,prL:null,incon:false,nota:""},
+{nm:"Ravioli carciofi cacio e pepe",forn:"Food B2B",um:"pz",costo:6,umU:"pz",costoU:6,prL:null,incon:false,nota:""},
+{nm:"Raviolo Cacio e Pepe",forn:"Food B2B",um:"pz",costo:null,umU:"pz",costoU:0,prL:null,incon:false,nota:""},
+{nm:"Scarola alla Partenopea",forn:"Food B2B",um:"pz",costo:2.5,umU:"pz",costoU:2.5,prL:null,incon:false,nota:""},
+{nm:"Spezzatino di Maiale con Prugne",forn:"Food B2B",um:"pz",costo:6.2,umU:"pz",costoU:6.2,prL:null,incon:false,nota:""},
+{nm:"Zucca Grigliata",forn:"Food B2B",um:"pz",costo:2.51,umU:"pz",costoU:2.51,prL:null,incon:false,nota:""},
+{nm:"Zuppa Ceci",forn:"Food B2B",um:"pz",costo:3.1,umU:"pz",costoU:3.1,prL:null,incon:false,nota:""},
+{nm:"Zuppa Lenticchie",forn:"Food B2B",um:"pz",costo:3.1,umU:"pz",costoU:3.1,prL:null,incon:false,nota:""},
+{nm:"Grana Grattugiato",forn:"MaRr",um:"kg",costo:15.5,umU:"g",costoU:0.0155,prL:null,incon:false,nota:""},
+{nm:"Miele Castagno",forn:"MaRr",um:"kg",costo:22,umU:"g",costoU:0.022,prL:null,incon:false,nota:""},
+{nm:"Senape miele",forn:"MaRr",um:"L",costo:2.8,umU:"ml",costoU:0.0028,prL:null,incon:false,nota:""},
+{nm:"Tabasco",forn:"MaRr",um:"",costo:null,umU:"",costoU:null,prL:4.9,incon:false,nota:""},
+{nm:"Noci",forn:"Proietti",um:"kg",costo:13,umU:"g",costoU:0.013,prL:16.5,incon:true,nota:""},
+{nm:"Caponata di Melanzane",forn:"Proposte d'Autore",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"Cicoria Ripassata",forn:"Proposte d'Autore",um:"pz",costo:2.1,umU:"pz",costoU:2.1,prL:null,incon:false,nota:""},
+{nm:"Friarielli",forn:"Proposte d'Autore",um:"pz",costo:3.4,umU:"pz",costoU:3.4,prL:null,incon:false,nota:""},
+{nm:"Friggitelli",forn:"Proposte d'Autore",um:"pz",costo:3,umU:"pz",costoU:3,prL:3.4,incon:true,nota:"sconto: -12%"},
+{nm:"Lasagna al Ragù di Manzo",forn:"Proposte d'Autore",um:"pz",costo:4,umU:"pz",costoU:4,prL:null,incon:false,nota:""},
+{nm:"Pollo con i Peperoni",forn:"Proposte d'Autore",um:"pz",costo:5.25,umU:"pz",costoU:5.25,prL:null,incon:false,nota:""},
+{nm:"Polpette di Manzo al sugo",forn:"Proposte d'Autore",um:"pz",costo:3.7,umU:"pz",costoU:3.7,prL:null,incon:false,nota:""},
+{nm:"cicoria ripassata food",forn:"Proposte d'Autore",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"Arancia",forn:"Sandro",um:"kg",costo:3,umU:"g",costoU:0.003,prL:3,incon:false,nota:"€/kg estate: 2.5"},
+{nm:"Basilico",forn:"Sandro",um:"kg",costo:10.5,umU:"g",costoU:0.0105,prL:10.5,incon:true,nota:""},
+{nm:"Cetrioli",forn:"Sandro",um:"kg",costo:3.5,umU:"g",costoU:0.0035,prL:3.5,incon:true,nota:"€/kg estate: 2"},
+{nm:"Cipolla",forn:"Sandro",um:"kg",costo:2.5,umU:"g",costoU:0.0025,prL:2.5,incon:false,nota:""},
+{nm:"Lime",forn:"Sandro",um:"kg",costo:6.9,umU:"g",costoU:0.0069,prL:6.9,incon:false,nota:""},
+{nm:"Limoni",forn:"Sandro",um:"kg",costo:3.5,umU:"g",costoU:0.0035,prL:3.5,incon:false,nota:"€/kg estate: 3"},
+{nm:"Menta",forn:"Sandro",um:"kg",costo:10.5,umU:"g",costoU:0.0105,prL:10.5,incon:false,nota:""},
+{nm:"Origano",forn:"Sandro",um:"kg",costo:10.5,umU:"g",costoU:0.0105,prL:10.5,incon:false,nota:""},
+{nm:"Peperoni",forn:"Sandro",um:"kg",costo:6,umU:"g",costoU:0.006,prL:6,incon:false,nota:"€/kg estate: 3.5"},
+{nm:"Pomodori",forn:"Sandro",um:"kg",costo:4,umU:"g",costoU:0.004,prL:4,incon:false,nota:"€/kg estate: 2.5"},
+{nm:"Prezzemolo",forn:"Sandro",um:"kg",costo:10.5,umU:"g",costoU:0.0105,prL:10.5,incon:false,nota:""},
+{nm:"Rosmarino",forn:"Sandro",um:"kg",costo:10.5,umU:"g",costoU:0.0105,prL:10.5,incon:false,nota:""},
+{nm:"Uva",forn:"Sandro",um:"kg",costo:6.9,umU:"g",costoU:0.0069,prL:6.9,incon:false,nota:""},
+{nm:"Angus Carpaccio",forn:"",um:"kg",costo:28.59,umU:"g",costoU:0.02859,prL:null,incon:false,nota:""},
+{nm:"Barbabietole e porri",forn:"",um:"kg",costo:14,umU:"g",costoU:0.014,prL:null,incon:false,nota:""},
+{nm:"Broccolo Siciliano",forn:"",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"Bruschette",forn:"",um:"kg",costo:8,umU:"g",costoU:0.008,prL:null,incon:false,nota:""},
+{nm:"Capperi",forn:"",um:"kg",costo:10.9,umU:"g",costoU:0.0109,prL:null,incon:false,nota:""},
+{nm:"Caprino fresco",forn:"",um:"kg",costo:14.9,umU:"g",costoU:0.0149,prL:null,incon:false,nota:""},
+{nm:"Carciofo Romana Food",forn:"",um:"pz",costo:2.9,umU:"pz",costoU:2.9,prL:null,incon:false,nota:""},
+{nm:"Ceci secchi",forn:"",um:"kg",costo:5,umU:"g",costoU:0.005,prL:null,incon:false,nota:""},
+{nm:"Ciambelline al Vino",forn:"",um:"kg",costo:18,umU:"g",costoU:0.018,prL:null,incon:false,nota:""},
+{nm:"Coppiette",forn:"",um:"kg",costo:24.9,umU:"g",costoU:0.0249,prL:null,incon:false,nota:""},
+{nm:"Corallina",forn:"",um:"kg",costo:14,umU:"g",costoU:0.014,prL:null,incon:false,nota:""},
+{nm:"Crackers senza glutine",forn:"",um:"pz",costo:1.06,umU:"pz",costoU:1.06,prL:null,incon:false,nota:""},
+{nm:"Croccantelle di Formaggio",forn:"",um:"kg",costo:8.8,umU:"g",costoU:0.0088,prL:null,incon:false,nota:""},
+{nm:"Crostatina RicPereCiocc",forn:"",um:"pz",costo:2.4,umU:"pz",costoU:2.4,prL:null,incon:false,nota:""},
+{nm:"Crostatina Ricotta Limone",forn:"",um:"pz",costo:2.4,umU:"pz",costoU:2.4,prL:null,incon:false,nota:""},
+{nm:"Crostatina Ricotta e Visciole",forn:"",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"Crostatina Ricotta e cioccolato",forn:"",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"Culatta",forn:"",um:"kg",costo:23.6,umU:"g",costoU:0.0236,prL:null,incon:false,nota:""},
+{nm:"Dressing (miele, olio, senape)",forn:"",um:"kg",costo:5.21,umU:"g",costoU:0.00521,prL:null,incon:false,nota:""},
+{nm:"Feta",forn:"",um:"kg",costo:10.5,umU:"g",costoU:0.0105,prL:null,incon:false,nota:""},
+{nm:"Flan di Verdure (doppio)",forn:"",um:"pz",costo:null,umU:"pz",costoU:0,prL:null,incon:false,nota:""},
+{nm:"Formaggio Capra",forn:"",um:"kg",costo:19.67,umU:"g",costoU:0.01967,prL:null,incon:false,nota:""},
+{nm:"Formaggio Pecorino",forn:"",um:"kg",costo:16.99,umU:"g",costoU:0.01699,prL:null,incon:false,nota:""},
+{nm:"Gelato GROM",forn:"",um:"pz",costo:2.5,umU:"pz",costoU:2.5,prL:null,incon:false,nota:""},
+{nm:"Gelato Yogurt e visciole",forn:"",um:"pz",costo:2.6,umU:"pz",costoU:2.6,prL:null,incon:false,nota:""},
+{nm:"Gelato caffè e rum",forn:"",um:"pz",costo:2.6,umU:"pz",costoU:2.6,prL:null,incon:false,nota:""},
+{nm:"Gelato zabaione al marsala",forn:"",um:"pz",costo:2.6,umU:"pz",costoU:2.6,prL:null,incon:false,nota:""},
+{nm:"Gorgonzola",forn:"",um:"kg",costo:13,umU:"g",costoU:0.013,prL:null,incon:false,nota:""},
+{nm:"Grana in Scaglie",forn:"",um:"kg",costo:8,umU:"g",costoU:0.008,prL:null,incon:false,nota:""},
+{nm:"Granajola",forn:"",um:"kg",costo:25,umU:"g",costoU:0.025,prL:null,incon:false,nota:""},
+{nm:"Insalata",forn:"",um:"kg",costo:11,umU:"g",costoU:0.011,prL:null,incon:false,nota:""},
+{nm:"Involtino di carne al sugo",forn:"",um:"pz",costo:null,umU:"pz",costoU:0,prL:null,incon:false,nota:""},
+{nm:"Lasagna Boscaiola",forn:"",um:"pz",costo:4.95,umU:"pz",costoU:4.95,prL:null,incon:false,nota:""},
+{nm:"Lasagna Provola Zucchine",forn:"",um:"pz",costo:4.75,umU:"pz",costoU:4.75,prL:null,incon:false,nota:""},
+{nm:"Lasagna Zucca e Salsiccia",forn:"",um:"pz",costo:4.75,umU:"pz",costoU:4.75,prL:null,incon:false,nota:""},
+{nm:"Lasagna funghi e taleggio (gf)",forn:"",um:"pz",costo:6.75,umU:"pz",costoU:6.75,prL:null,incon:false,nota:""},
+{nm:"Mandorle salate tostate",forn:"",um:"kg",costo:20,umU:"g",costoU:0.02,prL:null,incon:false,nota:""},
+{nm:"Meringato al limone",forn:"",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"Miele al Tartufo",forn:"",um:"kg",costo:15.82,umU:"g",costoU:0.01582,prL:null,incon:false,nota:""},
+{nm:"Mostarda Aglio Nero Vulcino (al lt)",forn:"",um:"L",costo:22,umU:"ml",costoU:0.022,prL:null,incon:false,nota:""},
+{nm:"Mousse Marsala Arancia",forn:"",um:"pz",costo:2.4,umU:"pz",costoU:2.4,prL:null,incon:false,nota:""},
+{nm:"Mozzarella di Bufala",forn:"",um:"kg",costo:12.5,umU:"g",costoU:0.0125,prL:null,incon:false,nota:""},
+{nm:"Olio Cucina Vulcino San Pietro",forn:"",um:"L",costo:14,umU:"ml",costoU:0.014,prL:null,incon:false,nota:""},
+{nm:"Olio EVO Colonna 250ml",forn:"",um:"L",costo:26,umU:"ml",costoU:0.026,prL:null,incon:false,nota:""},
+{nm:"Olio EVO Piccolo",forn:"",um:"L",costo:20,umU:"ml",costoU:0.02,prL:null,incon:false,nota:""},
+{nm:"Olio EVO Vulcino 250",forn:"",um:"L",costo:28,umU:"ml",costoU:0.028,prL:null,incon:false,nota:""},
+{nm:"Olio Evo Vulcino Piccante 100ml (al lt)",forn:"",um:"L",costo:5.5,umU:"ml",costoU:0.0055,prL:null,incon:false,nota:""},
+{nm:"Olio Evo Vulcino Piccante 250ml (al lt)",forn:"",um:"L",costo:42,umU:"ml",costoU:0.042,prL:null,incon:false,nota:""},
+{nm:"Olio limone",forn:"",um:"L",costo:24.9,umU:"ml",costoU:0.0249,prL:null,incon:false,nota:""},
+{nm:"Olive Denocciolate",forn:"",um:"kg",costo:18.8,umU:"g",costoU:0.0188,prL:null,incon:false,nota:""},
+{nm:"Olive Gaeta",forn:"",um:"kg",costo:7.1,umU:"g",costoU:0.0071,prL:null,incon:false,nota:""},
+{nm:"Ossocollo",forn:"",um:"kg",costo:15.8,umU:"g",costoU:0.0158,prL:null,incon:false,nota:""},
+{nm:"Pane",forn:"",um:"kg",costo:3.5,umU:"g",costoU:0.0035,prL:null,incon:false,nota:""},
+{nm:"Panna Caffè",forn:"",um:"pz",costo:0.5,umU:"pz",costoU:0.5,prL:null,incon:false,nota:""},
+{nm:"Panna Cotta",forn:"",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"Pepe",forn:"",um:"",costo:null,umU:"",costoU:null,prL:null,incon:false,nota:""},
+{nm:"Peperone Crusco",forn:"",um:"kg",costo:110,umU:"g",costoU:0.11,prL:null,incon:false,nota:""},
+{nm:"Pollo grigliato",forn:"",um:"kg",costo:26.36,umU:"g",costoU:0.02636,prL:null,incon:false,nota:""},
+{nm:"Polpettine Emporio Vegetale",forn:"",um:"pz",costo:null,umU:"pz",costoU:0,prL:null,incon:false,nota:""},
+{nm:"Polpettine Manzo/Salsiccia vino bianco",forn:"",um:"pz",costo:3.8,umU:"pz",costoU:3.8,prL:null,incon:false,nota:""},
+{nm:"Polpettone con spinaci",forn:"",um:"pz",costo:null,umU:"pz",costoU:0,prL:null,incon:false,nota:""},
+{nm:"Porchetta di Ariccia",forn:"",um:"kg",costo:12.9,umU:"g",costoU:0.0129,prL:null,incon:false,nota:""},
+{nm:"Raviolo Noci",forn:"",um:"pz",costo:5.55,umU:"pz",costoU:5.55,prL:null,incon:false,nota:""},
+{nm:"Raviolo Ricotta e salsa Lime - Limone",forn:"",um:"pz",costo:5.3,umU:"pz",costoU:5.3,prL:null,incon:false,nota:""},
+{nm:"Raviolo Zucca e Timo",forn:"",um:"pz",costo:5.3,umU:"pz",costoU:5.3,prL:null,incon:false,nota:""},
+{nm:"Ricotta Salata",forn:"",um:"kg",costo:9.75,umU:"g",costoU:0.00975,prL:null,incon:false,nota:""},
+{nm:"Ricotta di Bufala",forn:"",um:"kg",costo:6.5,umU:"g",costoU:0.0065,prL:null,incon:false,nota:""},
+{nm:"Roastbeef",forn:"",um:"kg",costo:24,umU:"g",costoU:0.024,prL:null,incon:false,nota:""},
+{nm:"Roastbeef (porzione)",forn:"",um:"pz",costo:2.64,umU:"pz",costoU:2.64,prL:null,incon:false,nota:""},
+{nm:"Sale",forn:"",um:"kg",costo:1,umU:"g",costoU:0.001,prL:null,incon:false,nota:""},
+{nm:"Salsa di pomodoro",forn:"",um:"pz",costo:1.8,umU:"pz",costoU:1.8,prL:null,incon:false,nota:""},
+{nm:"Salsiccette Rustiche",forn:"",um:"kg",costo:11.8,umU:"g",costoU:0.0118,prL:null,incon:false,nota:""},
+{nm:"Salsiccette al Tartufo",forn:"",um:"kg",costo:18.5,umU:"g",costoU:0.0185,prL:null,incon:false,nota:""},
+{nm:"Salsiccia San Biagio (DOL)",forn:"",um:"kg",costo:26.6,umU:"g",costoU:0.0266,prL:null,incon:false,nota:""},
+{nm:"Salsiccia e Friarielli",forn:"",um:"pz",costo:4.95,umU:"pz",costoU:4.95,prL:null,incon:false,nota:""},
+{nm:"Spuntature e Salsiccia",forn:"",um:"pz",costo:null,umU:"pz",costoU:0,prL:null,incon:false,nota:""},
+{nm:"Taralli",forn:"",um:"kg",costo:8.9,umU:"g",costoU:0.0089,prL:null,incon:false,nota:""},
+{nm:"Tartare Stella",forn:"",um:"kg",costo:27,umU:"g",costoU:0.027,prL:null,incon:false,nota:""},
+{nm:"Tartare di Frisona",forn:"",um:"pz",costo:3.24,umU:"pz",costoU:3.24,prL:null,incon:false,nota:""},
+{nm:"Tiramisù",forn:"",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"Tortino Patate e Alici (Proposte)",forn:"",um:"pz",costo:null,umU:"pz",costoU:0,prL:null,incon:false,nota:""},
+{nm:"Tresca primavera",forn:"",um:"pz",costo:4.5,umU:"pz",costoU:4.5,prL:null,incon:false,nota:""},
+{nm:"Trippa alla Romana",forn:"",um:"pz",costo:4.3,umU:"pz",costoU:4.3,prL:null,incon:false,nota:""},
+{nm:"Vinaigrette (olio, aceto)",forn:"",um:"",costo:null,umU:"",costoU:null,prL:null,incon:false,nota:""},
+{nm:"Zucchine Scapece Food",forn:"",um:"pz",costo:2.9,umU:"pz",costoU:2.9,prL:null,incon:false,nota:""},
+{nm:"Zucchine alla Romana (Proposte)",forn:"",um:"pz",costo:null,umU:"pz",costoU:0,prL:null,incon:false,nota:""},
+{nm:"Zuppa Contadina",forn:"",um:"pz",costo:3.1,umU:"pz",costoU:3.1,prL:null,incon:false,nota:""},
+{nm:"bignè di san giuseppe",forn:"",um:"pz",costo:2,umU:"pz",costoU:2,prL:null,incon:false,nota:""},
+{nm:"chips di verdure essiccate",forn:"",um:"kg",costo:24.9,umU:"g",costoU:0.0249,prL:null,incon:false,nota:""},
+{nm:"erba cipollina",forn:"",um:"kg",costo:null,umU:"g",costoU:0,prL:null,incon:false,nota:""},
+{nm:"mousse alla nocciola",forn:"",um:"pz",costo:3,umU:"pz",costoU:3,prL:null,incon:false,nota:""},
+{nm:"pachino secchi",forn:"",um:"kg",costo:38,umU:"g",costoU:0.038,prL:null,incon:false,nota:""},
+{nm:"polpettine di verdure e legumi in salsa",forn:"",um:"pz",costo:3.97,umU:"pz",costoU:3.97,prL:null,incon:false,nota:""},
+{nm:"speck cotto",forn:"",um:"kg",costo:10.8,umU:"g",costoU:0.0108,prL:null,incon:false,nota:""},
+{nm:"tozzetti al cioccolato",forn:"",um:"kg",costo:18,umU:"g",costoU:0.018,prL:null,incon:false,nota:""}
+];
+const delta=[
+{r:"Ravioli carciofi cacio e pepe",cat:"I CALDI",nomi:"RAVIOLO",pm25:13.4426,p26:15.0,delta:1.5574,pct:0.116,q26:2603,extra:4053.91,s9m:12161.73,imp:"▲▲ Alto"},
+{r:"Lasagna al Ragù di Manzo",cat:"I CALDI",nomi:"Lasagna ragu · Lasagna zucca e salsiccia",pm25:12.1939,p26:13.0,delta:0.8061,pct:0.066,q26:3502,extra:2822.96,s9m:8468.88,imp:"▲▲ Alto"},
+{r:"Polpette di Manzo al sugo",cat:"I CALDI",nomi:"Polpette sugo",pm25:10.7967,p26:12.0,delta:1.2033,pct:0.111,q26:2105,extra:2532.95,s9m:7598.85,imp:"▲▲ Alto"},
+{r:"Pane al Sughetto di pomodoro",cat:"SFIZI",nomi:"Pane al sughetto",pm25:5.4699,p26:6.0,delta:0.5301,pct:0.097,q26:4369,extra:2316.01,s9m:6948.03,imp:"▲▲ Alto"},
+{r:"Parmigiana di Melanzane",cat:"I CALDI",nomi:"Parmigiana",pm25:10.7086,p26:12.0,delta:1.2914,pct:0.121,q26:1630,extra:2104.98,s9m:6314.94,imp:"▲▲ Alto"},
+{r:"Tiramisù",cat:"DOLCI",nomi:"Tiramisù",pm25:5.9526,p26:7.0,delta:1.0474,pct:0.176,q26:1733,extra:1815.14,s9m:5445.42,imp:"▲▲ Alto"},
+{r:"Pollo con i Peperoni",cat:"I CALDI",nomi:"POLLO E PEPERONI",pm25:12.3715,p26:13.5,delta:1.1285,pct:0.091,q26:1103,extra:1244.74,s9m:3734.22,imp:"▲▲ Alto"},
+{r:"Capresona",cat:"ANTIPASTI",nomi:"CapresONA",pm25:10.1581,p26:12.0,delta:1.8419,pct:0.181,q26:605,extra:1114.35,s9m:3343.05,imp:"▲▲ Alto"},
+{r:"Hummus di ceci",cat:"SFIZI",nomi:"HUMMUS CECI",pm25:5.9191,p26:7.0,delta:1.0809,pct:0.183,q26:855,extra:924.17,s9m:2772.51,imp:"▲ Medio"},
+{r:"Tresca primavera",cat:"INSALATE",nomi:"TRESCA",pm25:10.7045,p26:13.5,delta:2.7955,pct:0.261,q26:241,extra:673.72,s9m:2021.16,imp:"▲ Medio"},
+{r:"Caponata di Melanzane",cat:"CONTORNI",nomi:"Caponata agrodolce",pm25:5.8881,p26:7.0,delta:1.1119,pct:0.189,q26:484,extra:538.16,s9m:1614.48,imp:"▲ Medio"},
+{r:"Carpaccio di Angus marinato",cat:"ANTIPASTI",nomi:"ANGUS",pm25:11.786,p26:12.5,delta:0.714,pct:0.061,q26:717,extra:511.94,s9m:1535.82,imp:"▲ Medio"},
+{r:"Panna Cotta",cat:"DOLCI",nomi:"Panna cotta",pm25:5.9554,p26:7.0,delta:1.0446,pct:0.175,q26:408,extra:426.2,s9m:1278.6,imp:"▲ Medio"},
+{r:"Cicoria Ripassata",cat:"CONTORNI",nomi:"Cicoria ripassata",pm25:6.396,p26:7.0,delta:0.604,pct:0.094,q26:665,extra:401.66,s9m:1204.98,imp:"▲ Medio"},
+{r:"Culatta di Parma con Bufala",cat:"ANTIPASTI",nomi:"Culatta di Parma con bufala",pm25:10.8567,p26:11.5,delta:0.6433,pct:0.059,q26:609,extra:391.77,s9m:1175.31,imp:"▲ Medio"},
+{r:"Coppiette",cat:"SFIZI",nomi:"Coppiette",pm25:4.388,p26:5.0,delta:0.612,pct:0.139,q26:530,extra:324.36,s9m:973.08,imp:"▲ Medio"},
+{r:"Mandorle salate tostate",cat:"SFIZI",nomi:"Mandorle salate",pm25:3.4094,p26:4.0,delta:0.5906,pct:0.173,q26:539,extra:318.33,s9m:954.99,imp:"▲ Medio"},
+{r:"Misto x 2 Salumi e Formaggi",cat:"ANTIPASTI",nomi:"Misto SalumForm x2 · Misto x 2 salumi",pm25:19.6595,p26:20.0,delta:0.3405,pct:0.017,q26:843,extra:287.04,s9m:861.12,imp:"→ Basso"},
+{r:"Porchetta di Ariccia",cat:"I CALDI",nomi:"Porchetta",pm25:10.8931,p26:11.0,delta:0.1069,pct:0.01,q26:1282,extra:137.05,s9m:411.15,imp:"→ Basso"},
+{r:"Culatta di Parma",cat:"ANTIPASTI",nomi:"Culatta di Parma",pm25:8.8656,p26:9.5,delta:0.6344,pct:0.072,q26:175,extra:111.02,s9m:333.06,imp:"→ Basso"},
+{r:"Patate al Forno",cat:"CONTORNI",nomi:"Patate al forno",pm25:5.9247,p26:6.0,delta:0.0753,pct:0.013,q26:1081,extra:81.4,s9m:244.2,imp:"→ Basso"},
+{r:"Salsiccette al Tartufo",cat:"SFIZI",nomi:"Sals Tartufo",pm25:4.4176,p26:4.5,delta:0.0824,pct:0.019,q26:743,extra:61.22,s9m:183.66,imp:"→ Basso"},
+{r:"Salsiccette Rustiche",cat:"SFIZI",nomi:"Sals  rustiche",pm25:3.4349,p26:3.5,delta:0.0651,pct:0.019,q26:774,extra:50.39,s9m:151.17,imp:"→ Basso"},
+{r:"Ricotta di Bufala",cat:"ANTIPASTI",nomi:"Ricotta miele",pm25:8.9246,p26:9.0,delta:0.0754,pct:0.008,q26:627,extra:47.28,s9m:141.84,imp:"→ Basso"},
+{r:"Oliva Gaeta DOP",cat:"SFIZI",nomi:"Olive Gaeta",pm25:3.4708,p26:3.5,delta:0.0292,pct:0.008,q26:1242,extra:36.27,s9m:108.81,imp:"→ Basso"},
+{r:"Greca",cat:"INSALATE",nomi:"Greca",pm25:10.4225,p26:10.5,delta:0.0775,pct:0.007,q26:331,extra:25.65,s9m:76.95,imp:"→ Basso"},
+{r:"Croccantelle di Formaggio",cat:"SFIZI",nomi:"Croccantelle di formaggio",pm25:3.4714,p26:3.5,delta:0.0286,pct:0.008,q26:553,extra:15.82,s9m:47.46,imp:"→ Basso"},
+{r:"Selezione Salumi x 1",cat:"ANTIPASTI",nomi:"SELEZIONE di salumi x1",pm25:10.0,p26:11.0,delta:1.0,pct:0.1,q26:1,extra:1.0,s9m:3.0,imp:"→ Basso"},
+{r:"Salsiccia e Friarielli",cat:"I CALDI",nomi:"SALSICCIA E FRIARELLI",pm25:13.9,p26:12.0,delta:-1.9,pct:-0.137,q26:43,extra:-81.7,s9m:-245.1,imp:"↓ Lieve"},
+{r:"Spezzatino di Maiale con Prugne",cat:"I CALDI",nomi:"SPEZZATINO MAIALE PRUGNE",pm25:14.627,p26:14.0,delta:-0.627,pct:-0.043,q26:205,extra:-128.53,s9m:-385.59,imp:"↓ Lieve"},
+{r:"Polpettine Emporio Vegetale",cat:"I CALDI",nomi:"POLPETTINE VEGETALI · POLPETTINE di Emporio",pm25:13.3601,p26:13.0,delta:-0.3601,pct:-0.027,q26:427,extra:-153.76,s9m:-461.28,imp:"↓ Lieve"}
+];
+const deltaNuovi=[
+{r:"Lasagna funghi e taleggio",cat:"I CALDI",p26:15.5,q26:829},
+{r:"Selezione Formaggi x1",cat:"ANTIPASTI",p26:12.0,q26:497},
+{r:"Mediterranea",cat:"INSALATE",p26:8.0,q26:399},
+{r:"BONACCIA",cat:"INSALATE",p26:15.0,q26:288},
+{r:"Peperone Crusco",cat:"SFIZI",p26:4.0,q26:273},
+{r:"Ciambelline al Vino",cat:"SFIZI",p26:3.0,q26:195},
+{r:"Chips di verdure essiccate",cat:"SFIZI",p26:4.0,q26:177},
+{r:"Trippa alla Romana",cat:"I CALDI",p26:14.0,q26:61},
+{r:"Crostatina Ricotta e cioccolato",cat:"DOLCI",p26:7.0,q26:26},
+{r:"Meringato al limone",cat:"DOLCI",p26:7.0,q26:21},
+{r:"Crostatina Ricotta e Visciole",cat:"DOLCI",p26:7.0,q26:21},
+{r:"Gelato zabaione al marsala",cat:"DOLCI",p26:6.0,q26:11},
+{r:"Gelato Yogurt e visciole",cat:"DOLCI",p26:6.0,q26:10}
+];
+const deltaTot={extra:23005.5,s9m:69016.5};
+const fornitori=[{"nome": "Proposte d'Autore", "prodotti": "Lasagna, Parmigiana, Pollo coi Peperoni, Hummus, Caponata, Sughetto, Pollo grigliato, Polpette di Manzo, Speciali", "cat": "Precotti", "note": "Ordine Serale per Mattina. Consegna entro h12", "stato": "ATTIVO"}, {"nome": "Food B2B", "prodotti": "Ravioli, Speciali, Patate al forno, Cicoria ripassata, contorni del giorno, Roastbeef, Insalata pronta, Tresca", "cat": "Precotti, Insalata, Speciali", "note": "Ordine Serale per Mattina. Consegna entro h12", "stato": "ATTIVO"}, {"nome": "Col.Form", "prodotti": "Mozzarella, Ricotta, Caprino, Primosale, Olive Gaeta, Corallina, Capperi, Panna spray, Ricotta salata, Feta, Gorgonzola, Ciambelline al Vino", "cat": "Varie e per Misto Salumi e Formaggi", "note": "Ordine Serale per Mattina. Consegna entro h12", "stato": "ATTIVO"}, {"nome": "MaRr", "prodotti": "Grana in Scaglie, Grana grattugiato, Senape, Noci, Bicarbonato, Tabasco, Salsa Worchestershire, Aceto bianco, Miele Millefiori", "cat": "Varie e Armadio Alimentare", "note": "Ordine 24 h Prima", "stato": "ATTIVO"}, {"nome": "Pezzetta", "prodotti": "Formaggio Pecorino, Croccantelle, Mortadella di Cinghiale", "cat": "Sfizi e per Misto Salumi e Formaggi", "note": "Ordine preferibilmente di Venerdì", "stato": "ATTIVO"}, {"nome": "Vescovi", "prodotti": "Culatta di Parma, Ossocollo Wolf", "cat": "Per Misto Salumi e Formaggi", "note": "Ordine preferibilmente di Venerdì", "stato": "ATTIVO"}, {"nome": "Latteria Perenzin", "prodotti": "Formaggio di Capra per Misto", "cat": "Per Misto Salumi e Formaggi", "note": "Max 5gg consegna", "stato": "ATTIVO"}, {"nome": "Luca Vinz", "prodotti": "Salsiccia secca, Olive Taggiasche", "cat": "Sfizi e per insalata", "note": "Ordini Lunedì, Mercoledì, Venerdì per giorno dopo", "stato": "ATTIVO"}, {"nome": "Sulpizio Tartufi", "prodotti": "Miele al Tartufo, Salsiccette al Tartufo", "cat": "Tartufi", "note": "Consegna in 48 h", "stato": "ATTIVO"}, {"nome": "Forno Danieli", "prodotti": "Taralli, Bruschette per Hummus", "cat": "Da forno, secchi", "note": "Consegna in 72h (soggetto a variazione)", "stato": "ATTIVO"}, {"nome": "Forno Roscioli", "prodotti": "Pane", "cat": "Panetteria", "note": "Ordine serale via mail, per mattina entro h12", "stato": "ATTIVO"}, {"nome": "Forno Antico Granaio", "prodotti": "Crapiata", "cat": "Sfizi, da forno secchi", "note": "in verifica (Con Corriere Espresso GLS)", "stato": "INATTIVO"}, {"nome": "Giuliani Tartufi", "prodotti": "Chips al Tartufo", "cat": "Tartufi, Sfizi", "note": "Consegna entro 72h (soggetto a variazione)", "stato": "INATTIVO"}, {"nome": "Frolla", "prodotti": "Tiramisù, Panna Cotta, Dolci del Giorno", "cat": "Dolci, Dolci del giorno", "note": "Ordine Serale per Mattina. Consegna entro h12", "stato": "ATTIVO"}, {"nome": "Sandro", "prodotti": "Pomodori, peperoni, cetrioli, cipolle rosmarino, basilico, arance, limoni, lime", "cat": "Ortofrutta - Fresco", "note": "Ordine in apertura AM e ore 17", "stato": "ATTIVO"}, {"nome": "IceLike", "prodotti": "Ghiaccio", "cat": "Ghiaccio", "note": "Ordine serale con consegna mattina dopo", "stato": "ATTIVO"}, {"nome": "Gioia", "prodotti": "Gelato Limone, Cioccolato, Pistacchio", "cat": "Sezione Dolci", "note": "Ordine AM per consegna giorno dopo", "stato": "ATTIVO"}, {"nome": "Piccolo", "prodotti": "Olio Servizio Sala", "cat": "Olio e.v.o", "note": "Dati mancanti", "stato": "INATTIVO"}, {"nome": "Tatamà", "prodotti": "Olio Servizio Sala", "cat": "Olio e.v.o", "note": "Dati mancanti", "stato": "INATTIVO"}, {"nome": "Vulcino", "prodotti": "Olio Servizio Sala, Olio Cucina San Pietro", "cat": "Olio e.v.o", "note": "Dati mancanti", "stato": "ATTIVO"}, {"nome": "Caseificio Stella", "prodotti": "Formaggi e Carni", "cat": "Tartare di Frisona", "note": "Consegna Venerdì, ordine Giovedì", "stato": "ATTIVO"}, {"nome": "PachinEat", "prodotti": "Conserve", "cat": "Pachino Essiccati", "note": "Consegna 48h con Corriere Espresso", "stato": "ATTIVO"}, {"nome": "Caseificio Zigrino", "prodotti": "Formaggi", "cat": "Herbal 21, pecorino", "note": "Consegna con Corriere 48h", "stato": "ATTIVO"}, {"nome": "Colonna", "prodotti": "Olio da Sala/Olio salvia/rosmarino", "cat": "Olio e.v.o", "note": "Consegna con Corriere 48h", "stato": "ATTIVO"}];
+const fornCnt={"Food B2B": 13, "MaRr": 4, "Proietti": 1, "Proposte d'Autore": 8, "Sandro": 13, "": 95};
 
-let currentCat = 'TUTTI';
-let currentSort = { col: 5, dir: 'asc' }; // default: food cost asc
 
-function getCatColor(cat) {
-  const map = { SFIZI:'#b07d3a', ANTIPASTI:'#3a6fa8', 'I CALDI':'#c94040', INSALATE:'#2e8a5f', CONTORNI:'#7b5ea7', DOLCI:'#c47f1a' };
-  return map[cat] || '#8a8580';
+const CC={SFIZI:'#c9a227',ANTIPASTI:'#4878b0','I CALDI':'#c04840',INSALATE:'#4a9a6a',CONTORNI:'#8858a0',DOLCI:'#c07828'};
+const f2c=fc=>fc===null?'var(--mu)':fc<=.33?'var(--grl)':fc>=.50?'var(--rdl)':'var(--gold)';
+const ccat=c=>CC[c]||'#8a7a60';
+const cpill=c=>{const col=ccat(c);return`<span class="pill" style="color:${col};background:${col}22;">${c}</span>`;};
+const fe=(v,d=2)=>v===null||isNaN(v)?'—':'€\u202f'+Number(v).toFixed(d).replace('.',',');
+const fp=v=>v===null||isNaN(v)?'—':(v*100).toFixed(1).replace('.',',')+'\u202f%';
+const fn2=v=>v?Number(v).toLocaleString('it-IT'):'—';
+const r5=(v,s)=>{s=Number(s||0);if(!s)return v;return Math.ceil(v/s)*s;};
+
+function go(id,el){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on'); el.classList.add('on');
+  if(id==='conf')cR(); if(id==='q1d')q1R(); if(id==='fc'){fcR();buildFCLists();}
+  if(id==='delta')dR(); if(id==='ingr')iR(); if(id==='sim'){sPop();stR();}
 }
 
-function fcClass(fc) {
-  if (fc === null) return 'fc-mid';
-  if (fc <= 0.33) return 'fc-ok';
-  if (fc >= 0.50) return 'fc-warn';
-  return 'fc-mid';
-}
-
-function fmt(v, prefix='€ ', decimals=2) {
-  if (v === null || v === undefined || isNaN(v)) return '—';
-  return prefix + v.toFixed(decimals).replace('.', ',');
-}
-
-function renderTable() {
-  const search = document.getElementById('search-input').value.toLowerCase();
-  let rows = piatti.filter(r => {
-    const catOk = currentCat === 'TUTTI' || r[1] === currentCat;
-    const searchOk = !search || r[0].toLowerCase().includes(search);
-    return catOk && searchOk;
+/* CONFRONTO */
+let cVv='pz',cSv='q26',cFv='ALL',cCv='ALL';
+function cV(v,b){cVv=v;document.querySelectorAll('[data-cv]').forEach(x=>x.classList.remove('on'));b.classList.add('on');cR();}
+function cS(v,b){cSv=v;document.querySelectorAll('[data-cs]').forEach(x=>x.classList.remove('on'));b.classList.add('on');cR();}
+function cFi(v,b){cFv=v;document.querySelectorAll('[data-cf]').forEach(x=>x.classList.remove('on'));b.classList.add('on');cR();}
+function cC(v,b){cCv=v;document.querySelectorAll('[data-cc]').forEach(x=>x.classList.remove('on'));b.classList.add('on');cR();}
+function cR(){
+  const s=document.getElementById('cs').value.toLowerCase().trim();
+  let rows=conf.map(r=>{
+    const v25=cVv==='pz'?r.q25:r.t25,v26=cVv==='pz'?r.q26:r.t26,da=v26-v25;
+    const st=r.q25===0&&r.q26>0?'NW':r.q26===0?'GO':v26>v25?'UP':'DN';
+    return{...r,v25,v26,da,st};
+  }).filter(r=>{
+    const ok=cFv==='ALL'||(cFv==='UP'&&r.st==='UP')||(cFv==='DN'&&(r.st==='DN'||r.st==='GO'))||(cFv==='NW'&&r.st==='NW');
+    return(!s||r.r.toLowerCase().includes(s))&&ok&&(cCv==='ALL'||r.cat===cCv);
   });
+  rows.sort((a,b)=>cSv==='q26'?b.v26-a.v26:cSv==='da'?b.da-a.da:(b.dp??-9999)-(a.dp??-9999));
+  document.getElementById('ccnt').textContent=rows.length+' ricette';
+  const br=rows.filter(r=>r.v26>0||r.v25>0).slice(0,20);
+  const mx=Math.max(...br.map(r=>Math.max(r.v25,r.v26)),1);
+  document.getElementById('conf-bars').innerHTML=br.map(r=>{
+    const d26=cVv==='pz'?fn2(r.v26):fe(r.v26,0),d25=cVv==='pz'?fn2(r.v25):fe(r.v25,0);
+    return`<div class="bdr"><span class="bl2" title="${r.r}">${r.r}</span><div class="brs"><div class="s25" style="width:${Math.round(r.v25/mx*100)}%;"></div><div class="s26" style="width:${Math.round(r.v26/mx*100)}%;"></div></div><span class="n26">${r.v26?d26:'—'}</span><span class="n25">${r.v25?d25:'—'}</span></div>`;
+  }).join('');
+  document.getElementById('conf-body').innerHTML=rows.map((r,i)=>{
+    const pos=r.da>=0,v26d=cVv==='pz'?fn2(r.v26):fe(r.v26,0),v25d=cVv==='pz'?fn2(r.v25):fe(r.v25,0);
+    const daD=cVv==='pz'?fn2(Math.abs(r.da)):fe(Math.abs(r.da),0);
+    const dpD=r.st==='NW'?'<span class="pill p-nw">NUOVO</span>':r.st==='GO'?'<span class="pill p-go">USCITO</span>':r.dp!==null?`<span class="${pos?'du':'dd'}">${pos?'+':''}${r.dp}%</span>`:'—';
+    const at=r.alias.length?` <span style="font-size:9px;color:var(--mu);background:var(--bg3);border:1px solid var(--bd);padding:1px 4px;margin-left:3px;cursor:help;" title="iPratico: ${r.alias.join(', ')}">alias ×${r.alias.length}</span>`:'';
+    return`<tr><td class="la" style="padding-left:10px;color:var(--mu);font-size:11px;">${i+1}</td><td class="la" style="max-width:175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.r}${at}</td><td style="color:var(--mu);">${r.v25?v25d:'—'}</td><td style="font-weight:600;color:var(--tx);">${r.v26?v26d:'—'}</td><td class="${pos?'du':'dd'}">${r.v25&&r.v26?(pos?'+':'−')+daD:'—'}</td><td>${dpD}</td></tr>`;
+  }).join('');
+}
 
-  // sort
-  const col = currentSort.col;
-  const dir = currentSort.dir === 'asc' ? 1 : -1;
-  rows.sort((a, b) => {
-    let va = a[col], vb = b[col];
-    if (va === null) return 1;
-    if (vb === null) return -1;
-    if (typeof va === 'string') return va.localeCompare(vb) * dir;
-    return (va - vb) * dir;
-  });
-
-  const tbody = document.getElementById('piatti-tbody');
-  tbody.innerHTML = rows.map(r => {
-    const [nome, cat, costoN, costoS, prezzo, fc, mg] = r;
-    const fcPct = fc !== null ? (fc * 100).toFixed(1) + '%' : '—';
-    const mgPct = mg !== null ? (mg * 100).toFixed(1) + '%' : '—';
-    const fcColor = fc === null ? '#8a8580' : fc <= 0.33 ? '#2e8a5f' : fc >= 0.50 ? '#c94040' : '#b07d3a';
-    const mgColor = mg === null ? '#8a8580' : mg >= 0.67 ? '#2e8a5f' : mg <= 0.50 ? '#c94040' : '#b07d3a';
-    const barW = fc !== null ? Math.round(fc * 100) : 0;
-    const catColor = getCatColor(cat);
-    return `<tr data-cat="${cat}">
-      <td style="max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${nome}">${nome}</td>
-      <td style="text-align:right;">
-        <span style="font-size:9px; font-weight:600; color:${catColor}; background:${catColor}18; padding:3px 7px; letter-spacing:0.07em; text-transform:uppercase;">${cat}</span>
-      </td>
-      <td style="text-align:right; color:var(--muted);">${fmt(costoN)}</td>
-      <td style="text-align:right; color:var(--muted);">${fmt(costoS)}</td>
-      <td style="text-align:right; font-weight:600;">${fmt(prezzo)}</td>
-      <td style="text-align:right;">
-        <div class="fc-bar-wrap">
-          <span style="font-weight:600; color:${fcColor}; min-width:38px; text-align:right;">${fcPct}</span>
-          <div class="fc-bar-mini"><div class="fc-bar-mini-fill" style="width:${barW}%; background:${fcColor};"></div></div>
-        </div>
-      </td>
-      <td style="text-align:right; font-weight:600; color:${mgColor};">${mgPct}</td>
-      <td style="text-align:right;">
-        <span class="fc-pill ${fcClass(fc)}" style="font-size:9px;">
-          ${fc === null ? '—' : fc <= 0.33 ? '✦ ottimo' : fc >= 0.50 ? '⚠ alto' : '◉ medio'}
-        </span>
-      </td>
+/* Q1 DETTAGLIO */
+let q1Cat='ALL';
+function q1C(c,b){q1Cat=c;document.querySelectorAll('[data-qc]').forEach(x=>x.classList.remove('on'));b.classList.add('on');q1R();}
+function q1R(){
+  const s=document.getElementById('q1s2').value.toLowerCase().trim(),sv=document.getElementById('q1s').value,ofc=document.getElementById('q1fc').checked;
+  let rows=[...q1d].filter(r=>(q1Cat==='ALL'||r.cat===q1Cat)&&(!s||r.nm.toLowerCase().includes(s))&&(!ofc||r.fc!==null));
+  rows.sort((a,b)=>sv==='pz'?b.q26-a.q26:sv==='rc'?b.t26-a.t26:sv==='mt'?(b.mt||0)-(a.mt||0):sv==='mp'?(b.mp||0)-(a.mp||0):sv==='fc'?(a.fc??99)-(b.fc??99):a.nm.localeCompare(b.nm));
+  document.getElementById('q1cnt').textContent=rows.length+' piatti';
+  document.getElementById('q1body').innerHTML=rows.map((r,i)=>{
+    const mpc=r.mp>4?'var(--grl)':r.mp>1?'var(--gold)':'var(--rdl)';
+    const mtc=r.mt>10000?'var(--grl)':r.mt>0?'var(--bl)':r.mt!==null?'var(--rdl)':'var(--mu)';
+    const isAlert=r.fc!==null&&r.fc>0.8;
+    return`<tr${isAlert?' class="row-alert"':''}><td class="la" style="color:var(--mu);font-size:11px;">${i+1}</td>
+      <td class="la" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.nm}">${r.nm}</td>
+      <td>${cpill(r.cat)}</td>
+      <td style="color:var(--mu);">${r.cs?fe(r.cs):'—'}</td>
+      <td style="font-weight:600;color:var(--tx);">${r.prz?fe(r.prz):'—'}</td>
+      <td><div class="fcw">
+        <span style="font-weight:700;color:${f2c(r.fc)};font-family:'DM Mono',monospace;font-size:11px;min-width:38px;text-align:right;">${r.fc?fp(r.fc):'—'}</span>
+        <div class="fcm"><div class="fcmf" style="width:${r.fc?Math.min(Math.round(r.fc*100),100):0}%;background:${f2c(r.fc)};"></div></div>
+      </div></td>
+      <td style="font-weight:600;color:${mpc};">${r.mp?fe(r.mp):'—'}</td>
+      <td style="font-family:'DM Mono',monospace;font-weight:600;">${fn2(r.q26)}</td>
+      <td style="font-weight:600;">${fe(r.t26,0)}</td>
+      <td style="font-weight:700;color:${mtc};">${r.mt?fe(r.mt,0):'—'}</td>
     </tr>`;
   }).join('');
-
-  document.getElementById('row-count').textContent = rows.length + ' piatti';
 }
 
-function filterTable(cat, btn) {
-  currentCat = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTable();
+/* FOOD COST */
+let fCat='ALL',fFC='ALL';
+function fcF(c,b){fCat=c;document.querySelectorAll('[data-fcat]').forEach(x=>x.classList.remove('on'));b.classList.add('on');fcR();}
+function fcFF(v,b){const s=fFC===v;document.querySelectorAll('[data-ffc]').forEach(x=>x.classList.remove('on'));fFC=s?'ALL':v;if(!s)b.classList.add('on');fcR();}
+function buildFCLists(){
+  const cf=[...piatti].filter(p=>p[4]>0&&p[6]!==null);
+  document.getElementById('fc-ok').innerHTML=cf.sort((a,b)=>a[6]-b[6]).slice(0,6).map((p,i)=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid var(--bd);"><span style="font-size:10px;color:var(--gold);font-weight:700;width:14px;">${i+1}</span><span style="flex:1;font-size:12px;font-weight:500;">${p[0]}</span><span style="font-size:11px;font-weight:700;color:var(--grl);">${fp(p[6])}</span></div>`).join('');
+  document.getElementById('fc-warn').innerHTML=cf.sort((a,b)=>b[6]-a[6]).slice(0,6).map((p,i)=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid var(--bd);"><span style="font-size:10px;color:var(--gold);font-weight:700;width:14px;">${i+1}</span><span style="flex:1;font-size:12px;font-weight:500;">${p[0]}</span><span style="font-size:11px;font-weight:700;color:var(--rdl);">${fp(p[6])}</span></div>`).join('');
+}
+function fcR(){
+  const s=document.getElementById('fc-s').value.toLowerCase().trim(),sv=document.getElementById('fc-sort').value;
+  let rows=piatti.filter(p=>{
+    const catOk=fCat==='ALL'||p[1]===fCat,srOk=!s||p[0].toLowerCase().includes(s);
+    let fcOk=true;if(fFC==='ok')fcOk=p[6]!==null&&p[6]<=.33;else if(fFC==='mid')fcOk=p[6]!==null&&p[6]>.33&&p[6]<.50;else if(fFC==='warn')fcOk=p[6]!==null&&p[6]>=.50;
+    return catOk&&srOk&&fcOk;
+  });
+  const[sk,sd]=sv.split('-');
+  rows.sort((a,b)=>{if(sk==='nm')return sd==='a'?a[0].localeCompare(b[0]):b[0].localeCompare(a[0]);const va=sk==='fc'?a[6]??99:sk==='mg'?a[7]??-1:sk==='prz'?a[4]??0:a[3]??0;const vb=sk==='fc'?b[6]??99:sk==='mg'?b[7]??-1:sk==='prz'?b[4]??0:b[3]??0;return sd==='a'?va-vb:vb-va;});
+  document.getElementById('fc-cnt').textContent=rows.length+' piatti';
+  document.getElementById('fc-body').innerHTML=rows.map(p=>{
+    const[nm,cat,cn,cs,prz,,fc,mg]=p,col=f2c(fc),bw=fc?Math.round(fc*100):0;
+    return`<tr><td class="la" style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${nm}">${nm}</td><td>${cpill(cat)}</td><td style="color:var(--mu);">${fe(cn)}</td><td style="color:var(--mu);">${fe(cs)}</td><td style="font-weight:600;color:var(--tx);">${fe(prz)}</td><td><div class="fcw"><span style="font-weight:700;color:${col};min-width:38px;text-align:right;font-family:'DM Mono',monospace;font-size:11px;">${fc?fp(fc):'—'}</span><div class="fcm"><div class="fcmf" style="width:${bw}%;background:${col};"></div></div></div></td><td style="font-weight:700;color:${mg?f2c(1-mg):'var(--mu)'};">${mg?fp(mg):'—'}</td><td><span class="pill ${fc===null?'p-md':fc<=.33?'p-ok':fc>=.50?'p-wn':'p-md'}">${fc===null?'—':fc<=.33?'✦ ottimo':fc>=.50?'⚠ alto':'◉ medio'}</span></td></tr>`;
+  }).join('');
 }
 
-function applyFilters() { renderTable(); }
-
-function sortTable(col) {
-  if (currentSort.col === col) {
-    currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
-  } else {
-    currentSort = { col, dir: col >= 2 ? 'asc' : 'asc' };
-  }
-  // update icons
-  for (let i = 0; i <= 6; i++) {
-    const el = document.getElementById('sort-' + i);
-    if (el) {
-      el.className = 'sort-icon';
-      el.textContent = i === col ? (currentSort.dir === 'asc' ? '↑' : '↓') : '↕';
-    }
-  }
-  renderTable();
+/* INCREMENTO PREZZI */
+let dVv='extra',dFv='ALL',dCv='ALL';
+function dV(v,b){dVv=v;document.querySelectorAll('[data-dv]').forEach(x=>x.classList.remove('on'));b.classList.add('on');dR();}
+function dFi(v,b){dFv=v;document.querySelectorAll('[data-df]').forEach(x=>x.classList.remove('on'));b.classList.add('on');dR();}
+function dC(v,b){dCv=v;document.querySelectorAll('[data-dc]').forEach(x=>x.classList.remove('on'));b.classList.add('on');dR();}
+function dR(){
+  const s=document.getElementById('ds').value.toLowerCase().trim();
+  let rows=[...delta].filter(r=>{
+    const fOk=dFv==='ALL'||(dFv==='UP'&&r.extra>=0)||(dFv==='DN'&&r.extra<0);
+    return(!s||r.r.toLowerCase().includes(s))&&fOk&&(dCv==='ALL'||r.cat===dCv);
+  });
+  rows.sort((a,b)=>b.extra-a.extra);
+  document.getElementById('dcnt').textContent=rows.length+' ricette';
+  const valKey=dVv;
+  const vals=rows.map(r=>dVv==='extra'?r.extra:dVv==='s9m'?r.s9m:dVv==='delta'?r.delta:r.pct);
+  const mx=Math.max(...vals.map(Math.abs),0.01);
+  document.getElementById('delta-bars').innerHTML=rows.slice(0,18).map((r,i)=>{
+    const val=dVv==='extra'?r.extra:dVv==='s9m'?r.s9m:dVv==='delta'?r.delta:r.pct;
+    const pos=val>=0;const pct=Math.round(Math.abs(val)/mx*100);
+    const disp=dVv==='pct'?fp(val/100):fe(val,0);
+    const col=pos?'var(--grl)':'var(--rdl)';
+    return`<div class="delta-bar-wrap"><span class="delta-bar-lbl" title="${r.r}">${r.r}</span><div class="delta-bar-track"><div class="delta-bar-fill" style="width:${pct}%;background:${col};opacity:.75;"></div></div><span class="delta-bar-val" style="color:${col};">${pos?'+':''}${disp}</span></div>`;
+  }).join('');
+  document.getElementById('delta-body').innerHTML=rows.map((r,i)=>{
+    const pos=r.extra>=0;
+    const deltaCol=r.delta>=0?'var(--grl)':'var(--rdl)';
+    return`<tr><td class="la" style="padding-left:10px;color:var(--mu);font-size:11px;">${i+1}</td>
+      <td class="la" style="max-width:175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.r}">${r.r}${r.nomi?` <span style="font-size:9px;color:var(--mu);">← ${r.nomi}</span>`:''}</td>
+      <td>${cpill(r.cat)}</td>
+      <td style="color:var(--mu);font-family:'DM Mono',monospace;">${fe(r.pm25,2)}</td>
+      <td style="font-weight:600;font-family:'DM Mono',monospace;">${fe(r.p26,2)}</td>
+      <td style="font-weight:700;color:${deltaCol};font-family:'DM Mono',monospace;">${(r.delta>=0?'+':'−')+fe(Math.abs(r.delta),2)}</td>
+      <td style="color:${deltaCol};font-family:'DM Mono',monospace;">${(r.pct>=0?'+':'')+fp(r.pct)}</td>
+      <td style="font-family:'DM Mono',monospace;">${fn2(r.q26)}</td>
+      <td style="font-weight:${Math.abs(r.extra)>1000?'700':'400'};color:${pos?'var(--grl)':'var(--rdl)'};">${(pos?'+':'−')+fe(Math.abs(r.extra),0)}</td>
+      <td style="color:${pos?'var(--godl)':'var(--rdl)'};font-weight:${Math.abs(r.s9m)>3000?'700':'400'};">${(pos?'+':'−')+fe(Math.abs(r.s9m),0)}</td>
+    </tr>`;
+  }).join('');
+  // Nuovi
+  document.getElementById('delta-nuovi').innerHTML=deltaNuovi.map(r=>`<tr>
+    <td class="la">${r.r}</td><td>${cpill(r.cat)}</td>
+    <td style="font-family:'DM Mono',monospace;">${fe(r.p26,2)}</td>
+    <td style="font-family:'DM Mono',monospace;">${fn2(r.q26)}</td>
+    <td style="color:var(--mu);font-size:11px;">Nessun dato 2025 — piatto nuovo</td>
+  </tr>`).join('');
 }
 
-
-function simFmtEuro(v) {
-  if (v === null || v === undefined || isNaN(v)) return '—';
-  return '€ ' + Number(v).toFixed(2).replace('.', ',');
+/* INGREDIENTI */
+const FORN_C=['#c9a227','#4878b0','#4a9a6a','#c04840','#8858a0','#c07828','#60b880','#e07030','#6888b8','#a07828'];
+const fcol={};fornitori.forEach((f,i)=>{fcol[f.nome]=FORN_C[i%FORN_C.length];});
+function buildFornitori(){
+  document.getElementById('forn-body').innerHTML=fornitori.map(f=>{
+    const col=fcol[f.nome]||'var(--mu)',n=fornCnt[f.nome]||0;
+    return`<tr><td class="la"><span style="font-weight:600;color:${col};">${f.nome}</span></td>
+      <td style="text-align:center;"><span class="pill ${f.stato==='ATTIVO'?'p-ok':'p-wn'}">${f.stato}</span></td>
+      <td class="la" style="max-width:200px;font-size:11px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${f.cat||''}">${f.cat||'—'}</td>
+      <td class="la" style="max-width:175px;font-size:11px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${f.note||''}">${f.note||'—'}</td>
+      <td style="font-family:'DM Mono',monospace;font-weight:600;color:${n?'var(--gold)':'var(--mu)'};">${n||'—'}</td>
+    </tr>`;
+  }).join('');
 }
-function simFmtPct(v) {
-  if (v === null || v === undefined || isNaN(v)) return '—';
-  return (Number(v) * 100).toFixed(1).replace('.', ',') + '%';
-}
-function simRound(value, step) {
-  step = Number(step || 0);
-  if (!step) return value;
-  return Math.ceil(value / step) * step;
-}
-function populateSimulator() {
-  const sel = document.getElementById('sim-piatto');
-  if (!sel) return;
-  const options = piatti
-    .filter(r => r[3] !== null && r[4] !== null)
-    .sort((a,b) => a[0].localeCompare(b[0]))
-    .map((r, idx) => `<option value="${piatti.indexOf(r)}">${r[0]} · ${r[1]}</option>`)
-    .join('');
-  sel.innerHTML = options;
-  const preferred = piatti.findIndex(r => r[0] === 'Ravioli carciofi cacio e pepe');
-  if (preferred >= 0) sel.value = String(preferred);
-  updateSimulator();
-}
-function updateSimulator() {
-  const sel = document.getElementById('sim-piatto');
-  if (!sel) return;
-  const idx = Number(sel.value);
-  const item = piatti[idx];
-  if (!item) return;
-  const [nome, cat, costoN, costoS, prezzo, fc, mg] = item;
-
-  const targetMarginPct = Number(document.getElementById('sim-target').value);
-  const rounding = Number(document.getElementById('sim-rounding').value);
-  document.getElementById('sim-target-label').textContent = targetMarginPct + '%';
-
-  const targetMargin = targetMarginPct / 100;
-  let targetPrice = costoS / (1 - targetMargin);
-  targetPrice = simRound(targetPrice, rounding);
-
-  const newFc = costoS / targetPrice;
-  const delta = targetPrice - prezzo;
-
-  document.getElementById('sim-prezzo-attuale').textContent = simFmtEuro(prezzo);
-  document.getElementById('sim-prezzo-target').textContent = simFmtEuro(targetPrice);
-  document.getElementById('sim-fc-target').textContent = simFmtPct(newFc);
-  document.getElementById('sim-delta').textContent = (delta >= 0 ? '+' : '−') + ' ' + simFmtEuro(Math.abs(delta)).replace('€ ', '€ ');
-  document.getElementById('sim-cat').textContent = cat;
-  document.getElementById('sim-costo-netto').textContent = simFmtEuro(costoN);
-  document.getElementById('sim-costo-scarto').textContent = simFmtEuro(costoS);
-  document.getElementById('sim-margine-attuale').textContent = simFmtPct(mg);
-
-  const decision = document.getElementById('sim-decision');
-  decision.className = 'decision-pill';
-  if (delta <= 0.5) {
-    decision.textContent = 'KEEP';
-    decision.classList.add('decision-keep');
-  } else if (delta <= 2.0) {
-    decision.textContent = 'FIX LIGHT';
-    decision.classList.add('decision-fix');
-  } else {
-    decision.textContent = 'REPRICE';
-    decision.classList.add('decision-risk');
-  }
+let iFF='ALL';
+function iF(v,b){iFF=v;document.querySelectorAll('[data-if]').forEach(x=>x.classList.remove('on'));b.classList.add('on');iR();}
+function iR(){
+  const s=document.getElementById('ingr-s').value.toLowerCase().trim(),sv=document.getElementById('ingr-sort').value,onlyIncon=document.getElementById('ingr-incon').checked;
+  let rows=ingr.filter(i=>{const fOk=iFF==='ALL'||(iFF==='NO'&&!i.forn)||(i.forn===iFF);return fOk&&(!s||i.nm.toLowerCase().includes(s))&&(!onlyIncon||i.incon);});
+  const[sk,sd]=sv.split('-');
+  rows.sort((a,b)=>sk==='nm'?a.nm.localeCompare(b.nm):sk==='costo'?(sd==='d'?(b.costo??-1)-(a.costo??-1):(a.costo??-1)-(b.costo??-1)):(a.forn||'zzz').localeCompare(b.forn||'zzz'));
+  document.getElementById('ingr-cnt').textContent=rows.length+' ingredienti';
+  document.getElementById('ingr-body').innerHTML=rows.map(i=>{
+    const fc=fcol[i.forn]||null;
+    const tag=i.forn?`<span style="font-size:10px;font-weight:600;padding:2px 6px;color:${fc};background:${fc}20;">${i.forn}</span>`:'<span style="font-size:10px;color:var(--mu);">—</span>';
+    let delta='—',dc='var(--mu)',stato='<span style="color:var(--mu);font-size:10px;">—</span>';
+    if(i.prL!==null&&i.costo!==null){const d=parseFloat(i.prL)-parseFloat(i.costo);delta=(d>=0?'+':'')+fe(d,4);dc=Math.abs(d)>0.001?'var(--warn)':'var(--grl)';stato=Math.abs(d)<=0.001?'<span class="pill p-ok">✓ OK</span>':'<span class="pill p-ic">⚠ Incongruente</span>';}
+    else if(i.prL!==null){stato='<span class="pill p-nw">Solo listino</span>';}
+    return`<tr${i.incon?' class="row-alert"':''}><td class="la" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${i.nm}">${i.nm}</td><td style="text-align:left;">${tag}</td><td style="text-align:center;color:var(--mu);font-size:11px;">${i.um||'—'}</td><td style="font-family:'DM Mono',monospace;">${i.costo!==null?fe(i.costo):'—'}</td><td style="text-align:center;color:var(--mu);font-size:11px;">${i.umU||'—'}</td><td style="font-family:'DM Mono',monospace;color:var(--mu);font-size:11px;">${i.costoU!==null?'€ '+Number(i.costoU).toFixed(5):'—'}</td><td style="font-family:'DM Mono',monospace;color:${i.prL!==null?'var(--godl)':'var(--mu)'};">${i.prL!==null?fe(i.prL):'—'}</td><td style="font-family:'DM Mono',monospace;font-weight:${i.incon?'700':'400'};color:${dc};">${delta}</td><td style="text-align:center;">${stato}</td></tr>`;
+  }).join('');
 }
 
+/* SIMULATORE */
+function sPop(){const sel=document.getElementById('smp');if(sel.options.length>0)return;const opts=[...piatti].filter(p=>p[3]>0).sort((a,b)=>a[0].localeCompare(b[0]));sel.innerHTML=opts.map(p=>`<option value="${piatti.indexOf(p)}">${p[0]} · ${p[1]}</option>`).join('');const pr=piatti.findIndex(p=>p[0]==='Ravioli carciofi cacio e pepe');if(pr>=0)sel.value=String(pr);sU();}
+function sU(){const p=piatti[Number(document.getElementById('smp').value)];if(!p)return;const[nm,cat,cn,cs,prz,pn,fc,mg,mp]=p;const tgt=Number(document.getElementById('smt').value)/100,rnd=Number(document.getElementById('smr').value);document.getElementById('sml').textContent=Math.round(tgt*100)+'%';const th=document.getElementById('sth-tgt');if(th)th.textContent=`P.target (${Math.round(tgt*100)}%)`;const tp=r5(cs/(1-tgt)*1.1,rnd),nfc=cs/(tp/1.1),dlt=prz?tp-prz:null;document.getElementById('sa').textContent=prz?fe(prz):'—';document.getElementById('st').textContent=fe(tp);const fce=document.getElementById('sfc');fce.textContent=fp(nfc);fce.className='val'+(nfc<=.33?' gr':nfc>=.50?' rd':'');const de=document.getElementById('sdl');if(dlt!==null){de.textContent=(dlt>=0?'+':'−')+fe(Math.abs(dlt));de.className='val'+(dlt>=0?' gr':' rd');}else de.textContent='—';document.getElementById('sca').textContent=cat;document.getElementById('scn').textContent=fe(cn);document.getElementById('scs').textContent=fe(cs);document.getElementById('sma').textContent=mg?fp(mg):'—';const dc=document.getElementById('sde');if(!dlt||dlt<=.5){dc.textContent='KEEP';dc.className='dp-k';}else if(dlt<=2){dc.textContent='FIX LIGHT';dc.className='dp-f';}else{dc.textContent='REPRICE';dc.className='dp-r';}stR();}
+let stFv='ALL';
+function stF(v,b){stFv=v;document.querySelectorAll('[data-sf]').forEach(x=>x.classList.remove('on'));b.classList.add('on');stR();}
+function stR(){const s=document.getElementById('sts').value.toLowerCase().trim();const tgt=Number(document.getElementById('smt')?.value||60)/100,rnd=Number(document.getElementById('smr')?.value||.5);let rows=piatti.filter(p=>p[3]>0&&p[4]>0).map(p=>{const tp=r5(p[3]/(1-tgt)*1.1,rnd),dlt=tp-p[4],dec=dlt<=.5?'KEEP':dlt<=2?'FIX':'REPRICE';return{nm:p[0],cat:p[1],cs:p[3],prz:p[4],fc:p[6],tp,dlt,dec};});if(stFv!=='ALL')rows=rows.filter(r=>r.dec===stFv);if(s)rows=rows.filter(r=>r.nm.toLowerCase().includes(s));document.getElementById('stbody').innerHTML=rows.map(r=>{const pos=r.dlt>=0,dc=r.dec==='KEEP'?'dp-k':r.dec==='FIX'?'dp-f':'dp-r';return`<tr><td class="la" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.nm}">${r.nm}</td><td>${cpill(r.cat)}</td><td style="color:var(--mu);">${fe(r.cs)}</td><td style="font-weight:600;color:var(--tx);">${fe(r.prz)}</td><td style="color:var(--godl);font-weight:600;">${fe(r.tp)}</td><td class="${pos?'du':'dd'}">${(pos?'+':'−')+fe(Math.abs(r.dlt))}</td><td style="color:${f2c(r.fc)};font-family:'DM Mono',monospace;font-size:11px;">${r.fc?fp(r.fc):'—'}</td><td><span class="${dc}">${r.dec==='FIX'?'FIX LIGHT':r.dec}</span></td></tr>`;}).join('');}
 
-// init
-sortTable(5); // default: food cost
-populateSimulator();
+
+// RECENSIONI — tabella piatti
+const revData=[
+  {p:"Lasagna al Ragù di Manzo",cat:"I CALDI",sent:5,cit:"'La migliore lasagna che abbia mai mangiato' · 'must try' · citata in quasi tutte le recensioni positive",rischio:"basso"},
+  {p:"Ravioli carciofi cacio e pepe",cat:"I CALDI",sent:5,cit:"'sublimi' · 'cremosi e saporiti' · molto fotografati · consigliati dallo staff",rischio:"basso"},
+  {p:"Ricotta di Bufala (con miele tartufo)",cat:"ANTIPASTI",sent:5,cit:"'life changing' · 'piatto simbolo' · genera ritorni · ottimo rapporto q/p percepito",rischio:"basso"},
+  {p:"Salsicce al Tartufo",cat:"SFIZI",sent:4,cit:"'bocconi ricchi di sapore' · spesso ordinati come sfizio iniziale",rischio:"basso"},
+  {p:"Carpaccio di Angus marinato",cat:"ANTIPASTI",sent:4,cit:"'freschissimo' · molto apprezzato · citato nei report più recenti (2025)",rischio:"basso"},
+  {p:"Porchetta di Ariccia",cat:"I CALDI",sent:4,cit:"'succulenta' · spesso fotografata · clienti abituali la ordinano regolarmente",rischio:"basso"},
+  {p:"Pollo con i Peperoni",cat:"I CALDI",sent:4,cit:"'romano doc' · consigliato dallo staff come classico della casa",rischio:"basso"},
+  {p:"Polpette di Manzo al sugo",cat:"I CALDI",sent:3,cit:"Ottime quando calde — frequenti segnalazioni di temperatura non uniforme",rischio:"medio"},
+  {p:"Parmigiana di Melanzane",cat:"I CALDI",sent:3,cit:"Apprezzata come piatto · stesso problema temperatura segnalato dalle recensioni critiche",rischio:"medio"},
+  {p:"Misto x 2 Salumi e Formaggi",cat:"ANTIPASTI",sent:3,cit:"Porzioni percepite come scarse per il prezzo (€20). 'Due fettine per tipo'",rischio:"medio"},
+  {p:"Tiramisù",cat:"DOLCI",sent:3,cit:"'Non il migliore' · 'nella media' · non genera entusiasmo nei dessert",rischio:"basso"},
+  {p:"Panna Cotta",cat:"DOLCI",sent:3,cit:"Citata raramente · non è un punto di forza distintivo nelle recensioni",rischio:"basso"},
+  {p:"Hummus di ceci",cat:"SFIZI",sent:4,cit:"Spesso ordinato come sfizio di benvenuto · apprezzato dai vegetariani",rischio:"basso"},
+  {p:"Capresona",cat:"ANTIPASTI",sent:4,cit:"Freschezza degli ingredienti lodato · buona percezione qualità/prezzo",rischio:"basso"},
+];
+const CC2={SFIZI:"#c9a227",ANTIPASTI:"#4878b0","I CALDI":"#c04840",INSALATE:"#4a9a6a",CONTORNI:"#8858a0",DOLCI:"#c07828"};
+document.getElementById("rev-body").innerHTML=revData.map(r=>{
+  const stars="⭐".repeat(r.sent)+"☆".repeat(5-r.sent);
+  const col=CC2[r.cat]||"#8a7a60";
+  const riskPill=r.rischio==="basso"
+    ?'<span class="pill p-ok">✓ Stabile</span>'
+    :'<span class="pill p-wn">⚠ Incostante</span>';
+  return`<tr>
+    <td class="la" style="font-weight:600;">${r.p}</td>
+    <td><span class="pill" style="color:${col};background:${col}22;">${r.cat}</span></td>
+    <td style="text-align:center;letter-spacing:1px;font-size:13px;">${stars}</td>
+    <td class="la" style="font-size:11px;color:var(--mu);max-width:280px;">${r.cit}</td>
+    <td style="text-align:center;">${riskPill}</td>
+  </tr>`;
+}).join("");
+
+/* INIT */
+cR(); buildFCLists(); buildFornitori(); iR(); dR();
 </script>
-
-<!-- ─────────────── FOOTER ─────────────── -->
-<div class="footer">
-  <span>Food Cost Dashboard · Dati da file Excel modello</span>
-  <span>Generato da Claude · Apr 2026</span>
-</div>
-
 </body>
 </html>
