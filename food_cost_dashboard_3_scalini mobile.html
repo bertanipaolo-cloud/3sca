@@ -154,151 +154,265 @@ input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:var(-
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);box-shadow:0 1px 4px rgba(0,0,0,.4);}
 
 
-/* ═══════════════════════════════════════════
-   RESPONSIVE — MOBILE (≤768px)
-═══════════════════════════════════════════ */
-@media (max-width: 768px) {
 
-  /* ── Layout base: sidebar collassa in bottom nav ── */
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — riscritta da zero, mobile-first
+═══════════════════════════════════════════════════════════════ */
+
+/* ── TABLET 600–1024px ── */
+@media (max-width: 1024px) {
+  .shell { grid-template-columns: 190px 1fr; }
+  .main  { padding: 24px 22px; }
+  .ks    { grid-template-columns: repeat(2,1fr); gap: 9px; }
+  .kv    { font-size: 20px; }
+  .kv.sm { font-size: 17px; }
+  .g2,.g32,.sg { grid-template-columns: 1fr; }
+  .split {
+    grid-template-columns: 1fr !important;
+    display: flex !important;
+    flex-direction: column;
+  }
+  .split-l { border-right: none; border-bottom: 1px solid var(--bd); }
+  .split-r { max-height: 400px; }
+  .so { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── MOBILE ≤640px ── */
+@media (max-width: 640px) {
+
+  /* Layout: sidebar → bottom nav */
   .shell {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
   }
 
+  /* SIDEBAR → barra fissa in basso */
   .sb {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    height: auto;
+    top: auto;
+    height: calc(56px + env(safe-area-inset-bottom, 0px));
+    background: var(--bg2) !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     width: 100%;
     flex-direction: row;
     overflow-x: auto;
     overflow-y: hidden;
     border-right: none;
-    border-top: 1px solid var(--bd);
-    z-index: 100;
+    border-top: 2px solid var(--bd);
+    z-index: 1000;
     padding: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  .sb::-webkit-scrollbar { display: none; }
 
-  /* Nasconde elementi sidebar non necessari su mobile */
-  .sb-head, .sb-sec, .sb-stats, .sb-ft { display: none; }
+  /* Nascondi tutto tranne le voci di navigazione */
+  .sb-head, .sb-sec, .sb-stats, .sb-ft { display: none !important; }
 
-  /* Nav items in riga orizzontale */
+  /* Nav items: colonna verticale icona+label */
   .ni {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 8px 12px 6px;
+    padding: 6px 14px 4px;
     border-left: none;
     border-top: 2px solid transparent;
-    font-size: 10px;
-    gap: 3px;
+    font-size: 9px;
+    gap: 2px;
     white-space: nowrap;
     flex-shrink: 0;
-    min-width: 60px;
+    min-width: 64px;
+    height: 56px;
   }
   .ni.on {
     border-left: none;
     border-top-color: var(--gold);
     background: rgba(201,162,39,.1);
   }
-  .ni i { font-size: 16px; width: auto; }
+  .ni i { font-size: 18px; width: auto; }
 
-  /* Main: padding ridotto, spazio per bottom nav */
+  /* Main: ordine inverso (sopra la bottom nav), padding bottom per nav */
   .main {
-    padding: 16px 14px 80px;
+    padding: 14px 12px calc(72px + env(safe-area-inset-bottom, 0px));
     order: -1;
+    min-height: calc(100vh - 56px);
   }
 
-  /* ── KPI strip: 2 colonne ── */
-  .ks { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-  .kpi { padding: 12px 13px; }
-  .kv { font-size: 20px; }
-  .kv.sm { font-size: 16px; }
-  .kl { font-size: 8px; margin-bottom: 5px; }
-  .kb { font-size: 9px; }
-  .kd { font-size: 9px; padding: 2px 5px; }
+  /* Titoli pagina */
+  .pt { font-size: 20px; }
+  .ps { font-size: 9px; }
+  .ph { margin-bottom: 14px; }
 
-  /* ── Griglie: tutte a colonna singola ── */
-  .g2, .g32, .sg, .split {
+  /* KPI → 2 colonne strette */
+  .ks {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+  .kpi { padding: 10px 11px; }
+  .kl  { font-size: 8px; margin-bottom: 5px; letter-spacing: .08em; }
+  .kv  { font-size: 18px; }
+  .kv.sm { font-size: 15px; }
+  .kb  { font-size: 9px; }
+  .kd  { font-size: 9px; padding: 1px 5px; margin-top: 3px; }
+
+  /* Tutte le griglie → colonna singola */
+  .g2, .g32, .sg, .so {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  /* Split layout → colonna singola */
+  .split {
     display: flex !important;
     flex-direction: column;
   }
-  .split { border: none; }
-  .split-l { border-right: none; border-bottom: 1px solid var(--bd); padding: 12px 14px; }
-  .split-r { max-height: 320px; }
+  .split-l {
+    border-right: none;
+    border-bottom: 1px solid var(--bd);
+    padding: 12px;
+  }
+  .split-r {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 280px;
+    -webkit-overflow-scrolling: touch;
+  }
 
-  /* ── Tabelle: scroll orizzontale ── */
-  .tw { max-height: 380px; }
-  .tbl th, .tbl td { padding: 6px 8px; font-size: 11px; }
-  .tbl th { font-size: 8px; }
+  /* Split inline (incremento prezzi) */
+  div[style*="grid-template-columns:380px"] {
+    display: flex !important;
+    flex-direction: column;
+  }
 
-  /* ── Filtri: scroll orizzontale ── */
+  /* Card */
+  .card { padding: 13px 13px; }
+  .cl   { font-size: 8px; }
+
+  /* Tabelle: font più grande, scroll orizzontale */
+  .tw {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 300px !important;
+  }
+  .tbl th {
+    font-size: 8px;
+    padding: 7px 8px;
+    letter-spacing: .06em;
+    white-space: nowrap;
+  }
+  .tbl td {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+  .tbl td.la { max-width: 130px; }
+
+  /* Filtri: scroll orizzontale, non andare a capo */
   .fb {
     overflow-x: auto;
     flex-wrap: nowrap;
     padding: 8px 10px;
     gap: 5px;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-bottom: none;
   }
-  .fb .rc { display: none; } /* nasconde contatore su mobile */
-  .cb { padding: 4px 9px; font-size: 10px; white-space: nowrap; }
-  .si { width: 120px !important; font-size: 11px; }
-  .ss { font-size: 10px; }
+  .fb::-webkit-scrollbar { display: none; }
+  .cb {
+    padding: 5px 10px;
+    font-size: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .fl { display: none; } /* nasconde label "Vista:" "Ordina:" ecc */
+  .fs { display: none; } /* nasconde separatori */
+  .rc { display: none; } /* nasconde contatore */
+  .si {
+    width: 110px !important;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .ss {
+    font-size: 10px;
+    flex-shrink: 0;
+  }
 
-  /* ── Page header ── */
-  .ph { margin-bottom: 14px; }
-  .pt { font-size: 20px; }
-  .ps { font-size: 10px; }
+  /* Barre confronto */
+  .bdr .bl2 { width: 120px; font-size: 10px; }
+  .bdr .n26, .bdr .n25 { width: 40px; font-size: 9px; }
 
-  /* ── Barre confronto: lbl più corte ── */
-  .bdr .bl2 { width: 130px; font-size: 10px; }
-  .bdr .n26, .bdr .n25 { width: 42px; font-size: 9px; }
+  /* FC bar */
+  .fcm { width: 32px; }
 
-  /* ── Card ── */
-  .card { padding: 14px 14px; }
+  /* Nota collassabile */
+  .nota { font-size: 10px; padding: 8px 10px; line-height: 1.5; }
 
-  /* ── FC bar ── */
-  .fcm { width: 36px; }
+  /* Sezione divider */
+  .sec h2 { font-size: 13px; }
+  .sec { margin: 14px 0 8px; }
 
-  /* ── Simulatore ── */
-  .so { grid-template-columns: 1fr 1fr; gap: 8px; }
+  /* Simulatore */
+  .sr { flex-wrap: wrap; }
+  .sr label { min-width: 100%; font-size: 9px; margin-bottom: -4px; }
   .sk { padding: 9px 10px; }
   .sk .val { font-size: 15px; }
-  .sr { flex-wrap: wrap; gap: 6px; }
-  .sr label { min-width: 100%; font-size: 9px; }
+  .sk .lbl { font-size: 8px; }
+  .sn { font-size: 10px; padding: 8px 10px; }
+  .sd td { font-size: 10px; padding: 4px 0; }
 
-  /* ── Nota collassabile ── */
-  .nota { font-size: 10px; padding: 8px 11px; }
+  /* Pill */
+  .pill { font-size: 8px; padding: 2px 5px; }
 
-  /* ── Section divider ── */
-  .sec h2 { font-size: 14px; }
+  /* Barre delta */
+  .delta-bar-lbl { width: 120px; font-size: 10px; }
+  .delta-bar-val { width: 58px; font-size: 10px; }
 
-  /* ── Login screen ── */
-  #login-screen > div {
-    padding: 28px 24px;
-    margin: 16px;
-    width: calc(100% - 32px);
-    min-width: unset;
+  /* Review cards 1 stella */
+  #one-star-cards > div { padding: 13px 13px; }
+
+  /* Box temi ricorrenti → colonna singola */
+  #one-star-cards + div > div[style*="grid-template-columns:repeat(3"] {
+    grid-template-columns: 1fr !important;
   }
 
-  /* ── Footer ── */
-  .footer { flex-direction: column; gap: 4px; font-size: 9px; }
-}
+  /* Grid 3col → 1col su mobile */
+  .mob-grid-3 { grid-template-columns: 1fr !important; }
 
-/* ── Tablet (769–1024px): sidebar più stretta ── */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .shell { grid-template-columns: 180px 1fr; }
-  .sb-name { font-size: 13px; }
-  .sb-logo { width: 64px; height: 64px; }
-  .main { padding: 24px 26px; }
-  .ks { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .kv { font-size: 22px; }
-  .g2, .g32 { grid-template-columns: 1fr; }
-  .split { grid-template-columns: 1fr; }
-  .split-l { border-right: none; border-bottom: 1px solid var(--bd); }
-  .sg { grid-template-columns: 1fr; }
-  .tw { max-height: 420px; }
+  /* Footer */
+  .footer {
+    flex-direction: column;
+    gap: 3px;
+    font-size: 9px;
+    margin-top: 24px;
+  }
+
+
+  /* iOS touch e input */
+  input[type=range] { height: 24px; }
+  input, select, button { -webkit-tap-highlight-color: transparent; }
+  select { font-size: 16px !important; } /* evita zoom automatico iOS */
+  .si { font-size: 16px !important; }    /* evita zoom automatico iOS */
+
+  /* Tabella fornitori anagrafica: nascondi colonne meno importanti */
+  #forn-body td:nth-child(3),
+  #forn-body td:nth-child(4),
+  .tbl thead th:nth-child(3):not(.keep),
+  .tbl thead th:nth-child(4):not(.keep) { 
+    /* non nascondiamo — meglio lo scroll orizzontale */
+  }
+
+  /* Margini e spaziature generali ridotti */
+  .surface { margin-bottom: 0; }
+  .g2, .g32 { margin-bottom: 10px; }
+
+  /* Login screen */
+  #login-screen > div {
+    padding: 24px 20px;
+    margin: 12px;
+    width: calc(100% - 24px);
+    min-width: unset;
+  }
 }
 
 </style>
@@ -577,7 +691,7 @@ document.addEventListener('DOMContentLoaded',()=>document.getElementById('pwd-in
     <input class="si" id="ds" placeholder="Cerca…" oninput="dR()" style="width:130px;margin-left:auto;">
     <span class="rc" id="dcnt"></span>
   </div>
-  <div style="display:grid;grid-template-columns:380px 1fr;border:1px solid var(--bd);border-top:none;background:var(--sf);">
+  <div style="display:grid;grid-template-columns:380px 1fr;border:1px solid var(--bd);border-top:none;background:var(--sf);" class="split">
     <div style="padding:13px 16px;border-right:1px solid var(--bd);">
       <div style="font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:8px;">Grafico — extra incassato Q1 2026 (€)</div>
       <div id="delta-bars"></div>
@@ -820,6 +934,134 @@ document.addEventListener('DOMContentLoaded',()=>document.getElementById('pwd-in
   </div></div>
 
   <!-- Note metodologiche -->
+
+  <!-- Sezione 1 stella -->
+  <div class="sec"><div class="secl"></div><h2>Recensioni ★☆☆☆☆ — Focus ultimi 6 mesi</h2><div class="secl"></div></div>
+
+  <div style="background:rgba(192,72,64,.07);border:1px solid rgba(192,72,64,.25);padding:11px 16px;margin-bottom:16px;font-size:11px;color:var(--rdl);line-height:1.6;">
+    <strong>Nota metodologica:</strong> Le recensioni Google non sono estraibili programmaticamente (API chiuse al pubblico). Le citazioni qui riportate sono quelle a 1 stella verificate su <strong>TripAdvisor</strong> (testi integrali, autori e date come pubblicati) e su aggregatori che indicizzano recensioni da Google Maps e altri canali. Nessun testo è stato modificato o parafrasato.
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:14px;" id="one-star-cards">
+
+    <!-- Card 1 -->
+    <div style="background:var(--sf);border:1px solid rgba(192,72,64,.35);border-left:3px solid var(--rd);padding:18px 20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--tx);">Alessandro M.</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:2px;">1 contributo · TripAdvisor</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;color:var(--rdl);font-weight:700;letter-spacing:1px;">★☆☆☆☆</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:2px;">29 dicembre 2025 · In famiglia</div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:8px;font-style:italic;">"se sei italiano scappa"</div>
+      <div style="font-size:12px;color:var(--tx2);line-height:1.7;">
+        "Che dire… sono un cuoco, ho lavorato in diversi ristoranti e so riconoscere molto bene quando un locale punta solo a fare cassa, senza alcuna attenzione per la qualità o per il cliente. Eravamo in tre e abbiamo deciso di ordinare un tagliere di salumi per due persone da dividere. Ci è arrivato un piattino a dir poco imbarazzante: due fettine di salume per tipo e qualche pezzo di formaggio messo lì senza criterio. I formaggi erano buoni, i salumi nella norma, ma chiedere 20 euro per una quantità e una presentazione del genere è semplicemente un insulto all'intelligenza del cliente. Come seconda portata abbiamo dovuto aspettare circa 30 minuti per due piatti di polpette, che ci sono arrivati freddi. Un'attesa ingiustificabile per un piatto così semplice e una totale mancanza di cura in cucina, ovviamente era roba congelata. A peggiorare ulteriormente l'esperienza, l'acqua se non altro è rimasta fresca per tutto il tempo, dato che siamo rimasti seduti all'esterno il 29 di Dicembre senza che nessuno si preoccupasse minimamente della situazione o di chiedere se fosse tutto a posto. In conclusione, il solito ristorante turistico: prezzi spropositati, porzioni ridicole, piatti serviti male e zero attenzione al cliente. Da evitare."
+      </div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="pill p-wn">Taglieri: porzioni inadeguate</span>
+        <span class="pill p-wn">Polpette fredde · 30 min attesa</span>
+        <span class="pill p-wn">Nessuna cura del cliente</span>
+        <span class="pill p-wn">Seduti fuori a dicembre</span>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div style="background:var(--sf);border:1px solid rgba(192,72,64,.35);border-left:3px solid var(--rd);padding:18px 20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--tx);">luckyluke</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:2px;">Roma · 12 contributi · TripAdvisor</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;color:var(--rdl);font-weight:700;letter-spacing:1px;">★☆☆☆☆</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:2px;">26 giugno 2025 · In coppia</div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:8px;font-style:italic;">"Non più come 'na vorta"</div>
+      <div style="font-size:12px;color:var(--tx2);line-height:1.7;">
+        "A malincuore non posso esimermi dal criticare un posto che ho frequentato per anni e per il quale ho sempre speso parole positive. Ma ora non ci siamo più, è diventato una macchina per fare soldi e basta, perdendo lo spirito popolare e &lsquo;de core&rsquo; che l'ha sempre contraddistinto. Non è possibile pagare 10,5 euro per una porzione di insalata greca che è quasi la metà di come è sempre stata in passato (vedi foto), o 12 euro per una piccola porzione di parmigiana di melanzane riscaldata (non hanno infatti la cucina). Birre da 7 euro in su, spritz serviti in bicchierini per l'acqua e stracolmi di ghiaccio. Ieri abbiamo anche atteso quasi 40 minuti per l'insalata e la parmigiana per cui no, non è più il posto di prima. Delusione nel cuore."
+      </div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="pill p-wn">Cliente storico deluso</span>
+        <span class="pill p-wn">Porzioni dimezzate vs passato</span>
+        <span class="pill p-wn">Parmigiana riscaldata</span>
+        <span class="pill p-wn">40 min attesa</span>
+        <span class="pill p-wn">Prezzi bevande elevati</span>
+      </div>
+    </div>
+
+    <!-- Card 3 — Gastroranking (Google Maps aggregato) -->
+    <div style="background:var(--sf);border:1px solid rgba(192,72,64,.35);border-left:3px solid var(--rd);padding:18px 20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--tx);">Recensore anonimo</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:2px;">Gastroranking.it (aggregatore Google Maps)</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;color:var(--rdl);font-weight:700;letter-spacing:1px;">★☆☆☆☆</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:2px;">23 agosto 2025</div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:8px;font-style:italic;">"Prezzi al peso non comunicati — attenzione"</div>
+      <div style="font-size:12px;color:var(--tx2);line-height:1.7;">
+        "Please be aware that the meat price mentioned is gramms. For example you might see 8€ for meat/100g. So you might have a surprise when receiving the check, if your meat was big. We paid 24€ for 300g meat. It was tasty, still confusing, because there is no english menu version. (L'etto=100g)"
+      </div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="pill p-wn">Prezzi al peso non spiegati</span>
+        <span class="pill p-wn">Nessun menu in inglese</span>
+        <span class="pill p-wn">Sorpresa in conto: €24 per 300g</span>
+      </div>
+    </div>
+
+    <!-- Card 4 — Petit Futé (recensore greco, aprile 2024) -->
+    <div style="background:var(--sf);border:1px solid rgba(192,72,64,.25);border-left:3px solid rgba(192,72,64,.5);padding:18px 20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--tx);">Recensore greco (anonimo)</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:2px;">Petit Futé · aprile 2024 · <em>1 stella su 5</em></div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px;color:var(--rdl);font-weight:700;letter-spacing:1px;">★☆☆☆☆</div>
+          <div style="font-size:10px;color:var(--mu);margin-top:2px;">aprile 2024 · turista internazionale</div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--tx);margin-bottom:8px;font-style:italic;">"Prezzi incomprensibili per i turisti"</div>
+      <div style="font-size:12px;color:var(--tx2);line-height:1.7;">
+        Testo originale in greco: <em>"Δυστυχώς καθίσαμε στο μαγαζί πριν δούμε τις κριτικές στο Google. 470 ml νερό το κοστολογούν 6,5€. Τα γλυκά pancake που η μερίδα είναι σαν δείγμα (ακριβώς 5 μπουκιές) τα κοστολογούν 16€."</em>
+        <br><br>
+        Traduzione: "Purtroppo ci siamo seduti prima di vedere le recensioni su Google. 470ml d'acqua €6,50. I pancake dolci — porzione come un campione, esattamente 5 bocconi — €16,00."
+      </div>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="pill p-wn">Acqua €6,50 per 470ml</span>
+        <span class="pill p-wn">Pancake €16 · porzione minima</span>
+        <span class="pill p-wn">Turista non informato</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Box sintesi temi ricorrenti -->
+  <div style="background:var(--bg3);border:1px solid var(--bd);padding:14px 18px;margin-top:16px;">
+    <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-bottom:10px;">Temi ricorrenti nelle recensioni negative</div>
+    <div class="mob-grid-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+      <div style="border-left:2px solid var(--rdl);padding-left:10px;">
+        <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">🌡 Temperatura piatti</div>
+        <div style="font-size:11px;color:var(--tx2);">Polpette e parmigiana arrivano fredde — 2 su 4 recensioni lo citano esplicitamente</div>
+      </div>
+      <div style="border-left:2px solid var(--warn);padding-left:10px;">
+        <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">💶 Rapporto prezzo/porzione</div>
+        <div style="font-size:11px;color:var(--tx2);">Taglieri, insalata greca e dessert percepiti come insufficienti rispetto al prezzo richiesto</div>
+      </div>
+      <div style="border-left:2px solid var(--bl);padding-left:10px;">
+        <div style="font-size:11px;font-weight:600;color:var(--tx);margin-bottom:3px;">🌍 Comunicazione turisti</div>
+        <div style="font-size:11px;color:var(--tx2);">Assenza di menu in inglese e prezzi al peso non spiegati generano sorprese e recensioni negative da turisti stranieri</div>
+      </div>
+    </div>
+  </div>
+
   <div style="background:var(--bg3);border:1px solid var(--bd);padding:11px 16px;margin-top:14px;font-size:10px;color:var(--mu);line-height:1.7;">
     <strong style="color:var(--tx2);">Fonti:</strong> TripAdvisor (2.429 recensioni), Google Maps (~3.900), Yelp (491), Sluurpy, Restaurant Guru, Foursquare.
     L'analisi è basata su recensioni in italiano e inglese degli ultimi 6 mesi (nov 2024 – mag 2025) con riferimento ai piatti del food cost model.
