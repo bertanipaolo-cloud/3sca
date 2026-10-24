@@ -832,7 +832,7 @@ button,input,select{font:inherit;color:inherit;}
       </div>
     </div>
     <div class="ks" id="plK"></div>
-    <div class="card"><div class="ch"><span class="cl">Rispetto al 2025</span><span class="cs" id="plVsSub"></span></div>
+    <div class="card" id="plVsCard"><div class="ch"><span class="cl">Rispetto al 2025</span><span class="cs" id="plVsSub"></span></div>
       <div class="ks" id="plVsK"></div><div class="prose" id="plVsTxt"></div>
       <div class="tw"><table class="tbl" id="plVsTbl"></table></div></div>
     <div class="grid2">
@@ -2245,12 +2245,12 @@ function renderPL(){
     ['Ricavi netti', eurS(r.ricN), `${dPill(pct(r.ricN,b.ricN),false)} · nel 2025 ${eurS(b.ricN)}`, 'var(--in)'],
     ['Materie prime', pp(q(r.mp)), `nel 2025 ${pp(q25(b.mp))} · ${dPill(pct(r.mp,b.mp))} in euro`, 'var(--g0)'],
     ['Personale', pp(q(r.staff)), `${eurS(r.staff)} · nel 2025 ${pp(q25(b.staff))}, ${eurS(b.staff)}`, 'var(--g5)'],
-    ['Resta prima delle imposte', eurS(r.ris), `nel 2025 ${eurS(b.ris)} · ${pp(q(r.ris))} contro ${pp(q25(b.ris))}`, r.ris>=0?'var(--gr)':'var(--rd)'],
+    ['Utile netto (ipotesi)', eurS(plTax(r).netto), `prima delle imposte ${eurS(r.ris)} · nel 2025 ${eurS(plTax(b).netto)}`, plTax(r).netto>=0?'var(--gr)':'var(--rd)'],
   ] : [
     ['Ricavi netti', eurS(r.ricN), `${eurS(r.ricL)} in cassa, meno l'IVA al 10%`, 'var(--in)'],
     ['Materie prime', pp(q(r.mp)), `${eurS(r.mp)} di cibo e bevande`, 'var(--g0)'],
     ['Personale', pp(q(r.staff)), `${eurS(r.staff)} su ${r.nM} mesi${r.staffEst ? ` · ${r.staffEst} stimati` : ' · buste paga'}`, 'var(--g5)'],
-    ['Resta prima delle imposte', eurS(r.ris), `${pp(q(r.ris))} dei ricavi · ${eurS(r.ris/r.nM)} al mese`, r.ris>=0?'var(--gr)':'var(--rd)'],
+    ['Utile netto (ipotesi)', eurS(plTax(r).netto), `prima delle imposte ${eurS(r.ris)} · imposte ${eurS(plTax(r).imp)}`, plTax(r).netto>=0?'var(--gr)':'var(--rd)'],
   ];
   $('#plK').innerHTML = k.map(x=>`<div class="kpi" style="--kc:${x[3]}"><div class="kl">${x[0]}</div><div class="kv">${x[1]}</div><div class="kb">${x[2]}</div></div>`).join('');
   // grafico: nel confronto due barre "su 100 €", altrimenti la cascata
@@ -2306,7 +2306,7 @@ function renderPL(){
   // mese per mese (solo dati veri)
   const gAll = PLG.flatMap(p=>p.g);
   const mp_ = acqMonth(2026,[0,1]), al_ = acqMonth(2026,gAll.filter(g=>g!==0&&g!==1));
-  $('#plMonSub').textContent = 'solo i mesi con dati di cassa · € senza IVA';
+  $('#plMonSub').textContent = r.proj ? `solo i mesi veri, ${PERIOD_A} · ${PERIOD_B} sono stimati nel conto sopra · € senza IVA` : 'solo i mesi con dati di cassa · € senza IVA';
   const pm_ = m => staffOf(2026,[m]).tot + st.plOth;
   const rowsM = MC.map(m=>{ const rn = S26.tot[m-1]/IVA, res = rn - mp_[m-1] - al_[m-1] - pm_(m);
     return `<tr><td class="la">${MESL[m-1]}</td><td>${eur(rn)}</td><td>${eur(mp_[m-1])}</td><td>${meter(mp_[m-1]/rn)}</td><td>${eur(al_[m-1])}</td><td>${eur(pm_(m))}</td><td>${pp(pm_(m)/rn)}</td><td style="color:${res>=0?'var(--grl)':'var(--rdl)'};font-weight:600">${eur(res)}</td><td>${pp(res/rn)}</td></tr>`; }).join('');
@@ -2609,6 +2609,7 @@ function hundredCmp(el, a, b) {
 // tabella affiancata
 // sempre visibile: 2026 contro 2025 sugli stessi mesi di calendario, poi senza febbraio
 function renderPLvs(){
+  $('#plVsCard').hidden = st.plPer === 'y26';
   const a = plYear(2026, MC, 0, st.plOth), b = plYear(2025, MC, 0, st.plOth);
   const ac = plYear(2026, CM, 0, st.plOth), bc = plYear(2025, CM, 0, st.plOth);
   const costi = x => x.mp + x.staff + x.altri + x.oth;
@@ -2618,6 +2619,7 @@ function renderPLvs(){
     ['Ricavi netti', a.ricN, b.ricN, ac.ricN, bc.ricN, 'var(--in)', true],
     ['Costi', costi(a), costi(b), costi(ac), costi(bc), 'var(--out)', false],
     ['Resta', a.ris, b.ris, ac.ris, bc.ris, 'var(--gr)', true],
+    ['Utile netto', plTax(a).netto, plTax(b).netto, plTax(ac).netto, plTax(bc).netto, 'var(--grl)', true],
   ];
   $('#plVsK').innerHTML = kk.map(x=>`<div class="kpi" style="--kc:${x[5]}"><div class="kl">${x[0]} ${lbl} 2026</div><div class="kv">${eurS(x[1])}</div><div class="kb">${x[2]>0 ? `${dPill(pct(x[1],x[2]),!x[6])} vs ${eurS(x[2])} nel 2025 · <span class="muted">senza feb: ${pctS(pct(x[3],x[4]))}</span>` : `${x[1]-x[2]>=0?'+':''}${eurS(x[1]-x[2])} rispetto al 2025 (${eurS(x[2])}) · <span class="muted">senza feb: ${eurS(x[3])} contro ${eurS(x[4])}</span>`}</div></div>`).join('');
   const row = (l, va, vb, vac, vbc, o={}) => {
@@ -2632,7 +2634,11 @@ function renderPLvs(){
   PLG.slice(2).forEach(p => { if ((a.val[p.k]||0) || (b.val[p.k]||0)) T.push(row(p.l, a.val[p.k]||0, b.val[p.k]||0, ac.val[p.k]||0, bc.val[p.k]||0, {dot:p.c})); });
   if (a.oth || b.oth) T.push(row('Altri costi fissi', a.oth, b.oth, ac.oth, bc.oth, {dot:'var(--bd2)'}));
   T.push(row('<b>Costi totali</b>', costi(a), costi(b), costi(ac), costi(bc), {cls:'plsum'}));
-  T.push(row('<b>Resta prima di ammortamenti, interessi e imposte</b>', a.ris, b.ris, ac.ris, bc.ris, {cls:'plend', good:true}));
+  T.push(row('<b>Resta prima di ammortamenti, interessi e imposte</b>', a.ris, b.ris, ac.ris, bc.ris, {cls:'plsum', good:true}));
+  { const ta = plTax(a), tb = plTax(b), tac = plTax(ac), tbc = plTax(bc);
+    if (st.plAmm) T.push(row('Ammortamenti e interessi', ta.amm, tb.amm, tac.amm, tbc.amm, {dot:'var(--g7)', note:'ipotesi'}));
+    T.push(row('IRES e IRAP', ta.imp, tb.imp, tac.imp, tbc.imp, {dot:'var(--out)', note:`ipotesi: ${nf1.format(st.plIres)}% e ${nf2.format(st.plIrap)}%`}));
+    T.push(row('<b>Utile netto (ipotesi)</b>', ta.netto, tb.netto, tac.netto, tbc.netto, {cls:'plend', good:true})); }
   T.push(row('Lavori e investimenti', a.lav, b.lav, ac.lav, bc.lav, {dot:'var(--g5)', cls:'plout', note:'fuori dal conto: nel 2025 c\'è la ristrutturazione'}));
   T.push(row('Resta dopo i lavori', a.ris-a.lav, b.ris-b.lav, ac.ris-ac.lav, bc.ris-bc.lav, {cls:'plout', good:true}));
   $('#plVsTbl').innerHTML = `<thead><tr><th class="la">Voce</th><th>2025</th><th>2026</th><th>Differenza</th><th>Variazione</th><th>Senza feb</th></tr></thead><tbody>${T.join('')}</tbody>`;
